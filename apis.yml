@@ -1,0 +1,140 @@
+name: Cisco Nexus Dashboard API
+description: APIs for managing and monitoring Cisco Nexus data center switches and network infrastructure
+image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
+url: https://developer.cisco.com/site/nexus/
+created: '2024'
+modified: '2024'
+tags:
+- networking
+- data center
+- switches
+- infrastructure
+- SDN
+- network automation
+apis:
+- name: Cisco NX-API REST
+  description: RESTful API for programmatic access to Nexus switches using HTTP/HTTPS
+  image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
+  humanURL: https://developer.cisco.com/docs/nx-os/
+  baseURL: https://{switch-ip}/api
+  tags:
+  - REST
+  - CLI
+  - configuration
+  - monitoring
+  properties:
+  - type: Documentation
+    url: https://developer.cisco.com/docs/nx-os/#!working-with-nx-api
+  - type: OpenAPI
+    url: https://developer.cisco.com/docs/nx-os/api-reference/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/nx-os/#!authentication
+  contact:
+  - FN: Cisco DevNet Support
+    email: support@cisco.com
+    url: https://developer.cisco.com/site/support/
+- name: Cisco NX-API CLI
+  description: API that accepts show commands and configuration commands in CLI format
+  image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
+  humanURL: https://developer.cisco.com/docs/nx-os/#!working-with-nx-api-cli
+  baseURL: https://{switch-ip}/ins
+  tags:
+  - CLI
+  - show commands
+  - configuration
+  properties:
+  - type: Documentation
+    url: https://developer.cisco.com/docs/nx-os/#!nx-api-cli
+  - type: SDK
+    url: https://github.com/CiscoDevNet/nxapi-learning-labs
+  - type: Sandbox
+    url: https://devnetsandbox.cisco.com/RM/Topology
+  contact:
+  - FN: Cisco DevNet Support
+    email: support@cisco.com
+    url: https://developer.cisco.com/site/support/
+- name: Cisco Nexus Dashboard REST API
+  description: Unified API for Nexus Dashboard Insights, Orchestrator, and Fabric Controller
+  image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
+  humanURL: https://developer.cisco.com/docs/nexus-dashboard/
+  baseURL: https://{nexus-dashboard}/api/v1
+  tags:
+  - dashboard
+  - orchestration
+  - insights
+  - fabric controller
+  - ACI
+  properties:
+  - type: Documentation
+    url: https://developer.cisco.com/docs/nexus-dashboard/
+  - type: API Reference
+    url: https://developer.cisco.com/docs/nexus-dashboard/#!api-reference
+  - type: Getting Started
+    url: https://developer.cisco.com/docs/nexus-dashboard/#!getting-started
+  - type: Postman Collection
+    url: https://www.postman.com/ciscodevnet/
+  contact:
+  - FN: Cisco DevNet Support
+    email: support@cisco.com
+    url: https://developer.cisco.com/site/support/
+- name: Cisco DCNM REST API
+  description: Data Center Network Manager API for managing Nexus fabric deployments
+  image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
+  humanURL: https://developer.cisco.com/docs/data-center-network-manager/
+  baseURL: https://{dcnm-server}/rest
+  tags:
+  - DCNM
+  - fabric management
+  - VXLAN
+  - EVPN
+  properties:
+  - type: Documentation
+    url: https://developer.cisco.com/docs/data-center-network-manager/
+  - type: API Guide
+    url: https://www.cisco.com/c/en/us/support/cloud-systems-management/prime-data-center-network-manager/products-programming-reference-guides-list.html
+  - type: Use Cases
+    url: https://developer.cisco.com/docs/data-center-network-manager/#!use-cases
+  contact:
+  - FN: Cisco DevNet Support
+    email: support@cisco.com
+    url: https://developer.cisco.com/site/support/
+- name: Cisco NETCONF/YANG API
+  description: Model-driven API using YANG data models for Nexus devices
+  image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
+  humanURL: https://developer.cisco.com/docs/nx-os/#!working-with-netconf
+  baseURL: netconf://{switch-ip}:830
+  tags:
+  - NETCONF
+  - YANG
+  - model-driven
+  - automation
+  properties:
+  - type: Documentation
+    url: https://developer.cisco.com/docs/nx-os/#!working-with-netconf
+  - type: YANG Models
+    url: https://github.com/YangModels/yang/tree/master/vendor/cisco/nx
+  - type: Tutorial
+    url: https://developer.cisco.com/learning/labs/tags/Nexus/
+  contact:
+  - FN: Cisco DevNet Support
+    email: support@cisco.com
+    url: https://developer.cisco.com/site/support/
+common:
+- type: Developer Portal
+  url: https://developer.cisco.com/
+- type: GitHub Organization
+  url: https://github.com/CiscoDevNet
+- type: Learning Labs
+  url: https://developer.cisco.com/learning/labs/tags/Nexus/
+- type: Sandbox
+  url: https://devnetsandbox.cisco.com/
+- type: Community Forums
+  url: https://community.cisco.com/t5/network-management/bd-p/disc-network-management
+- type: Support
+  url: https://developer.cisco.com/site/support/
+- type: Status Page
+  url: https://status.cisco.com/
+maintainers:
+- FN: Cisco DevNet Team
+  email: devnet-support@cisco.com
+  url: https://developer.cisco.com/
