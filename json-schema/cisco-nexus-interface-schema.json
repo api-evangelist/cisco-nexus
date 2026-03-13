@@ -1,0 +1,611 @@
+{
+  "$id": "https://schemas.apievangelist.com/cisco-nexus/cisco-nexus-interface-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cisco Nexus NX-API REST Interface Schema",
+  "description": "JSON Schema for Cisco Nexus switch interface managed objects as exposed through the NX-API REST DME model. Covers physical interfaces (l1PhysIf), SVI interfaces (sviIf), VLAN bridge domains (l2BD), and interface statistics (rmonEtherStats). Based on the Cisco Nexus 3000 and 9000 Series NX-API REST SDK documentation.",
+  "type": "object",
+  "definitions": {
+    "distinguishedName": {
+      "type": "string",
+      "description": "Globally unique identifier for a managed object in the NX-OS Management Information Tree (MIT). Composed of a series of relative names from the root to the object.",
+      "examples": [
+        "sys/intf/phys-[eth1/1]",
+        "sys/intf/svi-[vlan100]",
+        "sys/bd/bd-[vlan-100]"
+      ]
+    },
+    "interfaceId": {
+      "type": "string",
+      "description": "Physical Ethernet interface identifier matching the output of show interface brief on the Nexus switch.",
+      "pattern": "^eth\\d+/\\d+(/\\d+)?$",
+      "examples": [
+        "eth1/1",
+        "eth1/2",
+        "eth2/1",
+        "eth1/1/1"
+      ]
+    },
+    "vlanEncap": {
+      "type": "string",
+      "description": "VLAN fabric encapsulation identifier used by the NX-OS DME model to reference VLAN bridge domains.",
+      "pattern": "^vlan-\\d+$",
+      "examples": [
+        "vlan-1",
+        "vlan-100",
+        "vlan-4094"
+      ]
+    },
+    "sviId": {
+      "type": "string",
+      "description": "Switch Virtual Interface identifier combining the string vlan with a numeric VLAN ID.",
+      "pattern": "^vlan\\d+$",
+      "examples": [
+        "vlan1",
+        "vlan100",
+        "vlan4094"
+      ]
+    },
+    "adminState": {
+      "type": "string",
+      "description": "Administrative state indicating whether the interface or feature is operationally enabled or disabled by the administrator.",
+      "enum": ["up", "down"]
+    },
+    "operState": {
+      "type": "string",
+      "description": "Operational state reflecting the actual runtime status of the interface as detected by the system.",
+      "enum": ["up", "down", "link-up"]
+    },
+    "layerMode": {
+      "type": "string",
+      "description": "Operating layer of a physical interface. Layer2 enables switching functions. Layer3 enables routing functions.",
+      "enum": ["Layer2", "Layer3"]
+    },
+    "switchportMode": {
+      "type": "string",
+      "description": "Switchport mode determining how the interface handles VLAN tagged and untagged traffic.",
+      "enum": ["access", "trunk", "fex-fabric", "dot1q-tunnel", "promiscuous"]
+    },
+    "interfaceSpeed": {
+      "type": "string",
+      "description": "Configured line speed of the physical interface. Use auto for speed auto-negotiation.",
+      "enum": ["auto", "100M", "1G", "10G", "25G", "40G", "100G", "200G", "400G"]
+    },
+    "duplexMode": {
+      "type": "string",
+      "description": "Duplex mode of the physical interface. Use auto for duplex auto-negotiation.",
+      "enum": ["auto", "full", "half"]
+    },
+    "portMedium": {
+      "type": "string",
+      "description": "Port medium type controlling how the SVI interface handles broadcast traffic.",
+      "enum": ["broadcast", "p2p"]
+    },
+    "l1PhysIf": {
+      "type": "object",
+      "title": "Layer 1 Physical Interface (l1PhysIf)",
+      "description": "Represents a physical Ethernet interface on a Cisco Nexus switch. This managed object maps to the l1PhysIf class in the NX-OS DME model. The distinguished name format is sys/intf/phys-[{id}]. Configuration is applied via POST to /api/mo/sys/intf.json and state is retrieved via GET to /api/mo/sys/intf/phys-[{id}].json.",
+      "required": ["attributes"],
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "required": ["id"],
+          "properties": {
+            "dn": {
+              "$ref": "#/definitions/distinguishedName",
+              "description": "Distinguished name of the physical interface (e.g., sys/intf/phys-[eth1/1])"
+            },
+            "id": {
+              "$ref": "#/definitions/interfaceId",
+              "description": "Interface identifier matching the show interface brief output"
+            },
+            "adminSt": {
+              "$ref": "#/definitions/adminState",
+              "description": "Administrative state (up enables the interface, down shuts it down)"
+            },
+            "operSt": {
+              "$ref": "#/definitions/operState",
+              "description": "Current operational state of the interface (read-only)"
+            },
+            "operStQual": {
+              "type": "string",
+              "description": "Qualification reason when the operational state is down (read-only)",
+              "examples": [
+                "admin-down",
+                "link-failure",
+                "sfp-not-present"
+              ]
+            },
+            "layer": {
+              "$ref": "#/definitions/layerMode",
+              "description": "Layer mode (Layer2 for switching, Layer3 for routing)"
+            },
+            "mode": {
+              "$ref": "#/definitions/switchportMode",
+              "description": "Switchport mode when operating in Layer2"
+            },
+            "accessVlan": {
+              "$ref": "#/definitions/vlanEncap",
+              "description": "Access VLAN assignment for access mode ports"
+            },
+            "trunkVlans": {
+              "type": "string",
+              "description": "Trunk allowed VLANs specified as a range. Supports comma-separated values, ranges (1-100), and incremental add (+50) or remove (-50) operations.",
+              "examples": [
+                "1-4094",
+                "1-100,200,300-400",
+                "+50",
+                "-50"
+              ]
+            },
+            "nativeVlan": {
+              "$ref": "#/definitions/vlanEncap",
+              "description": "Native VLAN for untagged frames on trunk ports"
+            },
+            "speed": {
+              "$ref": "#/definitions/interfaceSpeed",
+              "description": "Configured line speed of the physical interface"
+            },
+            "duplex": {
+              "$ref": "#/definitions/duplexMode",
+              "description": "Duplex mode of the physical interface"
+            },
+            "mtu": {
+              "type": "string",
+              "description": "Maximum transmission unit in bytes. Valid range is 576 to 9216.",
+              "pattern": "^\\d+$",
+              "examples": [
+                "1500",
+                "9216"
+              ]
+            },
+            "descr": {
+              "type": "string",
+              "description": "Human-readable description of the interface purpose and connectivity.",
+              "maxLength": 254,
+              "examples": [
+                "Uplink to spine-01 eth1/49",
+                "Server rack A port 12"
+              ]
+            },
+            "snmpTrapSt": {
+              "type": "string",
+              "description": "Whether SNMP trap notifications are sent for link-state changes on this interface.",
+              "enum": ["enable", "disable"]
+            },
+            "bw": {
+              "type": "string",
+              "description": "Administrative bandwidth in kilobits per second used by routing protocols for metric calculation.",
+              "pattern": "^\\d+$",
+              "examples": [
+                "1000000",
+                "10000000"
+              ]
+            },
+            "delay": {
+              "type": "string",
+              "description": "Administrative delay in tens of microseconds used by routing protocols for metric calculation.",
+              "pattern": "^\\d+$",
+              "examples": [
+                "10"
+              ]
+            },
+            "modTs": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Timestamp of the last configuration modification (read-only)"
+            }
+          },
+          "additionalProperties": true
+        },
+        "children": {
+          "type": "array",
+          "description": "Child managed objects including port channel membership, statistics, and hardware details",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "sviIf": {
+      "type": "object",
+      "title": "Switch Virtual Interface (sviIf)",
+      "description": "Represents a Switch Virtual Interface (SVI) providing Layer 3 routing for a VLAN. This managed object maps to the sviIf class in the NX-OS DME model. The distinguished name format is sys/intf/svi-[{id}]. Requires the interface-vlan feature to be enabled (fmInterfaceVlan adminSt=enabled). Configuration is applied via POST to /api/mo/sys/intf/svi-[{id}].json.",
+      "required": ["attributes"],
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "required": ["id"],
+          "properties": {
+            "dn": {
+              "$ref": "#/definitions/distinguishedName",
+              "description": "Distinguished name of the SVI (e.g., sys/intf/svi-[vlan100])"
+            },
+            "id": {
+              "$ref": "#/definitions/sviId",
+              "description": "SVI identifier in the format vlan{id}"
+            },
+            "adminSt": {
+              "$ref": "#/definitions/adminState",
+              "description": "Administrative state of the SVI"
+            },
+            "operSt": {
+              "$ref": "#/definitions/operState",
+              "description": "Operational state of the SVI (read-only)"
+            },
+            "descr": {
+              "type": "string",
+              "description": "Human-readable description of the SVI.",
+              "maxLength": 254,
+              "examples": [
+                "Production network gateway",
+                "Management VLAN interface"
+              ]
+            },
+            "mtu": {
+              "type": "string",
+              "description": "Maximum transmission unit in bytes (64-9216).",
+              "pattern": "^\\d+$",
+              "examples": [
+                "1500",
+                "9216"
+              ]
+            },
+            "bw": {
+              "type": "string",
+              "description": "Administrative bandwidth in kilobits per second (1-400000000).",
+              "pattern": "^\\d+$",
+              "examples": [
+                "100000",
+                "1000000"
+              ]
+            },
+            "mac": {
+              "type": "string",
+              "description": "MAC address override for the SVI in MM:MM:MM:SS:SS:SS or M.M.M format.",
+              "examples": [
+                "00:AA:BB:CC:DD:EE",
+                "2.3.4"
+              ]
+            },
+            "medium": {
+              "$ref": "#/definitions/portMedium",
+              "description": "Port medium type (broadcast for multi-access, p2p for point-to-point)"
+            },
+            "autostate": {
+              "type": "string",
+              "description": "When true, the SVI tracks the operational state of its member ports. When false, the SVI stays up regardless of port state.",
+              "enum": ["true", "false"]
+            },
+            "carDel": {
+              "type": "string",
+              "description": "Carrier delay in seconds before reporting a link-down event.",
+              "pattern": "^\\d+$"
+            },
+            "loadIntvl1": {
+              "type": "string",
+              "description": "Load interval in seconds for computing interface utilization statistics.",
+              "pattern": "^\\d+$",
+              "examples": [
+                "30",
+                "300"
+              ]
+            },
+            "inbMgmt": {
+              "type": "string",
+              "description": "Whether the SVI is used for inband management.",
+              "enum": ["true", "false"]
+            },
+            "snmpTrap": {
+              "type": "string",
+              "description": "Whether SNMP trap notifications are sent for link-state changes.",
+              "enum": ["enable", "disable"]
+            },
+            "modTs": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Timestamp of the last configuration modification (read-only)"
+            }
+          },
+          "additionalProperties": true
+        },
+        "children": {
+          "type": "array",
+          "description": "Child managed objects including IPv4/IPv6 address configuration",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "l2BD": {
+      "type": "object",
+      "title": "Layer 2 Bridge Domain (l2BD)",
+      "description": "Represents a VLAN bridge domain on a Cisco Nexus switch. This managed object maps to the l2BD class in the NX-OS DME model. The distinguished name format is sys/bd/bd-[{fabEncap}]. Configuration is applied via POST to /api/mo/sys/bd.json and state is retrieved via GET to /api/mo/sys/bd/bd-[{fabEncap}].json.",
+      "required": ["attributes"],
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "required": ["fabEncap"],
+          "properties": {
+            "dn": {
+              "$ref": "#/definitions/distinguishedName",
+              "description": "Distinguished name of the bridge domain (e.g., sys/bd/bd-[vlan-100])"
+            },
+            "fabEncap": {
+              "$ref": "#/definitions/vlanEncap",
+              "description": "Fabric encapsulation identifier (e.g., vlan-100)"
+            },
+            "name": {
+              "type": "string",
+              "description": "Human-readable VLAN name.",
+              "maxLength": 32,
+              "examples": [
+                "Production",
+                "Management",
+                "DMZ"
+              ]
+            },
+            "pcTag": {
+              "type": "string",
+              "description": "Policy control tag / default classId for unknown unicast traffic.",
+              "pattern": "^\\d+$",
+              "examples": [
+                "0",
+                "1"
+              ]
+            },
+            "adminSt": {
+              "type": "string",
+              "description": "Administrative state of the VLAN bridge domain.",
+              "enum": ["active", "suspend"]
+            },
+            "operSt": {
+              "type": "string",
+              "description": "Operational state of the VLAN (read-only)"
+            },
+            "id": {
+              "type": "string",
+              "description": "Numeric bridge domain identifier (read-only)",
+              "pattern": "^\\d+$"
+            },
+            "bridgeMode": {
+              "type": "string",
+              "description": "Bridge mode of the VLAN.",
+              "enum": ["mac"]
+            },
+            "fwdCtrl": {
+              "type": "string",
+              "description": "Forwarding control mode.",
+              "examples": [
+                "mdst-flood"
+              ]
+            },
+            "fwdMode": {
+              "type": "string",
+              "description": "Forwarding mode.",
+              "examples": [
+                "bridge,route"
+              ]
+            },
+            "modTs": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Timestamp of the last configuration modification (read-only)"
+            }
+          },
+          "additionalProperties": true
+        },
+        "children": {
+          "type": "array",
+          "description": "Child managed objects including VLAN member ports and statistics",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "rmonEtherStats": {
+      "type": "object",
+      "title": "RMON Ethernet Statistics (rmonEtherStats)",
+      "description": "Ethernet RMON statistics counters for a physical interface. These are read-only child objects of l1PhysIf that refresh every 30-40 seconds. Retrieved via GET to /api/mo/sys/intf/phys-[{id}].json?query-target=subtree&target-subtree-class=rmonEtherStats.",
+      "required": ["attributes"],
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "dn": {
+              "$ref": "#/definitions/distinguishedName"
+            },
+            "broadcastPkts": {
+              "type": "string",
+              "description": "Total broadcast packets received",
+              "pattern": "^\\d+$"
+            },
+            "multicastPkts": {
+              "type": "string",
+              "description": "Total multicast packets received",
+              "pattern": "^\\d+$"
+            },
+            "octets": {
+              "type": "string",
+              "description": "Total octets (bytes) received",
+              "pattern": "^\\d+$"
+            },
+            "cRCAlignErrors": {
+              "type": "string",
+              "description": "Total CRC and alignment errors",
+              "pattern": "^\\d+$"
+            },
+            "dropEvents": {
+              "type": "string",
+              "description": "Total packet drop events due to resource limitations",
+              "pattern": "^\\d+$"
+            },
+            "collisions": {
+              "type": "string",
+              "description": "Total collision events",
+              "pattern": "^\\d+$"
+            },
+            "jabbers": {
+              "type": "string",
+              "description": "Total jabber (oversized with errors) frames",
+              "pattern": "^\\d+$"
+            },
+            "undersizePkts": {
+              "type": "string",
+              "description": "Total undersized packets (less than 64 bytes)",
+              "pattern": "^\\d+$"
+            },
+            "oversizePkts": {
+              "type": "string",
+              "description": "Total oversized packets (greater than MTU)",
+              "pattern": "^\\d+$"
+            },
+            "fragments": {
+              "type": "string",
+              "description": "Total fragment frames received",
+              "pattern": "^\\d+$"
+            }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "rmonIfHCIn": {
+      "type": "object",
+      "title": "RMON High-Capacity Inbound Counters (rmonIfHCIn)",
+      "description": "High-capacity 64-bit inbound traffic counters for a physical interface. Read-only child of l1PhysIf.",
+      "required": ["attributes"],
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "dn": {
+              "$ref": "#/definitions/distinguishedName"
+            },
+            "ucastPkts": {
+              "type": "string",
+              "description": "Inbound unicast packets",
+              "pattern": "^\\d+$"
+            },
+            "multicastPkts": {
+              "type": "string",
+              "description": "Inbound multicast packets",
+              "pattern": "^\\d+$"
+            },
+            "broadcastPkts": {
+              "type": "string",
+              "description": "Inbound broadcast packets",
+              "pattern": "^\\d+$"
+            },
+            "octets": {
+              "type": "string",
+              "description": "Total inbound octets (bytes)",
+              "pattern": "^\\d+$"
+            }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "rmonIfHCOut": {
+      "type": "object",
+      "title": "RMON High-Capacity Outbound Counters (rmonIfHCOut)",
+      "description": "High-capacity 64-bit outbound traffic counters for a physical interface. Read-only child of l1PhysIf.",
+      "required": ["attributes"],
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "dn": {
+              "$ref": "#/definitions/distinguishedName"
+            },
+            "ucastPkts": {
+              "type": "string",
+              "description": "Outbound unicast packets",
+              "pattern": "^\\d+$"
+            },
+            "multicastPkts": {
+              "type": "string",
+              "description": "Outbound multicast packets",
+              "pattern": "^\\d+$"
+            },
+            "broadcastPkts": {
+              "type": "string",
+              "description": "Outbound broadcast packets",
+              "pattern": "^\\d+$"
+            },
+            "octets": {
+              "type": "string",
+              "description": "Total outbound octets (bytes)",
+              "pattern": "^\\d+$"
+            }
+          },
+          "additionalProperties": true
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "title": "Physical Interface Object",
+      "properties": {
+        "l1PhysIf": {
+          "$ref": "#/definitions/l1PhysIf"
+        }
+      },
+      "required": ["l1PhysIf"]
+    },
+    {
+      "type": "object",
+      "title": "SVI Interface Object",
+      "properties": {
+        "sviIf": {
+          "$ref": "#/definitions/sviIf"
+        }
+      },
+      "required": ["sviIf"]
+    },
+    {
+      "type": "object",
+      "title": "VLAN Bridge Domain Object",
+      "properties": {
+        "l2BD": {
+          "$ref": "#/definitions/l2BD"
+        }
+      },
+      "required": ["l2BD"]
+    },
+    {
+      "type": "object",
+      "title": "RMON Ethernet Statistics Object",
+      "properties": {
+        "rmonEtherStats": {
+          "$ref": "#/definitions/rmonEtherStats"
+        }
+      },
+      "required": ["rmonEtherStats"]
+    },
+    {
+      "type": "object",
+      "title": "RMON Inbound Counters Object",
+      "properties": {
+        "rmonIfHCIn": {
+          "$ref": "#/definitions/rmonIfHCIn"
+        }
+      },
+      "required": ["rmonIfHCIn"]
+    },
+    {
+      "type": "object",
+      "title": "RMON Outbound Counters Object",
+      "properties": {
+        "rmonIfHCOut": {
+          "$ref": "#/definitions/rmonIfHCOut"
+        }
+      },
+      "required": ["rmonIfHCOut"]
+    }
+  ]
+}

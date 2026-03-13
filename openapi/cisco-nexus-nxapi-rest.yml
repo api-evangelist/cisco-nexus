@@ -1,0 +1,1562 @@
+openapi: 3.1.0
+info:
+  title: Cisco NX-API REST
+  description: >-
+    RESTful API for programmatic access to Cisco Nexus 3000 and 9000 Series
+    switches. NX-API REST exposes the NX-OS Data Management Engine (DME) object
+    model over HTTP/HTTPS, enabling configuration management, operational state
+    retrieval, and real-time event subscriptions using managed objects (MOs)
+    organized in a hierarchical Management Information Tree (MIT). All objects
+    are addressed by Distinguished Names (DNs) and support JSON and XML
+    encodings.
+  version: 10.5.0
+  contact:
+    name: Cisco DevNet Support
+    url: https://developer.cisco.com/site/support/
+    email: support@cisco.com
+  license:
+    name: Cisco DevNet
+    url: https://developer.cisco.com/site/license/
+  x-documentation:
+    - title: NX-API REST SDK User Guide
+      url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
+    - title: Nexus Model Reference
+      url: https://developer.cisco.com/docs/nexus-model/latest/
+    - title: NX-OS Programmability Guide
+      url: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/105x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-105x.html
+
+servers:
+  - url: https://{switchIp}/api
+    description: Cisco Nexus switch NX-API REST endpoint
+    variables:
+      switchIp:
+        default: 192.168.1.1
+        description: Management IP address or hostname of the Nexus switch
+
+security:
+  - cookieAuth: []
+
+tags:
+  - name: Authentication
+    description: Session authentication and token management via aaaLogin and aaaLogout
+  - name: Interfaces
+    description: >-
+      Physical interface configuration and operational state using the l1PhysIf
+      managed object class (DN sys/intf/phys-[id])
+  - name: VLANs
+    description: >-
+      VLAN bridge domain management using the l2BD managed object class
+      (DN sys/bd/bd-[vlan-id]) and SVI interface configuration using sviIf
+  - name: Routing
+    description: >-
+      IPv4 and IPv6 static route configuration using ipv4Route/ipv6Route
+      managed objects and BGP protocol management using bgpEntity hierarchy
+  - name: System
+    description: >-
+      Top-level system information and feature management via topSystem
+      and fmEntity managed objects
+
+paths:
+  /aaaLogin.json:
+    post:
+      operationId: authenticateUser
+      summary: Authenticate and obtain session cookie
+      description: >-
+        Authenticates a user against the NX-OS local or remote AAA database
+        and returns a session cookie (APIC-cookie) used for subsequent API
+        requests. The cookie has a configurable idle timeout (default 600
+        seconds).
+      tags:
+        - Authentication
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - aaaUser
+              properties:
+                aaaUser:
+                  type: object
+                  required:
+                    - attributes
+                  properties:
+                    attributes:
+                      type: object
+                      required:
+                        - name
+                        - pwd
+                      properties:
+                        name:
+                          type: string
+                          description: Username for authentication
+                          examples:
+                            - admin
+                        pwd:
+                          type: string
+                          format: password
+                          description: Password for authentication
+            example:
+              aaaUser:
+                attributes:
+                  name: admin
+                  pwd: Cisco123!
+      responses:
+        '200':
+          description: Authentication successful
+          headers:
+            Set-Cookie:
+              description: Session cookie (APIC-cookie) for subsequent requests
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AaaLoginResponse'
+        '401':
+          description: Authentication failed - invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /aaaLogout.json:
+    post:
+      operationId: logoutUser
+      summary: Terminate authenticated session
+      description: >-
+        Ends the current authenticated session and invalidates the session
+        cookie.
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                aaaUser:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: Username of the session to terminate
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+
+  /mo/sys/intf/phys-[{interfaceId}].json:
+    get:
+      operationId: getPhysicalInterface
+      summary: Retrieve physical interface configuration and state
+      description: >-
+        Returns the configuration and operational state of a specific physical
+        Ethernet interface identified by its l1PhysIf distinguished name. Use
+        the query-target parameter to retrieve child objects including counters
+        and statistics (rmonEtherStats, rmonIfHCIn, rmonIfHCOut).
+      tags:
+        - Interfaces
+      parameters:
+        - $ref: '#/components/parameters/interfaceId'
+        - $ref: '#/components/parameters/queryTarget'
+        - $ref: '#/components/parameters/targetSubtreeClass'
+        - $ref: '#/components/parameters/queryTargetFilter'
+        - $ref: '#/components/parameters/rspSubtree'
+        - $ref: '#/components/parameters/rspPropInclude'
+      responses:
+        '200':
+          description: Interface details returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhysicalInterfaceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /mo/sys/intf.json:
+    post:
+      operationId: configurePhysicalInterface
+      summary: Configure a physical Ethernet interface
+      description: >-
+        Creates or modifies the configuration of one or more physical Ethernet
+        interfaces. The payload uses the interfaceEntity container with l1PhysIf
+        child objects. Properties include administrative state, speed, duplex,
+        MTU, layer mode, switchport mode, access VLAN, trunk VLANs, and
+        description.
+      tags:
+        - Interfaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterfaceEntityPayload'
+            example:
+              interfaceEntity:
+                children:
+                  - l1PhysIf:
+                      attributes:
+                        id: eth1/1
+                        adminSt: up
+                        layer: Layer2
+                        mode: access
+                        accessVlan: vlan-100
+                        descr: Server port
+      responses:
+        '200':
+          description: Configuration applied successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /class/l1PhysIf.json:
+    get:
+      operationId: listPhysicalInterfaces
+      summary: List all physical interfaces
+      description: >-
+        Returns all l1PhysIf managed objects on the switch via a class-level
+        query. Supports filtering by property values and pagination. Each
+        returned object includes the full DN and configured properties.
+      tags:
+        - Interfaces
+      parameters:
+        - $ref: '#/components/parameters/queryTargetFilter'
+        - $ref: '#/components/parameters/rspSubtree'
+        - $ref: '#/components/parameters/rspPropInclude'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: List of physical interfaces returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhysicalInterfaceListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /mo/sys/bd.json:
+    post:
+      operationId: createVlan
+      summary: Create or modify a VLAN bridge domain
+      description: >-
+        Creates or modifies VLAN bridge domains using the bdEntity container
+        with l2BD child objects. The fabEncap attribute specifies the VLAN ID
+        in the format vlan-{id}. Supports VLAN naming and pcTag assignment.
+      tags:
+        - VLANs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BdEntityPayload'
+            example:
+              bdEntity:
+                children:
+                  - l2BD:
+                      attributes:
+                        fabEncap: vlan-100
+                        name: Production
+                        pcTag: "1"
+      responses:
+        '200':
+          description: VLAN created or modified successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /mo/sys/bd/bd-[{vlanEncap}].json:
+    get:
+      operationId: getVlan
+      summary: Retrieve a specific VLAN bridge domain
+      description: >-
+        Returns the configuration and state of a specific VLAN bridge domain
+        identified by its fabric encapsulation (e.g., vlan-100). Use
+        rsp-subtree=full to include child objects like VLAN member ports
+        and statistics.
+      tags:
+        - VLANs
+      parameters:
+        - name: vlanEncap
+          in: path
+          required: true
+          description: >-
+            VLAN fabric encapsulation identifier in the format vlan-{id}
+            (e.g., vlan-100)
+          schema:
+            type: string
+            pattern: ^vlan-\d+$
+            examples:
+              - vlan-100
+        - $ref: '#/components/parameters/rspSubtree'
+        - $ref: '#/components/parameters/rspPropInclude'
+      responses:
+        '200':
+          description: VLAN bridge domain details returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VlanBridgeDomainResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteVlan
+      summary: Delete a VLAN bridge domain
+      description: >-
+        Removes a VLAN bridge domain from the switch configuration. This
+        operation also removes any associated SVI and port membership
+        configurations.
+      tags:
+        - VLANs
+      parameters:
+        - name: vlanEncap
+          in: path
+          required: true
+          description: VLAN fabric encapsulation identifier (e.g., vlan-100)
+          schema:
+            type: string
+            pattern: ^vlan-\d+$
+      responses:
+        '200':
+          description: VLAN deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /class/l2BD.json:
+    get:
+      operationId: listVlans
+      summary: List all VLAN bridge domains
+      description: >-
+        Returns all l2BD managed objects representing configured VLANs on
+        the switch. Supports filtering by VLAN name, encapsulation, or
+        administrative state.
+      tags:
+        - VLANs
+      parameters:
+        - $ref: '#/components/parameters/queryTargetFilter'
+        - $ref: '#/components/parameters/rspPropInclude'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: List of VLAN bridge domains returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VlanBridgeDomainListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /mo/sys/intf/svi-[{sviId}].json:
+    get:
+      operationId: getSviInterface
+      summary: Retrieve an SVI (VLAN interface) configuration
+      description: >-
+        Returns the configuration and operational state of a Switch Virtual
+        Interface (SVI) identified by its VLAN ID (e.g., vlan100). SVIs
+        provide Layer 3 routing capability for VLANs.
+      tags:
+        - VLANs
+      parameters:
+        - name: sviId
+          in: path
+          required: true
+          description: SVI identifier in the format vlan{id} (e.g., vlan100)
+          schema:
+            type: string
+            pattern: ^vlan\d+$
+            examples:
+              - vlan100
+        - $ref: '#/components/parameters/rspSubtree'
+        - $ref: '#/components/parameters/rspPropInclude'
+      responses:
+        '200':
+          description: SVI interface details returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SviInterfaceResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: configureSviInterface
+      summary: Create or modify an SVI (VLAN interface)
+      description: >-
+        Creates or modifies a Switch Virtual Interface (SVI) for Layer 3
+        routing on a VLAN. Requires the interface-vlan feature to be enabled
+        (fmInterfaceVlan adminSt=enabled). Properties include admin state,
+        description, MTU, bandwidth, MAC address, and medium type.
+      tags:
+        - VLANs
+      parameters:
+        - name: sviId
+          in: path
+          required: true
+          description: SVI identifier in the format vlan{id}
+          schema:
+            type: string
+            pattern: ^vlan\d+$
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SviIfPayload'
+            example:
+              sviIf:
+                attributes:
+                  id: vlan100
+                  adminSt: up
+                  descr: Production Gateway
+                  mtu: "9216"
+      responses:
+        '200':
+          description: SVI configured successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /mo/sys/ipv4/inst.json:
+    post:
+      operationId: configureStaticRoute
+      summary: Create or modify IPv4 static routes
+      description: >-
+        Configures IPv4 static routes using the ipv4Inst container with
+        ipv4Dom, ipv4Route, and ipv4Nexthop child objects. Routes are
+        defined by destination prefix and one or more next-hop specifications
+        including interface, address, VRF, preference, name, and tag.
+      tags:
+        - Routing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ipv4InstPayload'
+            example:
+              ipv4Inst:
+                children:
+                  - ipv4Dom:
+                      attributes:
+                        name: default
+                      children:
+                        - ipv4Route:
+                            attributes:
+                              prefix: 10.0.0.0/8
+                            children:
+                              - ipv4Nexthop:
+                                  attributes:
+                                    nhAddr: 192.168.1.1
+                                    nhIf: eth1/1
+                                    nhVrf: default
+                                    pref: "1"
+                                    tag: "100"
+      responses:
+        '200':
+          description: Static route configured successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /mo/sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}].json:
+    get:
+      operationId: getStaticRoute
+      summary: Retrieve a specific IPv4 static route
+      description: >-
+        Returns the configuration of a specific IPv4 static route including
+        all configured next-hops. The route is identified by VRF name and
+        destination prefix.
+      tags:
+        - Routing
+      parameters:
+        - name: vrfName
+          in: path
+          required: true
+          description: VRF name (use "default" for the global routing table)
+          schema:
+            type: string
+            default: default
+        - name: prefix
+          in: path
+          required: true
+          description: IPv4 destination prefix in CIDR notation (e.g., 10.0.0.0/8)
+          schema:
+            type: string
+            format: ipv4-network
+        - $ref: '#/components/parameters/rspSubtree'
+      responses:
+        '200':
+          description: Static route details returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ipv4RouteResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /class/ipv4Route.json:
+    get:
+      operationId: listStaticRoutes
+      summary: List all IPv4 static routes
+      description: >-
+        Returns all ipv4Route managed objects across all VRFs. Supports
+        filtering by prefix, VRF, or route tag.
+      tags:
+        - Routing
+      parameters:
+        - $ref: '#/components/parameters/queryTargetFilter'
+        - $ref: '#/components/parameters/rspSubtree'
+        - $ref: '#/components/parameters/rspPropInclude'
+      responses:
+        '200':
+          description: List of IPv4 static routes returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ipv4RouteListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /mo/sys/bgp.json:
+    get:
+      operationId: getBgpConfiguration
+      summary: Retrieve full BGP configuration
+      description: >-
+        Returns the complete BGP configuration tree including bgpEntity,
+        bgpInst, all bgpDom domains, and bgpPeer neighbors. Use
+        rsp-subtree=full to retrieve the entire hierarchy.
+      tags:
+        - Routing
+      parameters:
+        - $ref: '#/components/parameters/rspSubtree'
+        - $ref: '#/components/parameters/rspPropInclude'
+      responses:
+        '200':
+          description: BGP configuration returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BgpEntityResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /mo/sys.json:
+    get:
+      operationId: getSystemInfo
+      summary: Retrieve top-level system information
+      description: >-
+        Returns the topSystem managed object containing system-wide
+        information including hostname, serial number, NX-OS version,
+        uptime, and system state.
+      tags:
+        - System
+      parameters:
+        - $ref: '#/components/parameters/rspPropInclude'
+      responses:
+        '200':
+          description: System information returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopSystemResponse'
+    post:
+      operationId: configureSystem
+      summary: Apply system-level configuration
+      description: >-
+        Applies configuration changes at the top system level. This endpoint
+        accepts a topSystem payload with nested child objects for configuring
+        interfaces (interfaceEntity), BGP (bgpEntity), features (fmEntity),
+        and other subsystems in a single atomic transaction.
+      tags:
+        - System
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopSystemPayload'
+      responses:
+        '200':
+          description: Configuration applied successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /mo/sys/fm.json:
+    post:
+      operationId: configureFeatures
+      summary: Enable or disable NX-OS features
+      description: >-
+        Manages NX-OS feature activation using the fmEntity container.
+        Features include interface-vlan (fmInterfaceVlan), BGP (fmBgp),
+        OSPF (fmOspf), LACP (fmLacp), and others. Each feature has an
+        adminSt property that accepts enabled or disabled.
+      tags:
+        - System
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FmEntityPayload'
+            example:
+              fmEntity:
+                children:
+                  - fmInterfaceVlan:
+                      attributes:
+                        adminSt: enabled
+                  - fmBgp:
+                      attributes:
+                        adminSt: enabled
+      responses:
+        '200':
+          description: Feature configuration applied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: APIC-cookie
+      description: >-
+        Session cookie obtained from the /api/aaaLogin endpoint. The cookie
+        has a configurable idle timeout (default 600 seconds) and must be
+        included in all subsequent requests.
+
+  parameters:
+    interfaceId:
+      name: interfaceId
+      in: path
+      required: true
+      description: >-
+        Physical interface identifier matching the output of show interface
+        brief (e.g., eth1/1, eth1/2, eth2/1)
+      schema:
+        type: string
+        pattern: ^eth\d+/\d+(/\d+)?$
+        examples:
+          - eth1/1
+
+    queryTarget:
+      name: query-target
+      in: query
+      required: false
+      description: >-
+        Specifies the scope of the query relative to the target DN.
+        self returns the target MO only. children returns direct children.
+        subtree returns the full subtree.
+      schema:
+        type: string
+        enum:
+          - self
+          - children
+          - subtree
+        default: self
+
+    targetSubtreeClass:
+      name: target-subtree-class
+      in: query
+      required: false
+      description: >-
+        Filters subtree query results to only include objects of the
+        specified class (e.g., rmonEtherStats, rmonIfHCIn)
+      schema:
+        type: string
+
+    queryTargetFilter:
+      name: query-target-filter
+      in: query
+      required: false
+      description: >-
+        Filter expression using conditions like eq(property,"value"),
+        ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators
+        and, or, not
+      schema:
+        type: string
+
+    rspSubtree:
+      name: rsp-subtree
+      in: query
+      required: false
+      description: >-
+        Controls the depth of child objects returned in the response.
+        no returns the target MO only. children includes direct children.
+        full includes the complete subtree.
+      schema:
+        type: string
+        enum:
+          - "no"
+          - children
+          - full
+        default: "no"
+
+    rspPropInclude:
+      name: rsp-prop-include
+      in: query
+      required: false
+      description: >-
+        Controls which properties are included in the response. all returns
+        all properties. config-only returns only configurable properties.
+        set-config-only returns only properties that have been explicitly set.
+      schema:
+        type: string
+        enum:
+          - all
+          - config-only
+          - set-config-only
+        default: all
+
+    pageSize:
+      name: page-size
+      in: query
+      required: false
+      description: Number of objects to return per page for class-level queries
+      schema:
+        type: integer
+        minimum: 1
+        default: 50
+
+    page:
+      name: page
+      in: query
+      required: false
+      description: Page number for paginated class-level queries (0-indexed)
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+
+  schemas:
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
+
+    ErrorResponse:
+      type: object
+      description: Error response from NX-API REST
+      properties:
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Numeric error code
+                      text:
+                        type: string
+                        description: Human-readable error message
+
+    AaaLoginResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              aaaLogin:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        description: Authentication token (also set as cookie)
+                      refreshTimeoutSeconds:
+                        type: string
+                        description: Session idle timeout in seconds
+                      userName:
+                        type: string
+                        description: Authenticated username
+
+    L1PhysIf:
+      type: object
+      description: >-
+        Layer 1 physical interface managed object representing a physical
+        Ethernet port on a Nexus switch. DN format is
+        sys/intf/phys-[{id}].
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              description: Distinguished name (e.g., sys/intf/phys-[eth1/1])
+              examples:
+                - sys/intf/phys-[eth1/1]
+            id:
+              type: string
+              description: Interface identifier matching show interface brief output
+              examples:
+                - eth1/1
+            adminSt:
+              type: string
+              description: Administrative state of the interface
+              enum:
+                - up
+                - down
+            operSt:
+              type: string
+              description: Operational state (read-only)
+              enum:
+                - up
+                - down
+                - link-up
+            layer:
+              type: string
+              description: Layer mode of the interface
+              enum:
+                - Layer2
+                - Layer3
+            mode:
+              type: string
+              description: Switchport mode (applicable when layer is Layer2)
+              enum:
+                - access
+                - trunk
+                - fex-fabric
+                - dot1q-tunnel
+                - promiscuous
+            accessVlan:
+              type: string
+              description: >-
+                Access VLAN assignment in the format vlan-{id}
+                (applicable when mode is access)
+              pattern: ^vlan-\d+$
+              examples:
+                - vlan-100
+            trunkVlans:
+              type: string
+              description: >-
+                Trunk allowed VLANs. Supports ranges (1-100), additions (+50),
+                and removals (-50). Use 1-4094 for all VLANs.
+              examples:
+                - 1-100,200,300-400
+            nativeVlan:
+              type: string
+              description: Native VLAN for trunk ports in the format vlan-{id}
+              pattern: ^vlan-\d+$
+              examples:
+                - vlan-1
+            speed:
+              type: string
+              description: Interface speed setting
+              enum:
+                - auto
+                - "100M"
+                - "1G"
+                - "10G"
+                - "25G"
+                - "40G"
+                - "100G"
+            duplex:
+              type: string
+              description: Duplex mode setting
+              enum:
+                - auto
+                - full
+                - half
+            mtu:
+              type: string
+              description: Maximum transmission unit (bytes, 576-9216)
+              examples:
+                - "1500"
+                - "9216"
+            descr:
+              type: string
+              description: Interface description (max 254 characters)
+              maxLength: 254
+            snmpTrapSt:
+              type: string
+              description: SNMP trap link-state notifications
+              enum:
+                - enable
+                - disable
+            modTs:
+              type: string
+              format: date-time
+              description: Last modification timestamp (read-only)
+
+    L2BD:
+      type: object
+      description: >-
+        Layer 2 bridge domain managed object representing a VLAN.
+        DN format is sys/bd/bd-[{fabEncap}].
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              description: Distinguished name (e.g., sys/bd/bd-[vlan-100])
+              examples:
+                - sys/bd/bd-[vlan-100]
+            fabEncap:
+              type: string
+              description: >-
+                Fabric encapsulation in the format vlan-{id} or vxlan-{id}
+              pattern: ^(vlan|vxlan)-\d+$
+              examples:
+                - vlan-100
+            name:
+              type: string
+              description: VLAN name
+              maxLength: 32
+              examples:
+                - Production
+            pcTag:
+              type: string
+              description: Default classId for unknown unicast traffic
+              examples:
+                - "1"
+            adminSt:
+              type: string
+              description: Administrative state
+              enum:
+                - active
+                - suspend
+            operSt:
+              type: string
+              description: Operational state (read-only)
+            id:
+              type: string
+              description: Bridge domain numeric identifier (read-only)
+            modTs:
+              type: string
+              format: date-time
+              description: Last modification timestamp (read-only)
+
+    SviIf:
+      type: object
+      description: >-
+        Switch Virtual Interface managed object for Layer 3 VLAN routing.
+        DN format is sys/intf/svi-[{id}].
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              description: Distinguished name (e.g., sys/intf/svi-[vlan100])
+              examples:
+                - sys/intf/svi-[vlan100]
+            id:
+              type: string
+              description: SVI identifier in the format vlan{id}
+              pattern: ^vlan\d+$
+              examples:
+                - vlan100
+            adminSt:
+              type: string
+              description: Administrative state
+              enum:
+                - up
+                - down
+            operSt:
+              type: string
+              description: Operational state (read-only)
+            descr:
+              type: string
+              description: Interface description (max 254 characters)
+              maxLength: 254
+            mtu:
+              type: string
+              description: Maximum transmission unit (64-9216 bytes)
+              examples:
+                - "9216"
+            bw:
+              type: string
+              description: Administrative bandwidth (1-400000000 kbps)
+              examples:
+                - "100000"
+            mac:
+              type: string
+              description: MAC address override in MM:MM:MM:SS:SS:SS format
+            medium:
+              type: string
+              description: Port medium type
+              enum:
+                - broadcast
+                - p2p
+            autostate:
+              type: string
+              description: Whether autostate is enabled
+              enum:
+                - "true"
+                - "false"
+            modTs:
+              type: string
+              format: date-time
+              description: Last modification timestamp (read-only)
+
+    Ipv4Route:
+      type: object
+      description: >-
+        IPv4 static route managed object. DN format is
+        sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}].
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              description: Distinguished name
+              examples:
+                - sys/ipv4/inst/dom-default/rt-[10.0.0.0/8]
+            prefix:
+              type: string
+              description: Destination IPv4 prefix in CIDR notation
+              format: ipv4-network
+              examples:
+                - 10.0.0.0/8
+        children:
+          type: array
+          description: Child next-hop objects
+          items:
+            $ref: '#/components/schemas/Ipv4Nexthop'
+
+    Ipv4Nexthop:
+      type: object
+      description: >-
+        IPv4 next-hop specification for a static route. DN format is
+        sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}]/nh-[{nhIf}]-addr-[{nhAddr}]-vrf-[{nhVrf}].
+      properties:
+        ipv4Nexthop:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                nhAddr:
+                  type: string
+                  description: Next-hop IP address
+                  format: ipv4
+                  examples:
+                    - 192.168.1.1
+                nhIf:
+                  type: string
+                  description: >-
+                    Next-hop egress interface (e.g., eth1/1, vlan100).
+                    Use unspecified for recursive lookup.
+                  examples:
+                    - eth1/1
+                nhVrf:
+                  type: string
+                  description: Next-hop VRF context
+                  default: default
+                  examples:
+                    - default
+                pref:
+                  type: string
+                  description: Route preference / administrative distance (0-255)
+                  examples:
+                    - "1"
+                rtname:
+                  type: string
+                  description: Route identifier name
+                  examples:
+                    - StaticRoute1
+                tag:
+                  type: string
+                  description: Route tag value (0-4294967295)
+                  examples:
+                    - "100"
+                status:
+                  type: string
+                  description: >-
+                    Set to deleted to remove a next-hop entry
+                  enum:
+                    - ""
+                    - deleted
+
+    BgpEntity:
+      type: object
+      description: >-
+        Top-level BGP entity managed object. DN is sys/bgp.
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              examples:
+                - sys/bgp
+            adminSt:
+              type: string
+              enum:
+                - enabled
+                - disabled
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpInst'
+
+    BgpInst:
+      type: object
+      description: >-
+        BGP instance managed object containing AS number and domain
+        configuration. DN is sys/bgp/inst.
+      properties:
+        bgpInst:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                asn:
+                  type: string
+                  description: >-
+                    BGP autonomous system number (supports 2-byte and 4-byte
+                    ASN formats including dot notation)
+                  examples:
+                    - "65000"
+                    - "65000.1"
+            children:
+              type: array
+              items:
+                $ref: '#/components/schemas/BgpDom'
+
+    BgpDom:
+      type: object
+      description: >-
+        BGP domain (VRF) managed object. DN format is
+        sys/bgp/inst/dom-{name}.
+      properties:
+        bgpDom:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: BGP domain name (VRF name, typically default)
+                  examples:
+                    - default
+                rtrId:
+                  type: string
+                  description: BGP router ID in IPv4 address format
+                  format: ipv4
+                  examples:
+                    - 10.0.0.1
+            children:
+              type: array
+              items:
+                $ref: '#/components/schemas/BgpPeer'
+
+    BgpPeer:
+      type: object
+      description: >-
+        BGP peer (neighbor) managed object. DN format is
+        sys/bgp/inst/dom-{name}/peer-{addr}.
+      properties:
+        bgpPeer:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                addr:
+                  type: string
+                  description: BGP neighbor IP address
+                  format: ipv4
+                  examples:
+                    - 192.168.1.2
+                asn:
+                  type: string
+                  description: Remote peer autonomous system number
+                  examples:
+                    - "65001"
+                passwdType:
+                  type: string
+                  description: >-
+                    Password encryption type (0=cleartext, 3=3DES,
+                    6=AES, 7=Vigenere)
+                  enum:
+                    - "0"
+                    - "3"
+                    - "6"
+                    - "7"
+                password:
+                  type: string
+                  description: Neighbor authentication password
+                  format: password
+                srcIf:
+                  type: string
+                  description: Source interface for BGP session
+                  examples:
+                    - lo0
+                adminSt:
+                  type: string
+                  description: Administrative state (shutdown/no shutdown)
+                  enum:
+                    - enabled
+                    - disabled
+
+    TopSystem:
+      type: object
+      description: >-
+        Top-level system managed object. DN is sys.
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              examples:
+                - sys
+            name:
+              type: string
+              description: System hostname
+            serial:
+              type: string
+              description: Chassis serial number
+            version:
+              type: string
+              description: NX-OS software version
+            upTs:
+              type: string
+              format: date-time
+              description: System last boot timestamp
+            state:
+              type: string
+              description: System operational state
+
+    PhysicalInterfaceResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l1PhysIf:
+                $ref: '#/components/schemas/L1PhysIf'
+
+    PhysicalInterfaceListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l1PhysIf:
+                $ref: '#/components/schemas/L1PhysIf'
+
+    VlanBridgeDomainResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l2BD:
+                $ref: '#/components/schemas/L2BD'
+
+    VlanBridgeDomainListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l2BD:
+                $ref: '#/components/schemas/L2BD'
+
+    SviInterfaceResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              sviIf:
+                $ref: '#/components/schemas/SviIf'
+
+    Ipv4RouteResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              ipv4Route:
+                $ref: '#/components/schemas/Ipv4Route'
+
+    Ipv4RouteListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              ipv4Route:
+                $ref: '#/components/schemas/Ipv4Route'
+
+    BgpEntityResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              bgpEntity:
+                $ref: '#/components/schemas/BgpEntity'
+
+    TopSystemResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              topSystem:
+                $ref: '#/components/schemas/TopSystem'
+
+    InterfaceEntityPayload:
+      type: object
+      properties:
+        interfaceEntity:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                properties:
+                  l1PhysIf:
+                    $ref: '#/components/schemas/L1PhysIf'
+
+    BdEntityPayload:
+      type: object
+      properties:
+        bdEntity:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                properties:
+                  l2BD:
+                    $ref: '#/components/schemas/L2BD'
+
+    SviIfPayload:
+      type: object
+      properties:
+        sviIf:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                id:
+                  type: string
+                  pattern: ^vlan\d+$
+                adminSt:
+                  type: string
+                  enum:
+                    - up
+                    - down
+                descr:
+                  type: string
+                mtu:
+                  type: string
+                bw:
+                  type: string
+                mac:
+                  type: string
+                medium:
+                  type: string
+                  enum:
+                    - broadcast
+                    - p2p
+
+    Ipv4InstPayload:
+      type: object
+      properties:
+        ipv4Inst:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                properties:
+                  ipv4Dom:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            description: VRF name
+                      children:
+                        type: array
+                        items:
+                          oneOf:
+                            - $ref: '#/components/schemas/Ipv4Route'
+                            - type: object
+                              properties:
+                                ipv4RtStaticBfd:
+                                  type: object
+                                  properties:
+                                    attributes:
+                                      type: object
+                                      properties:
+                                        intf:
+                                          type: string
+                                        nexthop:
+                                          type: string
+                                          format: ipv4
+
+    TopSystemPayload:
+      type: object
+      properties:
+        topSystem:
+          type: object
+          properties:
+            children:
+              type: array
+              description: >-
+                Array of child subsystem configurations. Supports
+                interfaceEntity, bgpEntity, fmEntity, bdEntity, and
+                other top-level containers for atomic multi-subsystem
+                configuration.
+              items:
+                type: object
+
+    FmEntityPayload:
+      type: object
+      properties:
+        fmEntity:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                description: >-
+                  Feature module objects such as fmInterfaceVlan, fmBgp,
+                  fmOspf, fmLacp, fmVpc, fmHsrp, fmVxlan, each with
+                  an attributes.adminSt property.
+
+  responses:
+    BadRequest:
+      description: >-
+        Invalid request - malformed payload, invalid property values, or
+        unsupported query parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    Forbidden:
+      description: >-
+        Insufficient privileges - the authenticated user does not have
+        RBAC permission for the requested operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    NotFound:
+      description: >-
+        Managed object not found - the specified DN does not exist in
+        the Management Information Tree
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

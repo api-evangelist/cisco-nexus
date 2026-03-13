@@ -1,0 +1,393 @@
+{
+  "@context": {
+    "@version": 1.1,
+
+    "cisco": "https://developer.cisco.com/docs/nexus-model/latest/#",
+    "nxos": "https://developer.cisco.com/docs/nx-os/",
+    "nxapi": "https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "ietf": "urn:ietf:params:xml:ns:yang:",
+    "ietf-if": "urn:ietf:params:xml:ns:yang:ietf-interfaces:",
+    "ieee802": "urn:ieee:std:802.1Q:yang:",
+
+    "NexusSwitch": {
+      "@id": "cisco:topSystem",
+      "@context": {
+        "hostname": {
+          "@id": "cisco:topSystem/name",
+          "@type": "xsd:string"
+        },
+        "serialNumber": {
+          "@id": "cisco:topSystem/serial",
+          "@type": "xsd:string"
+        },
+        "softwareVersion": {
+          "@id": "cisco:topSystem/version",
+          "@type": "xsd:string"
+        },
+        "systemState": {
+          "@id": "cisco:topSystem/state",
+          "@type": "xsd:string"
+        },
+        "lastBootTime": {
+          "@id": "cisco:topSystem/upTs",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "PhysicalInterface": {
+      "@id": "cisco:l1PhysIf",
+      "@context": {
+        "distinguishedName": {
+          "@id": "cisco:l1PhysIf/dn",
+          "@type": "xsd:string"
+        },
+        "interfaceId": {
+          "@id": "cisco:l1PhysIf/id",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "ietf-if:name",
+          "@type": "xsd:string"
+        },
+        "description": {
+          "@id": "cisco:l1PhysIf/descr",
+          "@type": "xsd:string"
+        },
+        "adminState": {
+          "@id": "cisco:l1PhysIf/adminSt",
+          "@type": "xsd:string"
+        },
+        "operState": {
+          "@id": "cisco:l1PhysIf/operSt",
+          "@type": "xsd:string"
+        },
+        "layer": {
+          "@id": "cisco:l1PhysIf/layer",
+          "@type": "xsd:string"
+        },
+        "switchportMode": {
+          "@id": "cisco:l1PhysIf/mode",
+          "@type": "xsd:string"
+        },
+        "speed": {
+          "@id": "cisco:l1PhysIf/speed",
+          "@type": "xsd:string"
+        },
+        "duplex": {
+          "@id": "cisco:l1PhysIf/duplex",
+          "@type": "xsd:string"
+        },
+        "mtu": {
+          "@id": "cisco:l1PhysIf/mtu",
+          "@type": "xsd:integer"
+        },
+        "bandwidth": {
+          "@id": "cisco:l1PhysIf/bw",
+          "@type": "xsd:integer"
+        },
+        "accessVlan": {
+          "@id": "cisco:l1PhysIf/accessVlan",
+          "@type": "@id"
+        },
+        "trunkVlans": {
+          "@id": "cisco:l1PhysIf/trunkVlans",
+          "@type": "xsd:string"
+        },
+        "nativeVlan": {
+          "@id": "cisco:l1PhysIf/nativeVlan",
+          "@type": "@id"
+        },
+        "lastModified": {
+          "@id": "cisco:l1PhysIf/modTs",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "SviInterface": {
+      "@id": "cisco:sviIf",
+      "@context": {
+        "distinguishedName": {
+          "@id": "cisco:sviIf/dn",
+          "@type": "xsd:string"
+        },
+        "interfaceId": {
+          "@id": "cisco:sviIf/id",
+          "@type": "xsd:string"
+        },
+        "description": {
+          "@id": "cisco:sviIf/descr",
+          "@type": "xsd:string"
+        },
+        "adminState": {
+          "@id": "cisco:sviIf/adminSt",
+          "@type": "xsd:string"
+        },
+        "operState": {
+          "@id": "cisco:sviIf/operSt",
+          "@type": "xsd:string"
+        },
+        "mtu": {
+          "@id": "cisco:sviIf/mtu",
+          "@type": "xsd:integer"
+        },
+        "bandwidth": {
+          "@id": "cisco:sviIf/bw",
+          "@type": "xsd:integer"
+        },
+        "macAddress": {
+          "@id": "cisco:sviIf/mac",
+          "@type": "xsd:string"
+        },
+        "medium": {
+          "@id": "cisco:sviIf/medium",
+          "@type": "xsd:string"
+        },
+        "autostate": {
+          "@id": "cisco:sviIf/autostate",
+          "@type": "xsd:boolean"
+        },
+        "lastModified": {
+          "@id": "cisco:sviIf/modTs",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "VlanBridgeDomain": {
+      "@id": "cisco:l2BD",
+      "@context": {
+        "distinguishedName": {
+          "@id": "cisco:l2BD/dn",
+          "@type": "xsd:string"
+        },
+        "fabricEncapsulation": {
+          "@id": "cisco:l2BD/fabEncap",
+          "@type": "xsd:string"
+        },
+        "vlanName": {
+          "@id": "cisco:l2BD/name",
+          "@type": "xsd:string"
+        },
+        "policyControlTag": {
+          "@id": "cisco:l2BD/pcTag",
+          "@type": "xsd:string"
+        },
+        "adminState": {
+          "@id": "cisco:l2BD/adminSt",
+          "@type": "xsd:string"
+        },
+        "operState": {
+          "@id": "cisco:l2BD/operSt",
+          "@type": "xsd:string"
+        },
+        "bridgeDomainId": {
+          "@id": "cisco:l2BD/id",
+          "@type": "xsd:integer"
+        },
+        "bridgeMode": {
+          "@id": "cisco:l2BD/bridgeMode",
+          "@type": "xsd:string"
+        },
+        "forwardingMode": {
+          "@id": "cisco:l2BD/fwdMode",
+          "@type": "xsd:string"
+        },
+        "lastModified": {
+          "@id": "cisco:l2BD/modTs",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Ipv4StaticRoute": {
+      "@id": "cisco:ipv4Route",
+      "@context": {
+        "distinguishedName": {
+          "@id": "cisco:ipv4Route/dn",
+          "@type": "xsd:string"
+        },
+        "prefix": {
+          "@id": "cisco:ipv4Route/prefix",
+          "@type": "xsd:string"
+        },
+        "nexthops": {
+          "@id": "cisco:ipv4Route/children",
+          "@type": "@id",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "Ipv4Nexthop": {
+      "@id": "cisco:ipv4Nexthop",
+      "@context": {
+        "nexthopAddress": {
+          "@id": "cisco:ipv4Nexthop/nhAddr",
+          "@type": "xsd:string"
+        },
+        "nexthopInterface": {
+          "@id": "cisco:ipv4Nexthop/nhIf",
+          "@type": "xsd:string"
+        },
+        "nexthopVrf": {
+          "@id": "cisco:ipv4Nexthop/nhVrf",
+          "@type": "xsd:string"
+        },
+        "preference": {
+          "@id": "cisco:ipv4Nexthop/pref",
+          "@type": "xsd:integer"
+        },
+        "routeName": {
+          "@id": "cisco:ipv4Nexthop/rtname",
+          "@type": "xsd:string"
+        },
+        "tag": {
+          "@id": "cisco:ipv4Nexthop/tag",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+
+    "BgpInstance": {
+      "@id": "cisco:bgpInst",
+      "@context": {
+        "autonomousSystemNumber": {
+          "@id": "cisco:bgpInst/asn",
+          "@type": "xsd:string"
+        },
+        "adminState": {
+          "@id": "cisco:bgpEntity/adminSt",
+          "@type": "xsd:string"
+        },
+        "domains": {
+          "@id": "cisco:bgpInst/children",
+          "@type": "@id",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "BgpDomain": {
+      "@id": "cisco:bgpDom",
+      "@context": {
+        "domainName": {
+          "@id": "cisco:bgpDom/name",
+          "@type": "xsd:string"
+        },
+        "routerId": {
+          "@id": "cisco:bgpDom/rtrId",
+          "@type": "xsd:string"
+        },
+        "peers": {
+          "@id": "cisco:bgpDom/children",
+          "@type": "@id",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "BgpPeer": {
+      "@id": "cisco:bgpPeer",
+      "@context": {
+        "peerAddress": {
+          "@id": "cisco:bgpPeer/addr",
+          "@type": "xsd:string"
+        },
+        "remoteAsn": {
+          "@id": "cisco:bgpPeer/asn",
+          "@type": "xsd:string"
+        },
+        "adminState": {
+          "@id": "cisco:bgpPeer/adminSt",
+          "@type": "xsd:string"
+        },
+        "sourceInterface": {
+          "@id": "cisco:bgpPeer/srcIf",
+          "@type": "xsd:string"
+        },
+        "passwordType": {
+          "@id": "cisco:bgpPeer/passwdType",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "EthernetStatistics": {
+      "@id": "cisco:rmonEtherStats",
+      "@context": {
+        "broadcastPackets": {
+          "@id": "cisco:rmonEtherStats/broadcastPkts",
+          "@type": "xsd:integer"
+        },
+        "multicastPackets": {
+          "@id": "cisco:rmonEtherStats/multicastPkts",
+          "@type": "xsd:integer"
+        },
+        "totalOctets": {
+          "@id": "cisco:rmonEtherStats/octets",
+          "@type": "xsd:integer"
+        },
+        "crcErrors": {
+          "@id": "cisco:rmonEtherStats/cRCAlignErrors",
+          "@type": "xsd:integer"
+        },
+        "dropEvents": {
+          "@id": "cisco:rmonEtherStats/dropEvents",
+          "@type": "xsd:integer"
+        },
+        "collisions": {
+          "@id": "cisco:rmonEtherStats/collisions",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+
+    "VlanStatistics": {
+      "@id": "cisco:l2VlanStats",
+      "@context": {
+        "inboundBroadcastPackets": {
+          "@id": "cisco:l2VlanStats/inBcastPkts",
+          "@type": "xsd:integer"
+        },
+        "inboundMulticastPackets": {
+          "@id": "cisco:l2VlanStats/inMcastPkts",
+          "@type": "xsd:integer"
+        },
+        "inboundUnicastPackets": {
+          "@id": "cisco:l2VlanStats/inUcastPkts",
+          "@type": "xsd:integer"
+        },
+        "outboundUnicastPackets": {
+          "@id": "cisco:l2VlanStats/outUcastPkts",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+
+    "interfaces": {
+      "@id": "cisco:interfaceEntity",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "vlans": {
+      "@id": "cisco:bdEntity",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "routes": {
+      "@id": "cisco:ipv4Inst",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "bgp": {
+      "@id": "cisco:bgpEntity",
+      "@type": "@id"
+    }
+  }
+}
