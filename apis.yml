@@ -1,4 +1,4 @@
-name: Cisco Nexus Dashboard API
+name: Cisco Nexus Dashboard
 description: APIs for managing and monitoring Cisco Nexus data center switches and network infrastructure
 image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
 url: https://developer.cisco.com/site/nexus/
