@@ -1,0 +1,12 @@
+name: cisco-nexus API Vocabulary
+provider: cisco-nexus
+created: '2026-04-19'
+modified: '2026-04-19'
+operations: 18
+schemas: 28
+tags:
+- Authentication
+- Interfaces
+- Routing
+- System
+- VLANs

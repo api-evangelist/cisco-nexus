@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "Ipv4RouteListResponse",
+  "type": "object",
+  "properties": {
+    "totalCount": {
+      "type": "string"
+    },
+    "imdata": {
+      "type": "array"
+    }
+  }
+}

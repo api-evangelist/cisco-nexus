@@ -1,0 +1,274 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Cisco Nexus Switch Management"
+  description: "Unified workflow for network administrators to configure and monitor Cisco Nexus switches including interfaces, VLANs, routing, and system features via the NX-API REST DME object model."
+  tags:
+    - Cisco
+    - Nexus
+    - Network Management
+    - Data Center
+  created: "2026-04-19"
+  modified: "2026-04-19"
+
+binds:
+  - namespace: env
+    keys:
+      NEXUS_USERNAME: NEXUS_USERNAME
+      NEXUS_PASSWORD: NEXUS_PASSWORD
+
+capability:
+  consumes:
+    - import: nxapi-rest
+      location: ./shared/nxapi-rest.yaml
+
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: switch-management-api
+      description: "Unified REST API for Cisco Nexus switch management."
+      resources:
+        - path: /v1/system
+          name: system
+          description: "System information"
+          operations:
+            - method: GET
+              name: get-system-info
+              description: "Get system information"
+              call: "nxapi-rest.get-system-info"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/interfaces
+          name: interfaces
+          description: "Interface management"
+          operations:
+            - method: GET
+              name: list-interfaces
+              description: "List all physical interfaces"
+              call: "nxapi-rest.list-physical-interfaces"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/interfaces/{interfaceId}
+          name: interface-detail
+          description: "Single interface operations"
+          operations:
+            - method: GET
+              name: get-interface
+              description: "Get interface details"
+              call: "nxapi-rest.get-physical-interface"
+              with:
+                interfaceId: "rest.interfaceId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/vlans
+          name: vlans
+          description: "VLAN management"
+          operations:
+            - method: GET
+              name: list-vlans
+              description: "List all VLANs"
+              call: "nxapi-rest.list-vlans"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-vlan
+              description: "Create a VLAN"
+              call: "nxapi-rest.create-vlan"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/vlans/{vlanEncap}
+          name: vlan-detail
+          description: "Single VLAN operations"
+          operations:
+            - method: GET
+              name: get-vlan
+              description: "Get VLAN details"
+              call: "nxapi-rest.get-vlan"
+              with:
+                vlanEncap: "rest.vlanEncap"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: DELETE
+              name: delete-vlan
+              description: "Delete a VLAN"
+              call: "nxapi-rest.delete-vlan"
+              with:
+                vlanEncap: "rest.vlanEncap"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/routes
+          name: routes
+          description: "Static route management"
+          operations:
+            - method: GET
+              name: list-routes
+              description: "List all static routes"
+              call: "nxapi-rest.list-static-routes"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9090
+      namespace: switch-management-mcp
+      transport: http
+      description: "MCP server for AI-assisted Cisco Nexus switch management."
+      tools:
+        - name: get-system-info
+          description: "Get Nexus switch system information including hostname, serial, and NX-OS version"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "nxapi-rest.get-system-info"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-interfaces
+          description: "List all physical Ethernet interfaces on the switch"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.list-physical-interfaces"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-interface
+          description: "Get configuration and operational state of a physical interface"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.get-physical-interface"
+          with:
+            interfaceId: "tools.interfaceId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: configure-interface
+          description: "Configure a physical Ethernet interface (admin state, speed, VLAN, etc.)"
+          hints:
+            readOnly: false
+            idempotent: true
+          call: "nxapi-rest.configure-physical-interface"
+          with:
+            interfaceEntity: "tools.interfaceEntity"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-vlans
+          description: "List all VLAN bridge domains on the switch"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.list-vlans"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-vlan
+          description: "Create or modify a VLAN bridge domain"
+          hints:
+            readOnly: false
+          call: "nxapi-rest.create-vlan"
+          with:
+            bdEntity: "tools.bdEntity"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-vlan
+          description: "Get VLAN bridge domain details"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.get-vlan"
+          with:
+            vlanEncap: "tools.vlanEncap"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: delete-vlan
+          description: "Delete a VLAN bridge domain from the switch"
+          hints:
+            destructive: true
+          call: "nxapi-rest.delete-vlan"
+          with:
+            vlanEncap: "tools.vlanEncap"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-svi
+          description: "Get Switch Virtual Interface configuration"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.get-svi-interface"
+          with:
+            sviId: "tools.sviId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: configure-svi
+          description: "Create or modify a Switch Virtual Interface for Layer 3 routing"
+          hints:
+            readOnly: false
+          call: "nxapi-rest.configure-svi-interface"
+          with:
+            sviId: "tools.sviId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-static-routes
+          description: "List all IPv4 static routes across all VRFs"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.list-static-routes"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: configure-static-route
+          description: "Create or modify IPv4 static routes"
+          hints:
+            readOnly: false
+          call: "nxapi-rest.configure-static-route"
+          with:
+            ipv4Inst: "tools.ipv4Inst"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-static-route
+          description: "Get a specific static route by VRF and prefix"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.get-static-route"
+          with:
+            vrfName: "tools.vrfName"
+            prefix: "tools.prefix"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-bgp-config
+          description: "Get the full BGP configuration tree"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.get-bgp-configuration"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: configure-features
+          description: "Enable or disable NX-OS features (interface-vlan, BGP, OSPF, LACP)"
+          hints:
+            readOnly: false
+          call: "nxapi-rest.configure-features"
+          with:
+            fmEntity: "tools.fmEntity"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: configure-system
+          description: "Apply system-level configuration changes"
+          hints:
+            readOnly: false
+          call: "nxapi-rest.configure-system"
+          outputParameters:
+            - type: object
+              mapping: "$."

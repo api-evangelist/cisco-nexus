@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "BgpEntity",
+  "type": "object",
+  "properties": {
+    "attributes": {
+      "type": "object"
+    },
+    "children": {
+      "type": "array"
+    }
+  }
+}

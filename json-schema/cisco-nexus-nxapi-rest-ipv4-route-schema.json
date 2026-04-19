@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ipv4Route",
+  "type": "object",
+  "description": "IPv4 static route managed object. DN format is sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}].",
+  "properties": {
+    "attributes": {
+      "type": "object"
+    },
+    "children": {
+      "type": "array",
+      "description": "Child next-hop objects"
+    }
+  }
+}

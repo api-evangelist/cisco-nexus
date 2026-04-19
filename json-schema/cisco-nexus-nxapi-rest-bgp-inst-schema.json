@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BgpInst",
+  "type": "object",
+  "description": "BGP instance managed object containing AS number and domain configuration. DN is sys/bgp/inst.",
+  "properties": {
+    "bgpInst": {
+      "type": "object"
+    }
+  }
+}

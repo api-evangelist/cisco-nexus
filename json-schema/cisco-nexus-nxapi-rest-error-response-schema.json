@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ErrorResponse",
+  "type": "object",
+  "description": "Error response from NX-API REST",
+  "properties": {
+    "imdata": {
+      "type": "array"
+    }
+  }
+}

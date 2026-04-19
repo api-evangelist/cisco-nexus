@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TopSystem",
+  "type": "object",
+  "description": "Top-level system managed object. DN is sys.",
+  "properties": {
+    "attributes": {
+      "type": "object"
+    }
+  }
+}

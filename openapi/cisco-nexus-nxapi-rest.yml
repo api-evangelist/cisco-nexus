@@ -18,56 +18,56 @@ info:
     name: Cisco DevNet
     url: https://developer.cisco.com/site/license/
   x-documentation:
-    - title: NX-API REST SDK User Guide
-      url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
-    - title: Nexus Model Reference
-      url: https://developer.cisco.com/docs/nexus-model/latest/
-    - title: NX-OS Programmability Guide
-      url: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/105x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-105x.html
+  - title: NX-API REST SDK User Guide
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
+  - title: Nexus Model Reference
+    url: https://developer.cisco.com/docs/nexus-model/latest/
+  - title: NX-OS Programmability Guide
+    url: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/105x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-105x.html
 
 servers:
-  - url: https://{switchIp}/api
-    description: Cisco Nexus switch NX-API REST endpoint
-    variables:
-      switchIp:
-        default: 192.168.1.1
-        description: Management IP address or hostname of the Nexus switch
+- url: https://{switchIp}/api
+  description: Cisco Nexus switch NX-API REST endpoint
+  variables:
+    switchIp:
+      default: 192.168.1.1
+      description: Management IP address or hostname of the Nexus switch
 
 security:
-  - cookieAuth: []
+- cookieAuth: []
 
 tags:
-  - name: Authentication
-    description: Session authentication and token management via aaaLogin and aaaLogout
-  - name: Interfaces
-    description: >-
-      Physical interface configuration and operational state using the l1PhysIf
-      managed object class (DN sys/intf/phys-[id])
-  - name: VLANs
-    description: >-
-      VLAN bridge domain management using the l2BD managed object class
-      (DN sys/bd/bd-[vlan-id]) and SVI interface configuration using sviIf
-  - name: Routing
-    description: >-
-      IPv4 and IPv6 static route configuration using ipv4Route/ipv6Route
-      managed objects and BGP protocol management using bgpEntity hierarchy
-  - name: System
-    description: >-
-      Top-level system information and feature management via topSystem
-      and fmEntity managed objects
+- name: Authentication
+  description: Session authentication and token management via aaaLogin and aaaLogout
+- name: Interfaces
+  description: >-
+    Physical interface configuration and operational state using the l1PhysIf
+    managed object class (DN sys/intf/phys-[id])
+- name: VLANs
+  description: >-
+    VLAN bridge domain management using the l2BD managed object class
+    (DN sys/bd/bd-[vlan-id]) and SVI interface configuration using sviIf
+- name: Routing
+  description: >-
+    IPv4 and IPv6 static route configuration using ipv4Route/ipv6Route
+    managed objects and BGP protocol management using bgpEntity hierarchy
+- name: System
+  description: >-
+    Top-level system information and feature management via topSystem
+    and fmEntity managed objects
 
 paths:
   /aaaLogin.json:
     post:
       operationId: authenticateUser
-      summary: Authenticate and obtain session cookie
+      summary: Authenticate and Obtain Session Cookie
       description: >-
         Authenticates a user against the NX-OS local or remote AAA database
         and returns a session cookie (APIC-cookie) used for subsequent API
         requests. The cookie has a configurable idle timeout (default 600
         seconds).
       tags:
-        - Authentication
+      - Authentication
       security: []
       requestBody:
         required: true
@@ -76,24 +76,24 @@ paths:
             schema:
               type: object
               required:
-                - aaaUser
+              - aaaUser
               properties:
                 aaaUser:
                   type: object
                   required:
-                    - attributes
+                  - attributes
                   properties:
                     attributes:
                       type: object
                       required:
-                        - name
-                        - pwd
+                      - name
+                      - pwd
                       properties:
                         name:
                           type: string
                           description: Username for authentication
                           examples:
-                            - admin
+                          - admin
                         pwd:
                           type: string
                           format: password
@@ -122,15 +122,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /aaaLogout.json:
     post:
       operationId: logoutUser
-      summary: Terminate authenticated session
+      summary: Terminate Authenticated Session
       description: >-
         Ends the current authenticated session and invalidates the session
         cookie.
       tags:
-        - Authentication
+      - Authentication
       requestBody:
         required: true
         content:
@@ -155,24 +158,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/ImDataResponse'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /mo/sys/intf/phys-[{interfaceId}].json:
     get:
       operationId: getPhysicalInterface
-      summary: Retrieve physical interface configuration and state
+      summary: Retrieve Physical Interface Configuration and State
       description: >-
         Returns the configuration and operational state of a specific physical
         Ethernet interface identified by its l1PhysIf distinguished name. Use
         the query-target parameter to retrieve child objects including counters
         and statistics (rmonEtherStats, rmonIfHCIn, rmonIfHCOut).
       tags:
-        - Interfaces
+      - Interfaces
       parameters:
-        - $ref: '#/components/parameters/interfaceId'
-        - $ref: '#/components/parameters/queryTarget'
-        - $ref: '#/components/parameters/targetSubtreeClass'
-        - $ref: '#/components/parameters/queryTargetFilter'
-        - $ref: '#/components/parameters/rspSubtree'
-        - $ref: '#/components/parameters/rspPropInclude'
+      - $ref: '#/components/parameters/interfaceId'
+      - $ref: '#/components/parameters/queryTarget'
+      - $ref: '#/components/parameters/targetSubtreeClass'
+      - $ref: '#/components/parameters/queryTargetFilter'
+      - $ref: '#/components/parameters/rspSubtree'
+      - $ref: '#/components/parameters/rspPropInclude'
       responses:
         '200':
           description: Interface details returned successfully
@@ -187,10 +193,13 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /mo/sys/intf.json:
     post:
       operationId: configurePhysicalInterface
-      summary: Configure a physical Ethernet interface
+      summary: Configure a Physical Ethernet Interface
       description: >-
         Creates or modifies the configuration of one or more physical Ethernet
         interfaces. The payload uses the interfaceEntity container with l1PhysIf
@@ -198,7 +207,7 @@ paths:
         MTU, layer mode, switchport mode, access VLAN, trunk VLANs, and
         description.
       tags:
-        - Interfaces
+      - Interfaces
       requestBody:
         required: true
         content:
@@ -208,14 +217,14 @@ paths:
             example:
               interfaceEntity:
                 children:
-                  - l1PhysIf:
-                      attributes:
-                        id: eth1/1
-                        adminSt: up
-                        layer: Layer2
-                        mode: access
-                        accessVlan: vlan-100
-                        descr: Server port
+                - l1PhysIf:
+                    attributes:
+                      id: eth1/1
+                      adminSt: up
+                      layer: Layer2
+                      mode: access
+                      accessVlan: vlan-100
+                      descr: Server port
       responses:
         '200':
           description: Configuration applied successfully
@@ -228,22 +237,25 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /class/l1PhysIf.json:
     get:
       operationId: listPhysicalInterfaces
-      summary: List all physical interfaces
+      summary: List All Physical Interfaces
       description: >-
         Returns all l1PhysIf managed objects on the switch via a class-level
         query. Supports filtering by property values and pagination. Each
         returned object includes the full DN and configured properties.
       tags:
-        - Interfaces
+      - Interfaces
       parameters:
-        - $ref: '#/components/parameters/queryTargetFilter'
-        - $ref: '#/components/parameters/rspSubtree'
-        - $ref: '#/components/parameters/rspPropInclude'
-        - $ref: '#/components/parameters/pageSize'
-        - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/queryTargetFilter'
+      - $ref: '#/components/parameters/rspSubtree'
+      - $ref: '#/components/parameters/rspPropInclude'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/page'
       responses:
         '200':
           description: List of physical interfaces returned
@@ -256,16 +268,19 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /mo/sys/bd.json:
     post:
       operationId: createVlan
-      summary: Create or modify a VLAN bridge domain
+      summary: Create or Modify a Vlan Bridge Domain
       description: >-
         Creates or modifies VLAN bridge domains using the bdEntity container
         with l2BD child objects. The fabEncap attribute specifies the VLAN ID
         in the format vlan-{id}. Supports VLAN naming and pcTag assignment.
       tags:
-        - VLANs
+      - VLANs
       requestBody:
         required: true
         content:
@@ -275,11 +290,11 @@ paths:
             example:
               bdEntity:
                 children:
-                  - l2BD:
-                      attributes:
-                        fabEncap: vlan-100
-                        name: Production
-                        pcTag: "1"
+                - l2BD:
+                    attributes:
+                      fabEncap: vlan-100
+                      name: Production
+                      pcTag: "1"
       responses:
         '200':
           description: VLAN created or modified successfully
@@ -292,31 +307,34 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /mo/sys/bd/bd-[{vlanEncap}].json:
     get:
       operationId: getVlan
-      summary: Retrieve a specific VLAN bridge domain
+      summary: Retrieve a Specific Vlan Bridge Domain
       description: >-
         Returns the configuration and state of a specific VLAN bridge domain
         identified by its fabric encapsulation (e.g., vlan-100). Use
         rsp-subtree=full to include child objects like VLAN member ports
         and statistics.
       tags:
-        - VLANs
+      - VLANs
       parameters:
-        - name: vlanEncap
-          in: path
-          required: true
-          description: >-
-            VLAN fabric encapsulation identifier in the format vlan-{id}
-            (e.g., vlan-100)
-          schema:
-            type: string
-            pattern: ^vlan-\d+$
-            examples:
-              - vlan-100
-        - $ref: '#/components/parameters/rspSubtree'
-        - $ref: '#/components/parameters/rspPropInclude'
+      - name: vlanEncap
+        in: path
+        required: true
+        description: >-
+          VLAN fabric encapsulation identifier in the format vlan-{id}
+          (e.g., vlan-100)
+        schema:
+          type: string
+          pattern: ^vlan-\d+$
+          examples:
+          - vlan-100
+      - $ref: '#/components/parameters/rspSubtree'
+      - $ref: '#/components/parameters/rspPropInclude'
       responses:
         '200':
           description: VLAN bridge domain details returned
@@ -328,23 +346,26 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteVlan
-      summary: Delete a VLAN bridge domain
+      summary: Delete a Vlan Bridge Domain
       description: >-
         Removes a VLAN bridge domain from the switch configuration. This
         operation also removes any associated SVI and port membership
         configurations.
       tags:
-        - VLANs
+      - VLANs
       parameters:
-        - name: vlanEncap
-          in: path
-          required: true
-          description: VLAN fabric encapsulation identifier (e.g., vlan-100)
-          schema:
-            type: string
-            pattern: ^vlan-\d+$
+      - name: vlanEncap
+        in: path
+        required: true
+        description: VLAN fabric encapsulation identifier (e.g., vlan-100)
+        schema:
+          type: string
+          pattern: ^vlan-\d+$
       responses:
         '200':
           description: VLAN deleted successfully
@@ -355,21 +376,24 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /class/l2BD.json:
     get:
       operationId: listVlans
-      summary: List all VLAN bridge domains
+      summary: List All Vlan Bridge Domains
       description: >-
         Returns all l2BD managed objects representing configured VLANs on
         the switch. Supports filtering by VLAN name, encapsulation, or
         administrative state.
       tags:
-        - VLANs
+      - VLANs
       parameters:
-        - $ref: '#/components/parameters/queryTargetFilter'
-        - $ref: '#/components/parameters/rspPropInclude'
-        - $ref: '#/components/parameters/pageSize'
-        - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/queryTargetFilter'
+      - $ref: '#/components/parameters/rspPropInclude'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/page'
       responses:
         '200':
           description: List of VLAN bridge domains returned
@@ -380,28 +404,31 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /mo/sys/intf/svi-[{sviId}].json:
     get:
       operationId: getSviInterface
-      summary: Retrieve an SVI (VLAN interface) configuration
+      summary: Retrieve an Svi (vlan Interface) Configuration
       description: >-
         Returns the configuration and operational state of a Switch Virtual
         Interface (SVI) identified by its VLAN ID (e.g., vlan100). SVIs
         provide Layer 3 routing capability for VLANs.
       tags:
-        - VLANs
+      - VLANs
       parameters:
-        - name: sviId
-          in: path
-          required: true
-          description: SVI identifier in the format vlan{id} (e.g., vlan100)
-          schema:
-            type: string
-            pattern: ^vlan\d+$
-            examples:
-              - vlan100
-        - $ref: '#/components/parameters/rspSubtree'
-        - $ref: '#/components/parameters/rspPropInclude'
+      - name: sviId
+        in: path
+        required: true
+        description: SVI identifier in the format vlan{id} (e.g., vlan100)
+        schema:
+          type: string
+          pattern: ^vlan\d+$
+          examples:
+          - vlan100
+      - $ref: '#/components/parameters/rspSubtree'
+      - $ref: '#/components/parameters/rspPropInclude'
       responses:
         '200':
           description: SVI interface details returned
@@ -411,24 +438,27 @@ paths:
                 $ref: '#/components/schemas/SviInterfaceResponse'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     post:
       operationId: configureSviInterface
-      summary: Create or modify an SVI (VLAN interface)
+      summary: Create or Modify an Svi (vlan Interface)
       description: >-
         Creates or modifies a Switch Virtual Interface (SVI) for Layer 3
         routing on a VLAN. Requires the interface-vlan feature to be enabled
         (fmInterfaceVlan adminSt=enabled). Properties include admin state,
         description, MTU, bandwidth, MAC address, and medium type.
       tags:
-        - VLANs
+      - VLANs
       parameters:
-        - name: sviId
-          in: path
-          required: true
-          description: SVI identifier in the format vlan{id}
-          schema:
-            type: string
-            pattern: ^vlan\d+$
+      - name: sviId
+        in: path
+        required: true
+        description: SVI identifier in the format vlan{id}
+        schema:
+          type: string
+          pattern: ^vlan\d+$
       requestBody:
         required: true
         content:
@@ -452,17 +482,20 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /mo/sys/ipv4/inst.json:
     post:
       operationId: configureStaticRoute
-      summary: Create or modify IPv4 static routes
+      summary: Create or Modify Ipv4 Static Routes
       description: >-
         Configures IPv4 static routes using the ipv4Inst container with
         ipv4Dom, ipv4Route, and ipv4Nexthop child objects. Routes are
         defined by destination prefix and one or more next-hop specifications
         including interface, address, VRF, preference, name, and tag.
       tags:
-        - Routing
+      - Routing
       requestBody:
         required: true
         content:
@@ -472,21 +505,21 @@ paths:
             example:
               ipv4Inst:
                 children:
-                  - ipv4Dom:
-                      attributes:
-                        name: default
-                      children:
-                        - ipv4Route:
+                - ipv4Dom:
+                    attributes:
+                      name: default
+                    children:
+                    - ipv4Route:
+                        attributes:
+                          prefix: 10.0.0.0/8
+                        children:
+                        - ipv4Nexthop:
                             attributes:
-                              prefix: 10.0.0.0/8
-                            children:
-                              - ipv4Nexthop:
-                                  attributes:
-                                    nhAddr: 192.168.1.1
-                                    nhIf: eth1/1
-                                    nhVrf: default
-                                    pref: "1"
-                                    tag: "100"
+                              nhAddr: 192.168.1.1
+                              nhIf: eth1/1
+                              nhVrf: default
+                              pref: "1"
+                              tag: "100"
       responses:
         '200':
           description: Static route configured successfully
@@ -497,32 +530,35 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /mo/sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}].json:
     get:
       operationId: getStaticRoute
-      summary: Retrieve a specific IPv4 static route
+      summary: Retrieve a Specific Ipv4 Static Route
       description: >-
         Returns the configuration of a specific IPv4 static route including
         all configured next-hops. The route is identified by VRF name and
         destination prefix.
       tags:
-        - Routing
+      - Routing
       parameters:
-        - name: vrfName
-          in: path
-          required: true
-          description: VRF name (use "default" for the global routing table)
-          schema:
-            type: string
-            default: default
-        - name: prefix
-          in: path
-          required: true
-          description: IPv4 destination prefix in CIDR notation (e.g., 10.0.0.0/8)
-          schema:
-            type: string
-            format: ipv4-network
-        - $ref: '#/components/parameters/rspSubtree'
+      - name: vrfName
+        in: path
+        required: true
+        description: VRF name (use "default" for the global routing table)
+        schema:
+          type: string
+          default: default
+      - name: prefix
+        in: path
+        required: true
+        description: IPv4 destination prefix in CIDR notation (e.g., 10.0.0.0/8)
+        schema:
+          type: string
+          format: ipv4-network
+      - $ref: '#/components/parameters/rspSubtree'
       responses:
         '200':
           description: Static route details returned
@@ -533,19 +569,22 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /class/ipv4Route.json:
     get:
       operationId: listStaticRoutes
-      summary: List all IPv4 static routes
+      summary: List All Ipv4 Static Routes
       description: >-
         Returns all ipv4Route managed objects across all VRFs. Supports
         filtering by prefix, VRF, or route tag.
       tags:
-        - Routing
+      - Routing
       parameters:
-        - $ref: '#/components/parameters/queryTargetFilter'
-        - $ref: '#/components/parameters/rspSubtree'
-        - $ref: '#/components/parameters/rspPropInclude'
+      - $ref: '#/components/parameters/queryTargetFilter'
+      - $ref: '#/components/parameters/rspSubtree'
+      - $ref: '#/components/parameters/rspPropInclude'
       responses:
         '200':
           description: List of IPv4 static routes returned
@@ -556,19 +595,22 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /mo/sys/bgp.json:
     get:
       operationId: getBgpConfiguration
-      summary: Retrieve full BGP configuration
+      summary: Retrieve Full Bgp Configuration
       description: >-
         Returns the complete BGP configuration tree including bgpEntity,
         bgpInst, all bgpDom domains, and bgpPeer neighbors. Use
         rsp-subtree=full to retrieve the entire hierarchy.
       tags:
-        - Routing
+      - Routing
       parameters:
-        - $ref: '#/components/parameters/rspSubtree'
-        - $ref: '#/components/parameters/rspPropInclude'
+      - $ref: '#/components/parameters/rspSubtree'
+      - $ref: '#/components/parameters/rspPropInclude'
       responses:
         '200':
           description: BGP configuration returned
@@ -579,18 +621,21 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /mo/sys.json:
     get:
       operationId: getSystemInfo
-      summary: Retrieve top-level system information
+      summary: Retrieve Top-level System Information
       description: >-
         Returns the topSystem managed object containing system-wide
         information including hostname, serial number, NX-OS version,
         uptime, and system state.
       tags:
-        - System
+      - System
       parameters:
-        - $ref: '#/components/parameters/rspPropInclude'
+      - $ref: '#/components/parameters/rspPropInclude'
       responses:
         '200':
           description: System information returned
@@ -598,16 +643,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TopSystemResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     post:
       operationId: configureSystem
-      summary: Apply system-level configuration
+      summary: Apply System-level Configuration
       description: >-
         Applies configuration changes at the top system level. This endpoint
         accepts a topSystem payload with nested child objects for configuring
         interfaces (interfaceEntity), BGP (bgpEntity), features (fmEntity),
         and other subsystems in a single atomic transaction.
       tags:
-        - System
+      - System
       requestBody:
         required: true
         content:
@@ -624,17 +672,20 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /mo/sys/fm.json:
     post:
       operationId: configureFeatures
-      summary: Enable or disable NX-OS features
+      summary: Enable or Disable Nx-os Features
       description: >-
         Manages NX-OS feature activation using the fmEntity container.
         Features include interface-vlan (fmInterfaceVlan), BGP (fmBgp),
         OSPF (fmOspf), LACP (fmLacp), and others. Each feature has an
         adminSt property that accepts enabled or disabled.
       tags:
-        - System
+      - System
       requestBody:
         required: true
         content:
@@ -644,12 +695,12 @@ paths:
             example:
               fmEntity:
                 children:
-                  - fmInterfaceVlan:
-                      attributes:
-                        adminSt: enabled
-                  - fmBgp:
-                      attributes:
-                        adminSt: enabled
+                - fmInterfaceVlan:
+                    attributes:
+                      adminSt: enabled
+                - fmBgp:
+                    attributes:
+                      adminSt: enabled
       responses:
         '200':
           description: Feature configuration applied
@@ -658,6 +709,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ImDataResponse'
 
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
 components:
   securitySchemes:
     cookieAuth:
@@ -681,7 +735,7 @@ components:
         type: string
         pattern: ^eth\d+/\d+(/\d+)?$
         examples:
-          - eth1/1
+        - eth1/1
 
     queryTarget:
       name: query-target
@@ -694,9 +748,9 @@ components:
       schema:
         type: string
         enum:
-          - self
-          - children
-          - subtree
+        - self
+        - children
+        - subtree
         default: self
 
     targetSubtreeClass:
@@ -731,9 +785,9 @@ components:
       schema:
         type: string
         enum:
-          - "no"
-          - children
-          - full
+        - "no"
+        - children
+        - full
         default: "no"
 
     rspPropInclude:
@@ -747,9 +801,9 @@ components:
       schema:
         type: string
         enum:
-          - all
-          - config-only
-          - set-config-only
+        - all
+        - config-only
+        - set-config-only
         default: all
 
     pageSize:
@@ -780,12 +834,14 @@ components:
         totalCount:
           type: string
           description: Total number of managed objects in the response
+          example: example_value
         imdata:
           type: array
           description: Array of managed object results
           items:
             type: object
 
+          example: []
     ErrorResponse:
       type: object
       description: Error response from NX-API REST
@@ -808,11 +864,13 @@ components:
                         type: string
                         description: Human-readable error message
 
+          example: []
     AaaLoginResponse:
       type: object
       properties:
         totalCount:
           type: string
+          example: example_value
         imdata:
           type: array
           items:
@@ -834,6 +892,7 @@ components:
                         type: string
                         description: Authenticated username
 
+          example: []
     L1PhysIf:
       type: object
       description: >-
@@ -848,40 +907,40 @@ components:
               type: string
               description: Distinguished name (e.g., sys/intf/phys-[eth1/1])
               examples:
-                - sys/intf/phys-[eth1/1]
+              - sys/intf/phys-[eth1/1]
             id:
               type: string
               description: Interface identifier matching show interface brief output
               examples:
-                - eth1/1
+              - eth1/1
             adminSt:
               type: string
               description: Administrative state of the interface
               enum:
-                - up
-                - down
+              - up
+              - down
             operSt:
               type: string
               description: Operational state (read-only)
               enum:
-                - up
-                - down
-                - link-up
+              - up
+              - down
+              - link-up
             layer:
               type: string
               description: Layer mode of the interface
               enum:
-                - Layer2
-                - Layer3
+              - Layer2
+              - Layer3
             mode:
               type: string
               description: Switchport mode (applicable when layer is Layer2)
               enum:
-                - access
-                - trunk
-                - fex-fabric
-                - dot1q-tunnel
-                - promiscuous
+              - access
+              - trunk
+              - fex-fabric
+              - dot1q-tunnel
+              - promiscuous
             accessVlan:
               type: string
               description: >-
@@ -889,44 +948,44 @@ components:
                 (applicable when mode is access)
               pattern: ^vlan-\d+$
               examples:
-                - vlan-100
+              - vlan-100
             trunkVlans:
               type: string
               description: >-
                 Trunk allowed VLANs. Supports ranges (1-100), additions (+50),
                 and removals (-50). Use 1-4094 for all VLANs.
               examples:
-                - 1-100,200,300-400
+              - 1-100,200,300-400
             nativeVlan:
               type: string
               description: Native VLAN for trunk ports in the format vlan-{id}
               pattern: ^vlan-\d+$
               examples:
-                - vlan-1
+              - vlan-1
             speed:
               type: string
               description: Interface speed setting
               enum:
-                - auto
-                - "100M"
-                - "1G"
-                - "10G"
-                - "25G"
-                - "40G"
-                - "100G"
+              - auto
+              - "100M"
+              - "1G"
+              - "10G"
+              - "25G"
+              - "40G"
+              - "100G"
             duplex:
               type: string
               description: Duplex mode setting
               enum:
-                - auto
-                - full
-                - half
+              - auto
+              - full
+              - half
             mtu:
               type: string
               description: Maximum transmission unit (bytes, 576-9216)
               examples:
-                - "1500"
-                - "9216"
+              - "1500"
+              - "9216"
             descr:
               type: string
               description: Interface description (max 254 characters)
@@ -935,13 +994,14 @@ components:
               type: string
               description: SNMP trap link-state notifications
               enum:
-                - enable
-                - disable
+              - enable
+              - disable
             modTs:
               type: string
               format: date-time
               description: Last modification timestamp (read-only)
 
+          example: example_value
     L2BD:
       type: object
       description: >-
@@ -955,31 +1015,31 @@ components:
               type: string
               description: Distinguished name (e.g., sys/bd/bd-[vlan-100])
               examples:
-                - sys/bd/bd-[vlan-100]
+              - sys/bd/bd-[vlan-100]
             fabEncap:
               type: string
               description: >-
                 Fabric encapsulation in the format vlan-{id} or vxlan-{id}
               pattern: ^(vlan|vxlan)-\d+$
               examples:
-                - vlan-100
+              - vlan-100
             name:
               type: string
               description: VLAN name
               maxLength: 32
               examples:
-                - Production
+              - Production
             pcTag:
               type: string
               description: Default classId for unknown unicast traffic
               examples:
-                - "1"
+              - "1"
             adminSt:
               type: string
               description: Administrative state
               enum:
-                - active
-                - suspend
+              - active
+              - suspend
             operSt:
               type: string
               description: Operational state (read-only)
@@ -991,6 +1051,7 @@ components:
               format: date-time
               description: Last modification timestamp (read-only)
 
+          example: example_value
     SviIf:
       type: object
       description: >-
@@ -1004,19 +1065,19 @@ components:
               type: string
               description: Distinguished name (e.g., sys/intf/svi-[vlan100])
               examples:
-                - sys/intf/svi-[vlan100]
+              - sys/intf/svi-[vlan100]
             id:
               type: string
               description: SVI identifier in the format vlan{id}
               pattern: ^vlan\d+$
               examples:
-                - vlan100
+              - vlan100
             adminSt:
               type: string
               description: Administrative state
               enum:
-                - up
-                - down
+              - up
+              - down
             operSt:
               type: string
               description: Operational state (read-only)
@@ -1028,12 +1089,12 @@ components:
               type: string
               description: Maximum transmission unit (64-9216 bytes)
               examples:
-                - "9216"
+              - "9216"
             bw:
               type: string
               description: Administrative bandwidth (1-400000000 kbps)
               examples:
-                - "100000"
+              - "100000"
             mac:
               type: string
               description: MAC address override in MM:MM:MM:SS:SS:SS format
@@ -1041,19 +1102,20 @@ components:
               type: string
               description: Port medium type
               enum:
-                - broadcast
-                - p2p
+              - broadcast
+              - p2p
             autostate:
               type: string
               description: Whether autostate is enabled
               enum:
-                - "true"
-                - "false"
+              - "true"
+              - "false"
             modTs:
               type: string
               format: date-time
               description: Last modification timestamp (read-only)
 
+          example: example_value
     Ipv4Route:
       type: object
       description: >-
@@ -1067,19 +1129,21 @@ components:
               type: string
               description: Distinguished name
               examples:
-                - sys/ipv4/inst/dom-default/rt-[10.0.0.0/8]
+              - sys/ipv4/inst/dom-default/rt-[10.0.0.0/8]
             prefix:
               type: string
               description: Destination IPv4 prefix in CIDR notation
               format: ipv4-network
               examples:
-                - 10.0.0.0/8
+              - 10.0.0.0/8
+          example: example_value
         children:
           type: array
           description: Child next-hop objects
           items:
             $ref: '#/components/schemas/Ipv4Nexthop'
 
+          example: []
     Ipv4Nexthop:
       type: object
       description: >-
@@ -1097,43 +1161,44 @@ components:
                   description: Next-hop IP address
                   format: ipv4
                   examples:
-                    - 192.168.1.1
+                  - 192.168.1.1
                 nhIf:
                   type: string
                   description: >-
                     Next-hop egress interface (e.g., eth1/1, vlan100).
                     Use unspecified for recursive lookup.
                   examples:
-                    - eth1/1
+                  - eth1/1
                 nhVrf:
                   type: string
                   description: Next-hop VRF context
                   default: default
                   examples:
-                    - default
+                  - default
                 pref:
                   type: string
                   description: Route preference / administrative distance (0-255)
                   examples:
-                    - "1"
+                  - "1"
                 rtname:
                   type: string
                   description: Route identifier name
                   examples:
-                    - StaticRoute1
+                  - StaticRoute1
                 tag:
                   type: string
                   description: Route tag value (0-4294967295)
                   examples:
-                    - "100"
+                  - "100"
                 status:
                   type: string
                   description: >-
                     Set to deleted to remove a next-hop entry
                   enum:
-                    - ""
-                    - deleted
+                  - ""
+                  - deleted
 
+          example: example_value
     BgpEntity:
       type: object
       description: >-
@@ -1145,17 +1210,19 @@ components:
             dn:
               type: string
               examples:
-                - sys/bgp
+              - sys/bgp
             adminSt:
               type: string
               enum:
-                - enabled
-                - disabled
+              - enabled
+              - disabled
+          example: example_value
         children:
           type: array
           items:
             $ref: '#/components/schemas/BgpInst'
 
+          example: []
     BgpInst:
       type: object
       description: >-
@@ -1174,13 +1241,14 @@ components:
                     BGP autonomous system number (supports 2-byte and 4-byte
                     ASN formats including dot notation)
                   examples:
-                    - "65000"
-                    - "65000.1"
+                  - "65000"
+                  - "65000.1"
             children:
               type: array
               items:
                 $ref: '#/components/schemas/BgpDom'
 
+          example: example_value
     BgpDom:
       type: object
       description: >-
@@ -1197,18 +1265,19 @@ components:
                   type: string
                   description: BGP domain name (VRF name, typically default)
                   examples:
-                    - default
+                  - default
                 rtrId:
                   type: string
                   description: BGP router ID in IPv4 address format
                   format: ipv4
                   examples:
-                    - 10.0.0.1
+                  - 10.0.0.1
             children:
               type: array
               items:
                 $ref: '#/components/schemas/BgpPeer'
 
+          example: example_value
     BgpPeer:
       type: object
       description: >-
@@ -1226,22 +1295,22 @@ components:
                   description: BGP neighbor IP address
                   format: ipv4
                   examples:
-                    - 192.168.1.2
+                  - 192.168.1.2
                 asn:
                   type: string
                   description: Remote peer autonomous system number
                   examples:
-                    - "65001"
+                  - "65001"
                 passwdType:
                   type: string
                   description: >-
                     Password encryption type (0=cleartext, 3=3DES,
                     6=AES, 7=Vigenere)
                   enum:
-                    - "0"
-                    - "3"
-                    - "6"
-                    - "7"
+                  - "0"
+                  - "3"
+                  - "6"
+                  - "7"
                 password:
                   type: string
                   description: Neighbor authentication password
@@ -1250,14 +1319,15 @@ components:
                   type: string
                   description: Source interface for BGP session
                   examples:
-                    - lo0
+                  - lo0
                 adminSt:
                   type: string
                   description: Administrative state (shutdown/no shutdown)
                   enum:
-                    - enabled
-                    - disabled
+                  - enabled
+                  - disabled
 
+          example: example_value
     TopSystem:
       type: object
       description: >-
@@ -1269,7 +1339,7 @@ components:
             dn:
               type: string
               examples:
-                - sys
+              - sys
             name:
               type: string
               description: System hostname
@@ -1287,11 +1357,13 @@ components:
               type: string
               description: System operational state
 
+          example: example_value
     PhysicalInterfaceResponse:
       type: object
       properties:
         totalCount:
           type: string
+          example: example_value
         imdata:
           type: array
           items:
@@ -1300,11 +1372,13 @@ components:
               l1PhysIf:
                 $ref: '#/components/schemas/L1PhysIf'
 
+          example: []
     PhysicalInterfaceListResponse:
       type: object
       properties:
         totalCount:
           type: string
+          example: example_value
         imdata:
           type: array
           items:
@@ -1313,11 +1387,13 @@ components:
               l1PhysIf:
                 $ref: '#/components/schemas/L1PhysIf'
 
+          example: []
     VlanBridgeDomainResponse:
       type: object
       properties:
         totalCount:
           type: string
+          example: example_value
         imdata:
           type: array
           items:
@@ -1326,11 +1402,13 @@ components:
               l2BD:
                 $ref: '#/components/schemas/L2BD'
 
+          example: []
     VlanBridgeDomainListResponse:
       type: object
       properties:
         totalCount:
           type: string
+          example: example_value
         imdata:
           type: array
           items:
@@ -1339,11 +1417,13 @@ components:
               l2BD:
                 $ref: '#/components/schemas/L2BD'
 
+          example: []
     SviInterfaceResponse:
       type: object
       properties:
         totalCount:
           type: string
+          example: example_value
         imdata:
           type: array
           items:
@@ -1352,11 +1432,13 @@ components:
               sviIf:
                 $ref: '#/components/schemas/SviIf'
 
+          example: []
     Ipv4RouteResponse:
       type: object
       properties:
         totalCount:
           type: string
+          example: example_value
         imdata:
           type: array
           items:
@@ -1365,11 +1447,13 @@ components:
               ipv4Route:
                 $ref: '#/components/schemas/Ipv4Route'
 
+          example: []
     Ipv4RouteListResponse:
       type: object
       properties:
         totalCount:
           type: string
+          example: example_value
         imdata:
           type: array
           items:
@@ -1378,11 +1462,13 @@ components:
               ipv4Route:
                 $ref: '#/components/schemas/Ipv4Route'
 
+          example: []
     BgpEntityResponse:
       type: object
       properties:
         totalCount:
           type: string
+          example: example_value
         imdata:
           type: array
           items:
@@ -1391,11 +1477,13 @@ components:
               bgpEntity:
                 $ref: '#/components/schemas/BgpEntity'
 
+          example: []
     TopSystemResponse:
       type: object
       properties:
         totalCount:
           type: string
+          example: example_value
         imdata:
           type: array
           items:
@@ -1404,6 +1492,7 @@ components:
               topSystem:
                 $ref: '#/components/schemas/TopSystem'
 
+          example: []
     InterfaceEntityPayload:
       type: object
       properties:
@@ -1418,6 +1507,7 @@ components:
                   l1PhysIf:
                     $ref: '#/components/schemas/L1PhysIf'
 
+          example: example_value
     BdEntityPayload:
       type: object
       properties:
@@ -1432,6 +1522,7 @@ components:
                   l2BD:
                     $ref: '#/components/schemas/L2BD'
 
+          example: example_value
     SviIfPayload:
       type: object
       properties:
@@ -1447,8 +1538,8 @@ components:
                 adminSt:
                   type: string
                   enum:
-                    - up
-                    - down
+                  - up
+                  - down
                 descr:
                   type: string
                 mtu:
@@ -1460,9 +1551,10 @@ components:
                 medium:
                   type: string
                   enum:
-                    - broadcast
-                    - p2p
+                  - broadcast
+                  - p2p
 
+          example: example_value
     Ipv4InstPayload:
       type: object
       properties:
@@ -1487,21 +1579,22 @@ components:
                         type: array
                         items:
                           oneOf:
-                            - $ref: '#/components/schemas/Ipv4Route'
-                            - type: object
-                              properties:
-                                ipv4RtStaticBfd:
-                                  type: object
-                                  properties:
-                                    attributes:
-                                      type: object
-                                      properties:
-                                        intf:
-                                          type: string
-                                        nexthop:
-                                          type: string
-                                          format: ipv4
+                          - $ref: '#/components/schemas/Ipv4Route'
+                          - type: object
+                            properties:
+                              ipv4RtStaticBfd:
+                                type: object
+                                properties:
+                                  attributes:
+                                    type: object
+                                    properties:
+                                      intf:
+                                        type: string
+                                      nexthop:
+                                        type: string
+                                        format: ipv4
 
+          example: example_value
     TopSystemPayload:
       type: object
       properties:
@@ -1518,6 +1611,7 @@ components:
               items:
                 type: object
 
+          example: example_value
     FmEntityPayload:
       type: object
       properties:
@@ -1533,6 +1627,7 @@ components:
                   fmOspf, fmLacp, fmVpc, fmHsrp, fmVxlan, each with
                   an attributes.adminSt property.
 
+          example: example_value
   responses:
     BadRequest:
       description: >-

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BgpPeer",
+  "type": "object",
+  "description": "BGP peer (neighbor) managed object. DN format is sys/bgp/inst/dom-{name}/peer-{addr}.",
+  "properties": {
+    "bgpPeer": {
+      "type": "object"
+    }
+  }
+}

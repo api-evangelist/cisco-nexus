@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "L2BD",
+  "type": "object",
+  "description": "Layer 2 bridge domain managed object representing a VLAN. DN format is sys/bd/bd-[{fabEncap}].",
+  "properties": {
+    "attributes": {
+      "type": "object"
+    }
+  }
+}

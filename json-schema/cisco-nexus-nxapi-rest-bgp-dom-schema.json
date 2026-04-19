@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BgpDom",
+  "type": "object",
+  "description": "BGP domain (VRF) managed object. DN format is sys/bgp/inst/dom-{name}.",
+  "properties": {
+    "bgpDom": {
+      "type": "object"
+    }
+  }
+}

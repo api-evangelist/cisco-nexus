@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SviIf",
+  "type": "object",
+  "description": "Switch Virtual Interface managed object for Layer 3 VLAN routing. DN format is sys/intf/svi-[{id}].",
+  "properties": {
+    "attributes": {
+      "type": "object"
+    }
+  }
+}

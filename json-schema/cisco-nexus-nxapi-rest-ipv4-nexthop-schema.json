@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ipv4Nexthop",
+  "type": "object",
+  "description": "IPv4 next-hop specification for a static route. DN format is sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}]/nh-[{nhIf}]-addr-[{nhAddr}]-vrf-[{nhVrf}].",
+  "properties": {
+    "ipv4Nexthop": {
+      "type": "object"
+    }
+  }
+}

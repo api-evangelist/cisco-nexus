@@ -1,0 +1,421 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Cisco NX-API REST"
+  description: "RESTful API for Cisco Nexus switch configuration and monitoring through the DME object model including interfaces, VLANs, routing, and system management."
+  tags:
+    - Cisco
+    - Nexus
+    - Networking
+    - Data Center
+  created: "2026-04-19"
+  modified: "2026-04-19"
+
+binds:
+  - namespace: env
+    keys:
+      NEXUS_USERNAME: NEXUS_USERNAME
+      NEXUS_PASSWORD: NEXUS_PASSWORD
+
+capability:
+  consumes:
+    - type: http
+      namespace: nxapi-rest
+      baseUri: https://{switchIp}/api
+      description: "Cisco NX-API REST for Nexus switch management via DME object model."
+      authentication:
+        type: basic
+        username: "{{NEXUS_USERNAME}}"
+        password: "{{NEXUS_PASSWORD}}"
+      resources:
+        - name: authentication
+          path: /
+          description: "Session authentication"
+          operations:
+            - name: authenticate-user
+              method: POST
+              description: "Authenticate and obtain session cookie"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  aaaUser:
+                    attributes:
+                      name: "{{tools.username}}"
+                      pwd: "{{tools.password}}"
+            - name: logout-user
+              method: POST
+              description: "Terminate authenticated session"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: interfaces
+          path: /
+          description: "Physical interface management"
+          operations:
+            - name: get-physical-interface
+              method: GET
+              description: "Get physical interface configuration and state"
+              inputParameters:
+                - name: interfaceId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Interface ID (e.g., eth1/1)"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: configure-physical-interface
+              method: POST
+              description: "Configure physical Ethernet interfaces"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  interfaceEntity: "{{tools.interfaceEntity}}"
+            - name: list-physical-interfaces
+              method: GET
+              description: "List all physical interfaces"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: vlans
+          path: /
+          description: "VLAN bridge domain management"
+          operations:
+            - name: create-vlan
+              method: POST
+              description: "Create or modify a VLAN bridge domain"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  bdEntity: "{{tools.bdEntity}}"
+            - name: get-vlan
+              method: GET
+              description: "Get VLAN bridge domain details"
+              inputParameters:
+                - name: vlanEncap
+                  in: path
+                  type: string
+                  required: true
+                  description: "VLAN encapsulation (e.g., vlan-100)"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: delete-vlan
+              method: DELETE
+              description: "Delete a VLAN bridge domain"
+              inputParameters:
+                - name: vlanEncap
+                  in: path
+                  type: string
+                  required: true
+                  description: "VLAN encapsulation"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: list-vlans
+              method: GET
+              description: "List all VLAN bridge domains"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: get-svi-interface
+              method: GET
+              description: "Get SVI (VLAN interface) configuration"
+              inputParameters:
+                - name: sviId
+                  in: path
+                  type: string
+                  required: true
+                  description: "SVI identifier (e.g., vlan100)"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: configure-svi-interface
+              method: POST
+              description: "Create or modify an SVI"
+              inputParameters:
+                - name: sviId
+                  in: path
+                  type: string
+                  required: true
+                  description: "SVI identifier"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: routing
+          path: /
+          description: "Routing configuration"
+          operations:
+            - name: configure-static-route
+              method: POST
+              description: "Create or modify IPv4 static routes"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  ipv4Inst: "{{tools.ipv4Inst}}"
+            - name: get-static-route
+              method: GET
+              description: "Get a specific IPv4 static route"
+              inputParameters:
+                - name: vrfName
+                  in: path
+                  type: string
+                  required: true
+                  description: "VRF name"
+                - name: prefix
+                  in: path
+                  type: string
+                  required: true
+                  description: "IPv4 prefix in CIDR"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: list-static-routes
+              method: GET
+              description: "List all IPv4 static routes"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: get-bgp-configuration
+              method: GET
+              description: "Get full BGP configuration"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: system
+          path: /
+          description: "System management"
+          operations:
+            - name: get-system-info
+              method: GET
+              description: "Get top-level system information"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: configure-system
+              method: POST
+              description: "Apply system-level configuration"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: configure-features
+              method: POST
+              description: "Enable or disable NX-OS features"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  fmEntity: "{{tools.fmEntity}}"
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: nxapi-rest-api
+      resources:
+        - path: /v1/interfaces
+          name: interfaces
+          operations:
+            - method: GET
+              name: list-interfaces
+              call: "nxapi-rest.list-physical-interfaces"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9100
+      namespace: nxapi-rest-mcp
+      transport: http
+      tools:
+        - name: get-system-info
+          description: "Get Nexus switch system information"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.get-system-info"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-interfaces
+          description: "List all physical interfaces"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.list-physical-interfaces"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-interface
+          description: "Get physical interface details"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.get-physical-interface"
+          with:
+            interfaceId: "tools.interfaceId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: configure-interface
+          description: "Configure a physical Ethernet interface"
+          hints:
+            readOnly: false
+            idempotent: true
+          call: "nxapi-rest.configure-physical-interface"
+          with:
+            interfaceEntity: "tools.interfaceEntity"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-vlans
+          description: "List all VLAN bridge domains"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.list-vlans"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-vlan
+          description: "Create or modify a VLAN"
+          hints:
+            readOnly: false
+          call: "nxapi-rest.create-vlan"
+          with:
+            bdEntity: "tools.bdEntity"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-vlan
+          description: "Get VLAN details"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.get-vlan"
+          with:
+            vlanEncap: "tools.vlanEncap"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: delete-vlan
+          description: "Delete a VLAN"
+          hints:
+            destructive: true
+          call: "nxapi-rest.delete-vlan"
+          with:
+            vlanEncap: "tools.vlanEncap"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-svi
+          description: "Get SVI interface configuration"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.get-svi-interface"
+          with:
+            sviId: "tools.sviId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: configure-svi
+          description: "Create or modify an SVI"
+          hints:
+            readOnly: false
+          call: "nxapi-rest.configure-svi-interface"
+          with:
+            sviId: "tools.sviId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-static-routes
+          description: "List all IPv4 static routes"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.list-static-routes"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: configure-static-route
+          description: "Create or modify static routes"
+          hints:
+            readOnly: false
+          call: "nxapi-rest.configure-static-route"
+          with:
+            ipv4Inst: "tools.ipv4Inst"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-static-route
+          description: "Get a specific static route"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.get-static-route"
+          with:
+            vrfName: "tools.vrfName"
+            prefix: "tools.prefix"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-bgp-config
+          description: "Get full BGP configuration"
+          hints:
+            readOnly: true
+          call: "nxapi-rest.get-bgp-configuration"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: configure-features
+          description: "Enable or disable NX-OS features"
+          hints:
+            readOnly: false
+          call: "nxapi-rest.configure-features"
+          with:
+            fmEntity: "tools.fmEntity"
+          outputParameters:
+            - type: object
+              mapping: "$."

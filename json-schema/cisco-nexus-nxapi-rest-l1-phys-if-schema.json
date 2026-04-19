@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "L1PhysIf",
+  "type": "object",
+  "description": "Layer 1 physical interface managed object representing a physical Ethernet port on a Nexus switch. DN format is sys/intf/phys-[{id}].",
+  "properties": {
+    "attributes": {
+      "type": "object"
+    }
+  }
+}

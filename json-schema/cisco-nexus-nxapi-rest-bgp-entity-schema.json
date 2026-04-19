@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BgpEntity",
+  "type": "object",
+  "description": "Top-level BGP entity managed object. DN is sys/bgp.",
+  "properties": {
+    "attributes": {
+      "type": "object"
+    },
+    "children": {
+      "type": "array"
+    }
+  }
+}
