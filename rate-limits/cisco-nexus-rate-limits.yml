@@ -4,143 +4,48 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Cisco Nexus Dashboard
 providerId: cisco-nexus
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - Data Center
-  - Infrastructure
-  - Network Automation
   - Networking
-  - SDN
-  - Switches
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Cisco Nexus Dashboard API surface. Captures
-  per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values
-  to be replaced with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+description: Cisco Nexus Dashboard, NX-API, and the underlying NX-OS / ACI APIs are deployed by the
+  customer on premises or in their VPC. Public per-second rate limits are not published; throughput is
+  bounded by switch CPU / supervisor capacity and by NX-API session limits configured in NX-OS.
+  Streaming telemetry (gRPC/gNMI/Model-Driven Telemetry) is the recommended path for high-volume
+  observability rather than polling REST endpoints.
+notes: Replace with concrete per-platform NX-API session limits when verified against Cisco's
+  configuration guides for the customer's deployed Nexus platform.
+sources:
+  - https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus9000/sw/93x/programmability/guide/b-cisco-nexus-9000-series-nx-os-programmability-guide-93x.html
+  - https://developer.cisco.com/docs/nexus-dashboard/
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
   serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Cisco NX-API REST
-      - Cisco NX-API CLI
-      - Cisco Nexus Dashboard REST API
-      - Cisco Nexus Dashboard Fabric Controller API
-      - Cisco Nexus Dashboard Orchestrator API
-      - Cisco Nexus Dashboard Insights API
-      - Cisco DCNM REST API
-      - Cisco NETCONF/YANG API
-      - Cisco NX-OS RESTCONF API
-      - Cisco NX-OS gNMI/gRPC API
-      - Cisco NX-OS Model-Driven Telemetry API
-      - Cisco NX-OS Python SDK API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Cisco NX-API REST
-      - Cisco NX-API CLI
-      - Cisco Nexus Dashboard REST API
-      - Cisco Nexus Dashboard Fabric Controller API
-      - Cisco Nexus Dashboard Orchestrator API
-      - Cisco Nexus Dashboard Insights API
-      - Cisco DCNM REST API
-      - Cisco NETCONF/YANG API
-      - Cisco NX-OS RESTCONF API
-      - Cisco NX-OS gNMI/gRPC API
-      - Cisco NX-OS Model-Driven Telemetry API
-      - Cisco NX-OS Python SDK API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Cisco NX-API REST
-      - Cisco NX-API CLI
-      - Cisco Nexus Dashboard REST API
-      - Cisco Nexus Dashboard Fabric Controller API
-      - Cisco Nexus Dashboard Orchestrator API
-      - Cisco Nexus Dashboard Insights API
-      - Cisco DCNM REST API
-      - Cisco NETCONF/YANG API
-      - Cisco NX-OS RESTCONF API
-      - Cisco NX-OS gNMI/gRPC API
-      - Cisco NX-OS Model-Driven Telemetry API
-      - Cisco NX-OS Python SDK API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Cisco NX-API REST
-      - Cisco NX-API CLI
-      - Cisco Nexus Dashboard REST API
-      - Cisco Nexus Dashboard Fabric Controller API
-      - Cisco Nexus Dashboard Orchestrator API
-      - Cisco Nexus Dashboard Insights API
-      - Cisco DCNM REST API
-      - Cisco NETCONF/YANG API
-      - Cisco NX-OS RESTCONF API
-      - Cisco NX-OS gNMI/gRPC API
-      - Cisco NX-OS Model-Driven Telemetry API
-      - Cisco NX-OS Python SDK API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Cisco NX-API REST
-      - Cisco NX-API CLI
-      - Cisco Nexus Dashboard REST API
-      - Cisco Nexus Dashboard Fabric Controller API
-      - Cisco Nexus Dashboard Orchestrator API
-      - Cisco Nexus Dashboard Insights API
-      - Cisco DCNM REST API
-      - Cisco NETCONF/YANG API
-      - Cisco NX-OS RESTCONF API
-      - Cisco NX-OS gNMI/gRPC API
-      - Cisco NX-OS Model-Driven Telemetry API
-      - Cisco NX-OS Python SDK API
+  - name: NX-API REST sessions
+    scope: switch
+    metric: concurrent_sessions
+    limit: see NX-OS Programmability Guide; bounded by supervisor CPU
+  - name: gRPC / Model-Driven Telemetry subscriptions
+    scope: switch
+    metric: concurrent_subscriptions
+    limit: see NX-OS Programmability Guide; varies by platform (e.g. N9K-C93180YC-FX vs N9K-C9508)
+  - name: Nexus Dashboard cluster API
+    scope: cluster
+    metric: varies
+    limit: see Nexus Dashboard scale guide for the deployed cluster size
 policies:
+  - name: Capacity-bounded
+    description: Limits are bounded by supervisor / control-plane CPU on each switch and by the Nexus
+      Dashboard cluster's compute footprint, not by a cloud-style per-second quota.
+  - name: Prefer streaming telemetry
+    description: For monitoring at scale, use gRPC/gNMI Model-Driven Telemetry instead of polling
+      NX-API REST endpoints to avoid control-plane saturation.
   - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+    description: Clients should implement exponential backoff with jitter on HTTP 429/503 responses
+      and limit concurrent NX-API sessions per switch.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
-    url: https://apievangelist.com

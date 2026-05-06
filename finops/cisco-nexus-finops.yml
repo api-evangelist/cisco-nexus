@@ -1,5 +1,6 @@
 specification: FinOps Framework
 specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
 alignedWith:
   framework: FinOps Foundation Framework
   frameworkUrl: https://www.finops.org/framework/
@@ -8,233 +9,82 @@ alignedWith:
   dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
 provider: Cisco Nexus Dashboard
 providerId: cisco-nexus
-publisherName: Cisco Nexus Dashboard
-serviceCategory: API
+publisherName: Cisco Systems, Inc.
+serviceCategory: Data Center Networking
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - Data Center
-  - Infrastructure
-  - Network Automation
   - Networking
   - SDN
-  - Switches
   - FinOps
-  - Cost Management
   - FOCUS
-description: FinOps framework definition for the Cisco Nexus Dashboard API surface. Provides a FOCUS-aligned
-  mapping for cost allocation, usage measurement, and unit-economics reporting across the provider's APIs.
-principles:
-  - name: Visibility
-    description: Make API consumption costs visible to engineering, product, and finance teams in near
-      real-time.
-  - name: Allocation
-    description: Tag every chargeable API call with the consuming team, environment, application, and
-      feature so cost can be allocated.
-  - name: Optimization
-    description: Continuously evaluate request patterns, caching, batching, and tier selection to reduce
-      cost per useful unit of work.
-  - name: Accountability
-    description: Establish budget owners and chargeback or showback flows for each consuming team.
-domains:
-  - name: Understand Usage and Cost
-    capabilities:
-      - Data Ingestion
-      - Allocation
-      - Reporting and Analytics
-      - Anomaly Management
-  - name: Quantify Business Value
-    capabilities:
-      - Planning and Estimating
-      - Forecasting
-      - Budgeting
-      - Benchmarking
-      - Unit Economics
-  - name: Optimize Usage and Cost
-    capabilities:
-      - Architecting for Cloud
-      - Rate Optimization
-      - Workload Optimization
-      - Cloud Sustainability
-      - Licensing and SaaS
-  - name: Manage the FinOps Practice
-    capabilities:
-      - FinOps Practice Operations
-      - FinOps Education and Enablement
-      - Invoicing and Chargeback
-      - Onboarding Workloads
-      - Intersecting Disciplines
+description: FOCUS-aligned FinOps shape for Cisco Nexus Dashboard and its NX-API / gRPC management
+  surface. Cost is driven by Cisco Data Center Networking software subscriptions (Essentials /
+  Advantage / Premier), Nexus 9000 hardware, and Cisco DC Power-of-Subscription term agreements —
+  not by per-API metering.
+notes: Per-API meters below are placeholders modeled on operational dimensions; real billing flows
+  through Cisco DCN licensing line items, hardware POs, and Smart Licensing usage.
+sources:
+  - https://www.cisco.com/site/us/en/products/networking/cloud-networking/nexus-platform/index.html
+  - https://www.cisco.com/c/en/us/products/software/dcn-software-subscriptions/index.html
 billingModel:
-  pricingCategory: Usage-Based
-  billingFrequency: Monthly
+  pricingCategory: Subscription + Perpetual License
+  billingFrequency: Annual
   billingCurrency: USD
   chargeCategories:
-    - Usage
     - Purchase
+    - Usage
     - Tax
-    - Credit
     - Adjustment
-  chargeFrequency: Recurring
 focusColumns:
   ServiceName: Cisco Nexus Dashboard
-  ServiceCategory: Developer Tools / API
-  ProviderName: Cisco Nexus Dashboard
-  PublisherName: Cisco Nexus Dashboard
-  InvoiceIssuerName: Cisco Nexus Dashboard
-  PricingCategory: Usage-Based
-  PricingUnit: request
+  ServiceCategory: Data Center Networking
+  ProviderName: Cisco
+  PublisherName: Cisco Systems, Inc.
+  InvoiceIssuerName: Cisco Systems, Inc.
   BillingCurrency: USD
-  ChargeCategory: Usage
+  ChargeCategory: Purchase
 meters:
-  - name: api_requests
-    description: Count of billable API requests
-    unit: request
+  - name: dcn_software_license
+    description: Cisco Data Center Networking software subscription (Essentials / Advantage / Premier)
+      tied to Nexus switches.
+    unit: license
     aggregation: sum
     dimensions:
-      - api
-      - endpoint
       - tier
+      - sku
+      - term
       - region
-      - consumer
-  - name: data_egress
-    description: Bytes returned over the network in API responses
-    unit: GB
+  - name: nexus_switch_hardware
+    description: Nexus 9000 / 7000 hardware purchases under support contract.
+    unit: chassis
     aggregation: sum
     dimensions:
-      - api
+      - platform
       - region
-      - consumer
-  - name: compute_seconds
-    description: Server-side compute consumed by the request, where applicable
-    unit: second
-    aggregation: sum
+  - name: nexus_dashboard_cluster
+    description: Nexus Dashboard cluster footprint hosting Insights / Orchestrator / Fabric Controller.
+    unit: cluster
+    aggregation: max
     dimensions:
-      - api
-      - endpoint
-      - tier
-apis:
-  - name: Cisco NX-API REST
-    baseURL: https://{switch-ip}/api
-    tags:
-      - CLI
-      - Configuration
-      - Monitoring
-      - REST
-    serviceName: Cisco NX-API REST
-    serviceCategory: API
-  - name: Cisco NX-API CLI
-    baseURL: https://{switch-ip}/ins
-    tags:
-      - CLI
-      - Configuration
-      - Show Commands
-    serviceName: Cisco NX-API CLI
-    serviceCategory: API
-  - name: Cisco Nexus Dashboard REST API
-    baseURL: https://{nexus-dashboard}/api/v1
-    tags:
-      - ACI
-      - Dashboard
-      - Fabric Controller
-      - Insights
-      - Orchestration
-    serviceName: Cisco Nexus Dashboard REST API
-    serviceCategory: API
-  - name: Cisco Nexus Dashboard Fabric Controller API
-    baseURL: https://{nexus-dashboard}/appcenter/cisco/ndfc/api/v1
-    tags:
-      - EVPN
-      - Fabric Management
-      - LAN
-      - NDFC
-      - SAN
-      - VXLAN
-    serviceName: Cisco Nexus Dashboard Fabric Controller API
-    serviceCategory: API
-  - name: Cisco Nexus Dashboard Orchestrator API
-    baseURL: https://{nexus-dashboard}/appcenter/cisco/ndo/api/v1
-    tags:
-      - ACI
-      - Multi-Site
-      - Orchestrator
-      - Policy Management
-      - Segmentation
-    serviceName: Cisco Nexus Dashboard Orchestrator API
-    serviceCategory: API
-  - name: Cisco Nexus Dashboard Insights API
-    baseURL: https://{nexus-dashboard}/appcenter/cisco/ndi/api/v1
-    tags:
-      - Analytics
-      - Anomaly Detection
-      - Insights
-      - Telemetry
-      - Troubleshooting
-    serviceName: Cisco Nexus Dashboard Insights API
-    serviceCategory: API
-  - name: Cisco DCNM REST API
-    baseURL: https://{dcnm-server}/rest
-    tags:
-      - DCNM
-      - EVPN
-      - Fabric Management
-      - VXLAN
-    serviceName: Cisco DCNM REST API
-    serviceCategory: API
-  - name: Cisco NETCONF/YANG API
-    baseURL: netconf://{switch-ip}:830
-    tags:
-      - Automation
-      - Model-Driven
-      - NETCONF
-      - YANG
-    serviceName: Cisco NETCONF/YANG API
-    serviceCategory: API
-  - name: Cisco NX-OS RESTCONF API
-    baseURL: https://{switch-ip}/restconf
-    tags:
-      - HTTP
-      - Model-Driven
-      - RESTCONF
-      - YANG
-    serviceName: Cisco NX-OS RESTCONF API
-    serviceCategory: API
-  - name: Cisco NX-OS gNMI/gRPC API
-    baseURL: grpc://{switch-ip}:50051
-    tags:
-      - gNMI
-      - gRPC
-      - Model-Driven
-      - Streaming
-      - Telemetry
-    serviceName: Cisco NX-OS gNMI/gRPC API
-    serviceCategory: API
-  - name: Cisco NX-OS Model-Driven Telemetry API
-    baseURL: grpc://{switch-ip}:50051
-    tags:
-      - Dial-Out
-      - Monitoring
-      - Streaming
-      - Telemetry
-      - YANG
-    serviceName: Cisco NX-OS Model-Driven Telemetry API
-    serviceCategory: API
-  - name: Cisco NX-OS Python SDK API
-    baseURL: https://{switch-ip}
-    tags:
-      - Automation
-      - On-Box
-      - Python
-      - SDK
-    serviceName: Cisco NX-OS Python SDK API
-    serviceCategory: API
-unitEconomics:
-  - name: Cost per 1K Requests
-    metric: billed_cost / (api_requests / 1000)
-    target: TBD
-  - name: Cost per Active Consumer
-    metric: billed_cost / active_consumers
-    target: TBD
+      - service
+      - size
+      - region
+principles:
+  - name: Visibility
+    description: Use Cisco Smart Software Manager (CSSM) for license consumption and Nexus Dashboard
+      Insights for fabric utilization and capacity reporting.
+  - name: Allocation
+    description: Allocate switch and DCN software cost to the network cost center; chargeback by
+      tenant / VRF / fabric using Nexus Dashboard tenant separation.
+  - name: Optimization
+    description: Match DCN tier (Essentials / Advantage / Premier) to required features, retire
+      under-utilized switches, and prefer streaming telemetry over REST polling.
+  - name: Accountability
+    description: Network platform owner is accountable for Nexus Smart License renewals, hardware
+      refresh planning, and Nexus Dashboard scale targets.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
-    url: https://apievangelist.com
