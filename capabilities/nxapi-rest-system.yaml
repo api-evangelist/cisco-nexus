@@ -1,0 +1,149 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cisco NX-API REST — System
+  description: 'Cisco NX-API REST — System. 3 operations. Lead operation: Retrieve Top-level System Information. Self-contained
+    Naftiko capability covering one Cisco Nexus business surface.'
+  tags:
+  - Cisco Nexus
+  - System
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    CISCO_NEXUS_API_KEY: CISCO_NEXUS_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: nxapi-rest-system
+    baseUri: https://{switchIp}/api
+    description: Cisco NX-API REST — System business capability. Self-contained, no shared references.
+    resources:
+    - name: mo-sys.json
+      path: /mo/sys.json
+      operations:
+      - name: getsysteminfo
+        method: GET
+        description: Retrieve Top-level System Information
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: configuresystem
+        method: POST
+        description: Apply System-level Configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: mo-sys-fm.json
+      path: /mo/sys/fm.json
+      operations:
+      - name: configurefeatures
+        method: POST
+        description: Enable or Disable Nx-os Features
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: APIC-cookie
+      value: '{{env.CISCO_NEXUS_API_KEY}}'
+      placement: cookie
+  exposes:
+  - type: rest
+    namespace: nxapi-rest-system-rest
+    port: 8080
+    description: REST adapter for Cisco NX-API REST — System. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/mo/sys-json
+      name: mo-sys-json
+      description: REST surface for mo-sys.json.
+      operations:
+      - method: GET
+        name: getsysteminfo
+        description: Retrieve Top-level System Information
+        call: nxapi-rest-system.getsysteminfo
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: configuresystem
+        description: Apply System-level Configuration
+        call: nxapi-rest-system.configuresystem
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/mo/sys/fm-json
+      name: mo-sys-fm-json
+      description: REST surface for mo-sys-fm.json.
+      operations:
+      - method: POST
+        name: configurefeatures
+        description: Enable or Disable Nx-os Features
+        call: nxapi-rest-system.configurefeatures
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: nxapi-rest-system-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Cisco NX-API REST — System. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: retrieve-top-level-system-information
+      description: Retrieve Top-level System Information
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nxapi-rest-system.getsysteminfo
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: apply-system-level-configuration
+      description: Apply System-level Configuration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: nxapi-rest-system.configuresystem
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: enable-disable-nx-os-features
+      description: Enable or Disable Nx-os Features
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: nxapi-rest-system.configurefeatures
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

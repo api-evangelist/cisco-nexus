@@ -1,0 +1,146 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cisco NX-API REST — Interfaces
+  description: 'Cisco NX-API REST — Interfaces. 3 operations. Lead operation: List All Physical Interfaces. Self-contained
+    Naftiko capability covering one Cisco Nexus business surface.'
+  tags:
+  - Cisco Nexus
+  - Interfaces
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    CISCO_NEXUS_API_KEY: CISCO_NEXUS_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: nxapi-rest-interfaces
+    baseUri: https://{switchIp}/api
+    description: Cisco NX-API REST — Interfaces business capability. Self-contained, no shared references.
+    resources:
+    - name: class-l1PhysIf.json
+      path: /class/l1PhysIf.json
+      operations:
+      - name: listphysicalinterfaces
+        method: GET
+        description: List All Physical Interfaces
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: mo-sys-intf.json
+      path: /mo/sys/intf.json
+      operations:
+      - name: configurephysicalinterface
+        method: POST
+        description: Configure a Physical Ethernet Interface
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: mo-sys-intf-phys-[{interfaceId}].json
+      path: /mo/sys/intf/phys-[{interfaceId}].json
+      operations:
+      - name: getphysicalinterface
+        method: GET
+        description: Retrieve Physical Interface Configuration and State
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: APIC-cookie
+      value: '{{env.CISCO_NEXUS_API_KEY}}'
+      placement: cookie
+  exposes:
+  - type: rest
+    namespace: nxapi-rest-interfaces-rest
+    port: 8080
+    description: REST adapter for Cisco NX-API REST — Interfaces. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/class/l1physif-json
+      name: class-l1physif-json
+      description: REST surface for class-l1PhysIf.json.
+      operations:
+      - method: GET
+        name: listphysicalinterfaces
+        description: List All Physical Interfaces
+        call: nxapi-rest-interfaces.listphysicalinterfaces
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/mo/sys/intf-json
+      name: mo-sys-intf-json
+      description: REST surface for mo-sys-intf.json.
+      operations:
+      - method: POST
+        name: configurephysicalinterface
+        description: Configure a Physical Ethernet Interface
+        call: nxapi-rest-interfaces.configurephysicalinterface
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/mo/sys/intf/phys-interfaceid-json
+      name: mo-sys-intf-phys-interfaceid-json
+      description: REST surface for mo-sys-intf-phys-[{interfaceId}].json.
+      operations:
+      - method: GET
+        name: getphysicalinterface
+        description: Retrieve Physical Interface Configuration and State
+        call: nxapi-rest-interfaces.getphysicalinterface
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: nxapi-rest-interfaces-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Cisco NX-API REST — Interfaces. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: list-all-physical-interfaces
+      description: List All Physical Interfaces
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nxapi-rest-interfaces.listphysicalinterfaces
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: configure-physical-ethernet-interface
+      description: Configure a Physical Ethernet Interface
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: nxapi-rest-interfaces.configurephysicalinterface
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-physical-interface-configuration-and
+      description: Retrieve Physical Interface Configuration and State
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nxapi-rest-interfaces.getphysicalinterface
+      outputParameters:
+      - type: object
+        mapping: $.

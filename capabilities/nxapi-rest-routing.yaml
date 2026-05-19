@@ -1,0 +1,195 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cisco NX-API REST — Routing
+  description: 'Cisco NX-API REST — Routing. 4 operations. Lead operation: List All Ipv4 Static Routes. Self-contained Naftiko
+    capability covering one Cisco Nexus business surface.'
+  tags:
+  - Cisco Nexus
+  - Routing
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    CISCO_NEXUS_API_KEY: CISCO_NEXUS_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: nxapi-rest-routing
+    baseUri: https://{switchIp}/api
+    description: Cisco NX-API REST — Routing business capability. Self-contained, no shared references.
+    resources:
+    - name: class-ipv4Route.json
+      path: /class/ipv4Route.json
+      operations:
+      - name: liststaticroutes
+        method: GET
+        description: List All Ipv4 Static Routes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: mo-sys-bgp.json
+      path: /mo/sys/bgp.json
+      operations:
+      - name: getbgpconfiguration
+        method: GET
+        description: Retrieve Full Bgp Configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: mo-sys-ipv4-inst.json
+      path: /mo/sys/ipv4/inst.json
+      operations:
+      - name: configurestaticroute
+        method: POST
+        description: Create or Modify Ipv4 Static Routes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: mo-sys-ipv4-inst-dom-{vrfName}-rt-[{prefix}].json
+      path: /mo/sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}].json
+      operations:
+      - name: getstaticroute
+        method: GET
+        description: Retrieve a Specific Ipv4 Static Route
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: vrfName
+          in: path
+          type: string
+          description: VRF name (use "default" for the global routing table)
+          required: true
+        - name: prefix
+          in: path
+          type: string
+          description: IPv4 destination prefix in CIDR notation (e.g., 10.0.0.0/8)
+          required: true
+    authentication:
+      type: apikey
+      key: APIC-cookie
+      value: '{{env.CISCO_NEXUS_API_KEY}}'
+      placement: cookie
+  exposes:
+  - type: rest
+    namespace: nxapi-rest-routing-rest
+    port: 8080
+    description: REST adapter for Cisco NX-API REST — Routing. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/class/ipv4route-json
+      name: class-ipv4route-json
+      description: REST surface for class-ipv4Route.json.
+      operations:
+      - method: GET
+        name: liststaticroutes
+        description: List All Ipv4 Static Routes
+        call: nxapi-rest-routing.liststaticroutes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/mo/sys/bgp-json
+      name: mo-sys-bgp-json
+      description: REST surface for mo-sys-bgp.json.
+      operations:
+      - method: GET
+        name: getbgpconfiguration
+        description: Retrieve Full Bgp Configuration
+        call: nxapi-rest-routing.getbgpconfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/mo/sys/ipv4/inst-json
+      name: mo-sys-ipv4-inst-json
+      description: REST surface for mo-sys-ipv4-inst.json.
+      operations:
+      - method: POST
+        name: configurestaticroute
+        description: Create or Modify Ipv4 Static Routes
+        call: nxapi-rest-routing.configurestaticroute
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/mo/sys/ipv4/inst/dom-vrfname/rt-prefix-json
+      name: mo-sys-ipv4-inst-dom-vrfname-rt-prefix-json
+      description: REST surface for mo-sys-ipv4-inst-dom-{vrfName}-rt-[{prefix}].json.
+      operations:
+      - method: GET
+        name: getstaticroute
+        description: Retrieve a Specific Ipv4 Static Route
+        call: nxapi-rest-routing.getstaticroute
+        with:
+          vrfName: rest.vrfName
+          prefix: rest.prefix
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: nxapi-rest-routing-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Cisco NX-API REST — Routing. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: list-all-ipv4-static-routes
+      description: List All Ipv4 Static Routes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nxapi-rest-routing.liststaticroutes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-full-bgp-configuration
+      description: Retrieve Full Bgp Configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nxapi-rest-routing.getbgpconfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-modify-ipv4-static-routes
+      description: Create or Modify Ipv4 Static Routes
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: nxapi-rest-routing.configurestaticroute
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-specific-ipv4-static-route
+      description: Retrieve a Specific Ipv4 Static Route
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nxapi-rest-routing.getstaticroute
+      with:
+        vrfName: tools.vrfName
+        prefix: tools.prefix
+      outputParameters:
+      - type: object
+        mapping: $.
