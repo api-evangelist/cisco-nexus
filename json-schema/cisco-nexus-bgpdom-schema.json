@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/BgpDom",
+  "title": "BgpDom",
+  "type": "object",
+  "description": "BGP domain (VRF) managed object. DN format is sys/bgp/inst/dom-{name}.",
+  "properties": {
+    "bgpDom": {
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "BGP domain name (VRF name, typically default)",
+              "examples": [
+                "default"
+              ]
+            },
+            "rtrId": {
+              "type": "string",
+              "description": "BGP router ID in IPv4 address format",
+              "format": "ipv4",
+              "examples": [
+                "10.0.0.1"
+              ]
+            }
+          }
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/BgpPeer"
+          }
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

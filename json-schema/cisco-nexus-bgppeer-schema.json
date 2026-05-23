@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/BgpPeer",
+  "title": "BgpPeer",
+  "type": "object",
+  "description": "BGP peer (neighbor) managed object. DN format is sys/bgp/inst/dom-{name}/peer-{addr}.",
+  "properties": {
+    "bgpPeer": {
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "addr": {
+              "type": "string",
+              "description": "BGP neighbor IP address",
+              "format": "ipv4",
+              "examples": [
+                "192.168.1.2"
+              ]
+            },
+            "asn": {
+              "type": "string",
+              "description": "Remote peer autonomous system number",
+              "examples": [
+                "65001"
+              ]
+            },
+            "passwdType": {
+              "type": "string",
+              "description": "Password encryption type (0=cleartext, 3=3DES, 6=AES, 7=Vigenere)",
+              "enum": [
+                "0",
+                "3",
+                "6",
+                "7"
+              ]
+            },
+            "password": {
+              "type": "string",
+              "description": "Neighbor authentication password",
+              "format": "password"
+            },
+            "srcIf": {
+              "type": "string",
+              "description": "Source interface for BGP session",
+              "examples": [
+                "lo0"
+              ]
+            },
+            "adminSt": {
+              "type": "string",
+              "description": "Administrative state (shutdown/no shutdown)",
+              "enum": [
+                "enabled",
+                "disabled"
+              ]
+            }
+          }
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

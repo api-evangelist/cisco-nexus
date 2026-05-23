@@ -1,0 +1,27 @@
+{
+  "operationId": "createVlan",
+  "method": "POST",
+  "path": "/mo/sys/bd.json",
+  "summary": "Create or Modify a Vlan Bridge Domain",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "bdEntity": {
+          "children": [
+            {
+              "l2BD": {
+                "attributes": {
+                  "fabEncap": "vlan-100",
+                  "name": "Production",
+                  "pcTag": "1"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "responseExamples": []
+}

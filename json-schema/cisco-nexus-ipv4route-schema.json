@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Ipv4Route",
+  "title": "Ipv4Route",
+  "type": "object",
+  "description": "IPv4 static route managed object. DN format is sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}].",
+  "properties": {
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "dn": {
+          "type": "string",
+          "description": "Distinguished name",
+          "examples": [
+            "sys/ipv4/inst/dom-default/rt-[10.0.0.0/8]"
+          ]
+        },
+        "prefix": {
+          "type": "string",
+          "description": "Destination IPv4 prefix in CIDR notation",
+          "format": "ipv4-network",
+          "examples": [
+            "10.0.0.0/8"
+          ]
+        }
+      },
+      "example": "example_value"
+    },
+    "children": {
+      "type": "array",
+      "description": "Child next-hop objects",
+      "items": {
+        "$ref": "#/components/schemas/Ipv4Nexthop"
+      },
+      "example": []
+    }
+  }
+}

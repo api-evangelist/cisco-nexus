@@ -1,0 +1,22 @@
+{
+  "operationId": "configureSviInterface",
+  "method": "POST",
+  "path": "/mo/sys/intf/svi-[{sviId}].json",
+  "summary": "Create or Modify an Svi (vlan Interface)",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "sviIf": {
+          "attributes": {
+            "id": "vlan100",
+            "adminSt": "up",
+            "descr": "Production Gateway",
+            "mtu": "9216"
+          }
+        }
+      }
+    }
+  ],
+  "responseExamples": []
+}

@@ -1,0 +1,32 @@
+{
+  "operationId": "configureFeatures",
+  "method": "POST",
+  "path": "/mo/sys/fm.json",
+  "summary": "Enable or Disable Nx-os Features",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "fmEntity": {
+          "children": [
+            {
+              "fmInterfaceVlan": {
+                "attributes": {
+                  "adminSt": "enabled"
+                }
+              }
+            },
+            {
+              "fmBgp": {
+                "attributes": {
+                  "adminSt": "enabled"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "responseExamples": []
+}

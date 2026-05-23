@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/BgpEntity",
+  "title": "BgpEntity",
+  "type": "object",
+  "description": "Top-level BGP entity managed object. DN is sys/bgp.",
+  "properties": {
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "dn": {
+          "type": "string",
+          "examples": [
+            "sys/bgp"
+          ]
+        },
+        "adminSt": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
+        }
+      },
+      "example": "example_value"
+    },
+    "children": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/BgpInst"
+      },
+      "example": []
+    }
+  }
+}

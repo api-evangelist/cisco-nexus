@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/L1PhysIf",
+  "title": "L1PhysIf",
+  "type": "object",
+  "description": "Layer 1 physical interface managed object representing a physical Ethernet port on a Nexus switch. DN format is sys/intf/phys-[{id}].",
+  "properties": {
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "dn": {
+          "type": "string",
+          "description": "Distinguished name (e.g., sys/intf/phys-[eth1/1])",
+          "examples": [
+            "sys/intf/phys-[eth1/1]"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "description": "Interface identifier matching show interface brief output",
+          "examples": [
+            "eth1/1"
+          ]
+        },
+        "adminSt": {
+          "type": "string",
+          "description": "Administrative state of the interface",
+          "enum": [
+            "up",
+            "down"
+          ]
+        },
+        "operSt": {
+          "type": "string",
+          "description": "Operational state (read-only)",
+          "enum": [
+            "up",
+            "down",
+            "link-up"
+          ]
+        },
+        "layer": {
+          "type": "string",
+          "description": "Layer mode of the interface",
+          "enum": [
+            "Layer2",
+            "Layer3"
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "description": "Switchport mode (applicable when layer is Layer2)",
+          "enum": [
+            "access",
+            "trunk",
+            "fex-fabric",
+            "dot1q-tunnel",
+            "promiscuous"
+          ]
+        },
+        "accessVlan": {
+          "type": "string",
+          "description": "Access VLAN assignment in the format vlan-{id} (applicable when mode is access)",
+          "pattern": "^vlan-\\d+$",
+          "examples": [
+            "vlan-100"
+          ]
+        },
+        "trunkVlans": {
+          "type": "string",
+          "description": "Trunk allowed VLANs. Supports ranges (1-100), additions (+50), and removals (-50). Use 1-4094 for all VLANs.",
+          "examples": [
+            "1-100,200,300-400"
+          ]
+        },
+        "nativeVlan": {
+          "type": "string",
+          "description": "Native VLAN for trunk ports in the format vlan-{id}",
+          "pattern": "^vlan-\\d+$",
+          "examples": [
+            "vlan-1"
+          ]
+        },
+        "speed": {
+          "type": "string",
+          "description": "Interface speed setting",
+          "enum": [
+            "auto",
+            "100M",
+            "1G",
+            "10G",
+            "25G",
+            "40G",
+            "100G"
+          ]
+        },
+        "duplex": {
+          "type": "string",
+          "description": "Duplex mode setting",
+          "enum": [
+            "auto",
+            "full",
+            "half"
+          ]
+        },
+        "mtu": {
+          "type": "string",
+          "description": "Maximum transmission unit (bytes, 576-9216)",
+          "examples": [
+            "1500",
+            "9216"
+          ]
+        },
+        "descr": {
+          "type": "string",
+          "description": "Interface description (max 254 characters)",
+          "maxLength": 254
+        },
+        "snmpTrapSt": {
+          "type": "string",
+          "description": "SNMP trap link-state notifications",
+          "enum": [
+            "enable",
+            "disable"
+          ]
+        },
+        "modTs": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last modification timestamp (read-only)"
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

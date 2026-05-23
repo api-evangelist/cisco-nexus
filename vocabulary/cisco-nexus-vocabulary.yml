@@ -1,0 +1,17 @@
+name: Cisco Nexus Dashboard Domain Vocabulary
+provider: Cisco Nexus Dashboard
+providerId: cisco-nexus
+description: Tag-derived vocabulary for the Cisco Nexus Dashboard API surface; sourced from openapi/ tags.
+terms:
+- term: Authentication
+  description: Session authentication and token management via aaaLogin and aaaLogout
+- term: Interfaces
+  description: Physical interface configuration and operational state using the l1PhysIf managed object class (DN sys/intf/phys-[id])
+- term: VLANs
+  description: VLAN bridge domain management using the l2BD managed object class (DN sys/bd/bd-[vlan-id]) and SVI interface
+    configuration using sviIf
+- term: Routing
+  description: IPv4 and IPv6 static route configuration using ipv4Route/ipv6Route managed objects and BGP protocol management
+    using bgpEntity hierarchy
+- term: System
+  description: Top-level system information and feature management via topSystem and fmEntity managed objects

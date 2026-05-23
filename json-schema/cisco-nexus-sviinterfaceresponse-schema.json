@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SviInterfaceResponse",
+  "title": "SviInterfaceResponse",
+  "type": "object",
+  "properties": {
+    "totalCount": {
+      "type": "string",
+      "example": "example_value"
+    },
+    "imdata": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sviIf": {
+            "$ref": "#/components/schemas/SviIf"
+          }
+        }
+      },
+      "example": []
+    }
+  }
+}

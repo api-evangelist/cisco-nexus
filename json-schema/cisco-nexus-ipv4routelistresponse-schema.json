@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Ipv4RouteListResponse",
+  "title": "Ipv4RouteListResponse",
+  "type": "object",
+  "properties": {
+    "totalCount": {
+      "type": "string",
+      "example": "example_value"
+    },
+    "imdata": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ipv4Route": {
+            "$ref": "#/components/schemas/Ipv4Route"
+          }
+        }
+      },
+      "example": []
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SviIf",
+  "title": "SviIf",
+  "type": "object",
+  "description": "Switch Virtual Interface managed object for Layer 3 VLAN routing. DN format is sys/intf/svi-[{id}].",
+  "properties": {
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "dn": {
+          "type": "string",
+          "description": "Distinguished name (e.g., sys/intf/svi-[vlan100])",
+          "examples": [
+            "sys/intf/svi-[vlan100]"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "description": "SVI identifier in the format vlan{id}",
+          "pattern": "^vlan\\d+$",
+          "examples": [
+            "vlan100"
+          ]
+        },
+        "adminSt": {
+          "type": "string",
+          "description": "Administrative state",
+          "enum": [
+            "up",
+            "down"
+          ]
+        },
+        "operSt": {
+          "type": "string",
+          "description": "Operational state (read-only)"
+        },
+        "descr": {
+          "type": "string",
+          "description": "Interface description (max 254 characters)",
+          "maxLength": 254
+        },
+        "mtu": {
+          "type": "string",
+          "description": "Maximum transmission unit (64-9216 bytes)",
+          "examples": [
+            "9216"
+          ]
+        },
+        "bw": {
+          "type": "string",
+          "description": "Administrative bandwidth (1-400000000 kbps)",
+          "examples": [
+            "100000"
+          ]
+        },
+        "mac": {
+          "type": "string",
+          "description": "MAC address override in MM:MM:MM:SS:SS:SS format"
+        },
+        "medium": {
+          "type": "string",
+          "description": "Port medium type",
+          "enum": [
+            "broadcast",
+            "p2p"
+          ]
+        },
+        "autostate": {
+          "type": "string",
+          "description": "Whether autostate is enabled",
+          "enum": [
+            "true",
+            "false"
+          ]
+        },
+        "modTs": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last modification timestamp (read-only)"
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

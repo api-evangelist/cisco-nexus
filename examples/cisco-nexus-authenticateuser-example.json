@@ -1,0 +1,20 @@
+{
+  "operationId": "authenticateUser",
+  "method": "POST",
+  "path": "/aaaLogin.json",
+  "summary": "Authenticate and Obtain Session Cookie",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "aaaUser": {
+          "attributes": {
+            "name": "admin",
+            "pwd": "Cisco123!"
+          }
+        }
+      }
+    }
+  ],
+  "responseExamples": []
+}

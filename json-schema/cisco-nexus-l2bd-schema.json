@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/L2BD",
+  "title": "L2BD",
+  "type": "object",
+  "description": "Layer 2 bridge domain managed object representing a VLAN. DN format is sys/bd/bd-[{fabEncap}].",
+  "properties": {
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "dn": {
+          "type": "string",
+          "description": "Distinguished name (e.g., sys/bd/bd-[vlan-100])",
+          "examples": [
+            "sys/bd/bd-[vlan-100]"
+          ]
+        },
+        "fabEncap": {
+          "type": "string",
+          "description": "Fabric encapsulation in the format vlan-{id} or vxlan-{id}",
+          "pattern": "^(vlan|vxlan)-\\d+$",
+          "examples": [
+            "vlan-100"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "description": "VLAN name",
+          "maxLength": 32,
+          "examples": [
+            "Production"
+          ]
+        },
+        "pcTag": {
+          "type": "string",
+          "description": "Default classId for unknown unicast traffic",
+          "examples": [
+            "1"
+          ]
+        },
+        "adminSt": {
+          "type": "string",
+          "description": "Administrative state",
+          "enum": [
+            "active",
+            "suspend"
+          ]
+        },
+        "operSt": {
+          "type": "string",
+          "description": "Operational state (read-only)"
+        },
+        "id": {
+          "type": "string",
+          "description": "Bridge domain numeric identifier (read-only)"
+        },
+        "modTs": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last modification timestamp (read-only)"
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

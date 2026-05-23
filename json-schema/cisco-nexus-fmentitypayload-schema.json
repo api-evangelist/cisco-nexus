@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/FmEntityPayload",
+  "title": "FmEntityPayload",
+  "type": "object",
+  "properties": {
+    "fmEntity": {
+      "type": "object",
+      "properties": {
+        "children": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "Feature module objects such as fmInterfaceVlan, fmBgp, fmOspf, fmLacp, fmVpc, fmHsrp, fmVxlan, each with an attributes.adminSt property."
+          }
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

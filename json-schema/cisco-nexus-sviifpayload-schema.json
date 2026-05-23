@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SviIfPayload",
+  "title": "SviIfPayload",
+  "type": "object",
+  "properties": {
+    "sviIf": {
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^vlan\\d+$"
+            },
+            "adminSt": {
+              "type": "string",
+              "enum": [
+                "up",
+                "down"
+              ]
+            },
+            "descr": {
+              "type": "string"
+            },
+            "mtu": {
+              "type": "string"
+            },
+            "bw": {
+              "type": "string"
+            },
+            "mac": {
+              "type": "string"
+            },
+            "medium": {
+              "type": "string",
+              "enum": [
+                "broadcast",
+                "p2p"
+              ]
+            }
+          }
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

@@ -1,0 +1,342 @@
+{
+  "provider": "Cisco Nexus Dashboard",
+  "providerId": "cisco-nexus",
+  "kind": "json-structure",
+  "description": "Structural overview of the Cisco Nexus Dashboard API surface; extracted from openapi/.",
+  "schemaCount": 28,
+  "operationCount": 18,
+  "schemas": [
+    {
+      "name": "ImDataResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "ErrorResponse",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "AaaLoginResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "L1PhysIf",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "L2BD",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "SviIf",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "Ipv4Route",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "Ipv4Nexthop",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "BgpEntity",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "BgpInst",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "BgpDom",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "BgpPeer",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "TopSystem",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "PhysicalInterfaceResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "PhysicalInterfaceListResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "VlanBridgeDomainResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "VlanBridgeDomainListResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "SviInterfaceResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "Ipv4RouteResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "Ipv4RouteListResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "BgpEntityResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "TopSystemResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "InterfaceEntityPayload",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "BdEntityPayload",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "SviIfPayload",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "Ipv4InstPayload",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "TopSystemPayload",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "FmEntityPayload",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    }
+  ],
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/aaaLogin.json",
+      "operationId": "authenticateUser",
+      "summary": "Authenticate and Obtain Session Cookie",
+      "tags": [
+        "Authentication"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/aaaLogout.json",
+      "operationId": "logoutUser",
+      "summary": "Terminate Authenticated Session",
+      "tags": [
+        "Authentication"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/mo/sys/intf/phys-[{interfaceId}].json",
+      "operationId": "getPhysicalInterface",
+      "summary": "Retrieve Physical Interface Configuration and State",
+      "tags": [
+        "Interfaces"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/mo/sys/intf.json",
+      "operationId": "configurePhysicalInterface",
+      "summary": "Configure a Physical Ethernet Interface",
+      "tags": [
+        "Interfaces"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/class/l1PhysIf.json",
+      "operationId": "listPhysicalInterfaces",
+      "summary": "List All Physical Interfaces",
+      "tags": [
+        "Interfaces"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/mo/sys/bd.json",
+      "operationId": "createVlan",
+      "summary": "Create or Modify a Vlan Bridge Domain",
+      "tags": [
+        "VLANs"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/mo/sys/bd/bd-[{vlanEncap}].json",
+      "operationId": "getVlan",
+      "summary": "Retrieve a Specific Vlan Bridge Domain",
+      "tags": [
+        "VLANs"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/mo/sys/bd/bd-[{vlanEncap}].json",
+      "operationId": "deleteVlan",
+      "summary": "Delete a Vlan Bridge Domain",
+      "tags": [
+        "VLANs"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/class/l2BD.json",
+      "operationId": "listVlans",
+      "summary": "List All Vlan Bridge Domains",
+      "tags": [
+        "VLANs"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/mo/sys/intf/svi-[{sviId}].json",
+      "operationId": "getSviInterface",
+      "summary": "Retrieve an Svi (vlan Interface) Configuration",
+      "tags": [
+        "VLANs"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/mo/sys/intf/svi-[{sviId}].json",
+      "operationId": "configureSviInterface",
+      "summary": "Create or Modify an Svi (vlan Interface)",
+      "tags": [
+        "VLANs"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/mo/sys/ipv4/inst.json",
+      "operationId": "configureStaticRoute",
+      "summary": "Create or Modify Ipv4 Static Routes",
+      "tags": [
+        "Routing"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/mo/sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}].json",
+      "operationId": "getStaticRoute",
+      "summary": "Retrieve a Specific Ipv4 Static Route",
+      "tags": [
+        "Routing"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/class/ipv4Route.json",
+      "operationId": "listStaticRoutes",
+      "summary": "List All Ipv4 Static Routes",
+      "tags": [
+        "Routing"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/mo/sys/bgp.json",
+      "operationId": "getBgpConfiguration",
+      "summary": "Retrieve Full Bgp Configuration",
+      "tags": [
+        "Routing"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/mo/sys.json",
+      "operationId": "getSystemInfo",
+      "summary": "Retrieve Top-level System Information",
+      "tags": [
+        "System"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/mo/sys.json",
+      "operationId": "configureSystem",
+      "summary": "Apply System-level Configuration",
+      "tags": [
+        "System"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/mo/sys/fm.json",
+      "operationId": "configureFeatures",
+      "summary": "Enable or Disable Nx-os Features",
+      "tags": [
+        "System"
+      ]
+    }
+  ]
+}

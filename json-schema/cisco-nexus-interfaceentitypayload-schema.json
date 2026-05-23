@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/InterfaceEntityPayload",
+  "title": "InterfaceEntityPayload",
+  "type": "object",
+  "properties": {
+    "interfaceEntity": {
+      "type": "object",
+      "properties": {
+        "children": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "l1PhysIf": {
+                "$ref": "#/components/schemas/L1PhysIf"
+              }
+            }
+          }
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

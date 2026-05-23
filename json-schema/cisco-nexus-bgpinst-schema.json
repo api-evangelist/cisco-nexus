@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/BgpInst",
+  "title": "BgpInst",
+  "type": "object",
+  "description": "BGP instance managed object containing AS number and domain configuration. DN is sys/bgp/inst.",
+  "properties": {
+    "bgpInst": {
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "asn": {
+              "type": "string",
+              "description": "BGP autonomous system number (supports 2-byte and 4-byte ASN formats including dot notation)",
+              "examples": [
+                "65000",
+                "65000.1"
+              ]
+            }
+          }
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/BgpDom"
+          }
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

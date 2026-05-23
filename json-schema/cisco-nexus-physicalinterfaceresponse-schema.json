@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PhysicalInterfaceResponse",
+  "title": "PhysicalInterfaceResponse",
+  "type": "object",
+  "properties": {
+    "totalCount": {
+      "type": "string",
+      "example": "example_value"
+    },
+    "imdata": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "l1PhysIf": {
+            "$ref": "#/components/schemas/L1PhysIf"
+          }
+        }
+      },
+      "example": []
+    }
+  }
+}

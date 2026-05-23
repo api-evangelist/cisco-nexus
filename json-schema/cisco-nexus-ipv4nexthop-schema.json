@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Ipv4Nexthop",
+  "title": "Ipv4Nexthop",
+  "type": "object",
+  "description": "IPv4 next-hop specification for a static route. DN format is sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}]/nh-[{nhIf}]-addr-[{nhAddr}]-vrf-[{nhVrf}].",
+  "properties": {
+    "ipv4Nexthop": {
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "nhAddr": {
+              "type": "string",
+              "description": "Next-hop IP address",
+              "format": "ipv4",
+              "examples": [
+                "192.168.1.1"
+              ]
+            },
+            "nhIf": {
+              "type": "string",
+              "description": "Next-hop egress interface (e.g., eth1/1, vlan100). Use unspecified for recursive lookup.",
+              "examples": [
+                "eth1/1"
+              ]
+            },
+            "nhVrf": {
+              "type": "string",
+              "description": "Next-hop VRF context",
+              "default": "default",
+              "examples": [
+                "default"
+              ]
+            },
+            "pref": {
+              "type": "string",
+              "description": "Route preference / administrative distance (0-255)",
+              "examples": [
+                "1"
+              ]
+            },
+            "rtname": {
+              "type": "string",
+              "description": "Route identifier name",
+              "examples": [
+                "StaticRoute1"
+              ]
+            },
+            "tag": {
+              "type": "string",
+              "description": "Route tag value (0-4294967295)",
+              "examples": [
+                "100"
+              ]
+            },
+            "status": {
+              "type": "string",
+              "description": "Set to deleted to remove a next-hop entry",
+              "enum": [
+                "",
+                "deleted"
+              ]
+            }
+          }
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

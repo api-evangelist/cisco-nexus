@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Ipv4InstPayload",
+  "title": "Ipv4InstPayload",
+  "type": "object",
+  "properties": {
+    "ipv4Inst": {
+      "type": "object",
+      "properties": {
+        "children": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ipv4Dom": {
+                "type": "object",
+                "properties": {
+                  "attributes": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "VRF name"
+                      }
+                    }
+                  },
+                  "children": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/Ipv4Route"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "ipv4RtStaticBfd": {
+                              "type": "object",
+                              "properties": {
+                                "attributes": {
+                                  "type": "object",
+                                  "properties": {
+                                    "intf": {
+                                      "type": "string"
+                                    },
+                                    "nexthop": {
+                                      "type": "string",
+                                      "format": "ipv4"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

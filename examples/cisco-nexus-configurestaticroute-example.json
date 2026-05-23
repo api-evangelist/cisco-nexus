@@ -1,0 +1,47 @@
+{
+  "operationId": "configureStaticRoute",
+  "method": "POST",
+  "path": "/mo/sys/ipv4/inst.json",
+  "summary": "Create or Modify Ipv4 Static Routes",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "ipv4Inst": {
+          "children": [
+            {
+              "ipv4Dom": {
+                "attributes": {
+                  "name": "default"
+                },
+                "children": [
+                  {
+                    "ipv4Route": {
+                      "attributes": {
+                        "prefix": "10.0.0.0/8"
+                      },
+                      "children": [
+                        {
+                          "ipv4Nexthop": {
+                            "attributes": {
+                              "nhAddr": "192.168.1.1",
+                              "nhIf": "eth1/1",
+                              "nhVrf": "default",
+                              "pref": "1",
+                              "tag": "100"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "responseExamples": []
+}

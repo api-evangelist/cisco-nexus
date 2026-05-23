@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TopSystem",
+  "title": "TopSystem",
+  "type": "object",
+  "description": "Top-level system managed object. DN is sys.",
+  "properties": {
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "dn": {
+          "type": "string",
+          "examples": [
+            "sys"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "description": "System hostname"
+        },
+        "serial": {
+          "type": "string",
+          "description": "Chassis serial number"
+        },
+        "version": {
+          "type": "string",
+          "description": "NX-OS software version"
+        },
+        "upTs": {
+          "type": "string",
+          "format": "date-time",
+          "description": "System last boot timestamp"
+        },
+        "state": {
+          "type": "string",
+          "description": "System operational state"
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

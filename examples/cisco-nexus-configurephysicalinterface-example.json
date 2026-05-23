@@ -1,0 +1,30 @@
+{
+  "operationId": "configurePhysicalInterface",
+  "method": "POST",
+  "path": "/mo/sys/intf.json",
+  "summary": "Configure a Physical Ethernet Interface",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "interfaceEntity": {
+          "children": [
+            {
+              "l1PhysIf": {
+                "attributes": {
+                  "id": "eth1/1",
+                  "adminSt": "up",
+                  "layer": "Layer2",
+                  "mode": "access",
+                  "accessVlan": "vlan-100",
+                  "descr": "Server port"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "responseExamples": []
+}

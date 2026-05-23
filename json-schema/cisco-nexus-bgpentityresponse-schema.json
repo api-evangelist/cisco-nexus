@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/BgpEntityResponse",
+  "title": "BgpEntityResponse",
+  "type": "object",
+  "properties": {
+    "totalCount": {
+      "type": "string",
+      "example": "example_value"
+    },
+    "imdata": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "bgpEntity": {
+            "$ref": "#/components/schemas/BgpEntity"
+          }
+        }
+      },
+      "example": []
+    }
+  }
+}

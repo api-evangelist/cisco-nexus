@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TopSystemPayload",
+  "title": "TopSystemPayload",
+  "type": "object",
+  "properties": {
+    "topSystem": {
+      "type": "object",
+      "properties": {
+        "children": {
+          "type": "array",
+          "description": "Array of child subsystem configurations. Supports interfaceEntity, bgpEntity, fmEntity, bdEntity, and other top-level containers for atomic multi-subsystem configuration.",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}
