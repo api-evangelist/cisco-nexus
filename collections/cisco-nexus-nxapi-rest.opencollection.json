@@ -1,0 +1,502 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cisco NX-API REST",
+    "version": "10.5.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "APIC-cookie",
+      "value": "{{APIC-cookie}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Authenticate and Obtain Session Cookie",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/aaaLogin.json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Authenticates a user against the NX-OS local or remote AAA database and returns a session cookie (APIC-cookie) used for subsequent API requests. The cookie has a configurable idle timeout (default 600 seconds)."
+        },
+        {
+          "info": {
+            "name": "Terminate Authenticated Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/aaaLogout.json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Ends the current authenticated session and invalidates the session cookie."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Interfaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Physical Interface Configuration and State",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/mo/sys/intf/phys-[:interfaceId].json",
+            "params": [
+              {
+                "name": "interfaceId",
+                "value": "",
+                "type": "path",
+                "description": "Physical interface identifier matching the output of show interface brief (e.g., eth1/1, eth1/2, eth2/1)"
+              },
+              {
+                "name": "query-target",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the scope of the query relative to the target DN. self returns the target MO only. children returns direct children. subtree returns the full subtree."
+              },
+              {
+                "name": "target-subtree-class",
+                "value": "",
+                "type": "query",
+                "description": "Filters subtree query results to only include objects of the specified class (e.g., rmonEtherStats, rmonIfHCIn)"
+              },
+              {
+                "name": "query-target-filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter expression using conditions like eq(property,\"value\"), ne(property,\"value\"), gt, lt, ge, le, wcard, and boolean operators and, or, not"
+              },
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              }
+            ]
+          },
+          "docs": "Returns the configuration and operational state of a specific physical Ethernet interface identified by its l1PhysIf distinguished name. Use the query-target parameter to retrieve child objects including counters and statistics (rmonEtherStats, rmonIfHCIn, rmonIfHCOut)."
+        },
+        {
+          "info": {
+            "name": "Configure a Physical Ethernet Interface",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/mo/sys/intf.json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or modifies the configuration of one or more physical Ethernet interfaces. The payload uses the interfaceEntity container with l1PhysIf child objects. Properties include administrative state, speed, duplex, MTU, layer mode, switchport mode, access VLAN, trunk VLANs, and description."
+        },
+        {
+          "info": {
+            "name": "List All Physical Interfaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/class/l1PhysIf.json",
+            "params": [
+              {
+                "name": "query-target-filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter expression using conditions like eq(property,\"value\"), ne(property,\"value\"), gt, lt, ge, le, wcard, and boolean operators and, or, not"
+              },
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Number of objects to return per page for class-level queries"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for paginated class-level queries (0-indexed)"
+              }
+            ]
+          },
+          "docs": "Returns all l1PhysIf managed objects on the switch via a class-level query. Supports filtering by property values and pagination. Each returned object includes the full DN and configured properties."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "VLANs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create or Modify a Vlan Bridge Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/mo/sys/bd.json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or modifies VLAN bridge domains using the bdEntity container with l2BD child objects. The fabEncap attribute specifies the VLAN ID in the format vlan-{id}. Supports VLAN naming and pcTag assignment."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Specific Vlan Bridge Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/mo/sys/bd/bd-[:vlanEncap].json",
+            "params": [
+              {
+                "name": "vlanEncap",
+                "value": "",
+                "type": "path",
+                "description": "VLAN fabric encapsulation identifier in the format vlan-{id} (e.g., vlan-100)"
+              },
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              }
+            ]
+          },
+          "docs": "Returns the configuration and state of a specific VLAN bridge domain identified by its fabric encapsulation (e.g., vlan-100). Use rsp-subtree=full to include child objects like VLAN member ports and statistics."
+        },
+        {
+          "info": {
+            "name": "Delete a Vlan Bridge Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{switchIp}/api/mo/sys/bd/bd-[:vlanEncap].json",
+            "params": [
+              {
+                "name": "vlanEncap",
+                "value": "",
+                "type": "path",
+                "description": "VLAN fabric encapsulation identifier (e.g., vlan-100)"
+              }
+            ]
+          },
+          "docs": "Removes a VLAN bridge domain from the switch configuration. This operation also removes any associated SVI and port membership configurations."
+        },
+        {
+          "info": {
+            "name": "List All Vlan Bridge Domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/class/l2BD.json",
+            "params": [
+              {
+                "name": "query-target-filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter expression using conditions like eq(property,\"value\"), ne(property,\"value\"), gt, lt, ge, le, wcard, and boolean operators and, or, not"
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Number of objects to return per page for class-level queries"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for paginated class-level queries (0-indexed)"
+              }
+            ]
+          },
+          "docs": "Returns all l2BD managed objects representing configured VLANs on the switch. Supports filtering by VLAN name, encapsulation, or administrative state."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Svi (vlan Interface) Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/mo/sys/intf/svi-[:sviId].json",
+            "params": [
+              {
+                "name": "sviId",
+                "value": "",
+                "type": "path",
+                "description": "SVI identifier in the format vlan{id} (e.g., vlan100)"
+              },
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              }
+            ]
+          },
+          "docs": "Returns the configuration and operational state of a Switch Virtual Interface (SVI) identified by its VLAN ID (e.g., vlan100). SVIs provide Layer 3 routing capability for VLANs."
+        },
+        {
+          "info": {
+            "name": "Create or Modify an Svi (vlan Interface)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/mo/sys/intf/svi-[:sviId].json",
+            "params": [
+              {
+                "name": "sviId",
+                "value": "",
+                "type": "path",
+                "description": "SVI identifier in the format vlan{id}"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or modifies a Switch Virtual Interface (SVI) for Layer 3 routing on a VLAN. Requires the interface-vlan feature to be enabled (fmInterfaceVlan adminSt=enabled). Properties include admin state, description, MTU, bandwidth, MAC address, and medium type."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Routing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create or Modify Ipv4 Static Routes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/mo/sys/ipv4/inst.json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Configures IPv4 static routes using the ipv4Inst container with ipv4Dom, ipv4Route, and ipv4Nexthop child objects. Routes are defined by destination prefix and one or more next-hop specifications including interface, address, VRF, preference, name, and tag."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Specific Ipv4 Static Route",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/mo/sys/ipv4/inst/dom-:vrfName/rt-[:prefix].json",
+            "params": [
+              {
+                "name": "vrfName",
+                "value": "",
+                "type": "path",
+                "description": "VRF name (use \"default\" for the global routing table)"
+              },
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "path",
+                "description": "IPv4 destination prefix in CIDR notation (e.g., 10.0.0.0/8)"
+              },
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific IPv4 static route including all configured next-hops. The route is identified by VRF name and destination prefix."
+        },
+        {
+          "info": {
+            "name": "List All Ipv4 Static Routes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/class/ipv4Route.json",
+            "params": [
+              {
+                "name": "query-target-filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter expression using conditions like eq(property,\"value\"), ne(property,\"value\"), gt, lt, ge, le, wcard, and boolean operators and, or, not"
+              },
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              }
+            ]
+          },
+          "docs": "Returns all ipv4Route managed objects across all VRFs. Supports filtering by prefix, VRF, or route tag."
+        },
+        {
+          "info": {
+            "name": "Retrieve Full Bgp Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/mo/sys/bgp.json",
+            "params": [
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              }
+            ]
+          },
+          "docs": "Returns the complete BGP configuration tree including bgpEntity, bgpInst, all bgpDom domains, and bgpPeer neighbors. Use rsp-subtree=full to retrieve the entire hierarchy."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "System",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Top-level System Information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/mo/sys.json",
+            "params": [
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              }
+            ]
+          },
+          "docs": "Returns the topSystem managed object containing system-wide information including hostname, serial number, NX-OS version, uptime, and system state."
+        },
+        {
+          "info": {
+            "name": "Apply System-level Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/mo/sys.json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies configuration changes at the top system level. This endpoint accepts a topSystem payload with nested child objects for configuring interfaces (interfaceEntity), BGP (bgpEntity), features (fmEntity), and other subsystems in a single atomic transaction."
+        },
+        {
+          "info": {
+            "name": "Enable or Disable Nx-os Features",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/mo/sys/fm.json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Manages NX-OS feature activation using the fmEntity container. Features include interface-vlan (fmInterfaceVlan), BGP (fmBgp), OSPF (fmOspf), LACP (fmLacp), and others. Each feature has an adminSt property that accepts enabled or disabled."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

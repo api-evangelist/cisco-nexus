@@ -1,0 +1,3659 @@
+{
+  "item": [
+    {
+      "id": "3845f948-b466-4c7a-a017-3380f66e4f10",
+      "name": "Authentication",
+      "description": {
+        "content": "Session authentication and token management via aaaLogin and aaaLogout",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e661396c-d30d-4888-b8a6-19bb3f66b6e0",
+          "name": "Authenticate and Obtain Session Cookie",
+          "request": {
+            "name": "Authenticate and Obtain Session Cookie",
+            "description": {
+              "content": "Authenticates a user against the NX-OS local or remote AAA database and returns a session cookie (APIC-cookie) used for subsequent API requests. The cookie has a configurable idle timeout (default 600 seconds).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "aaaLogin.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"aaaUser\": {\n    \"attributes\": {\n      \"name\": \"<string>\",\n      \"pwd\": \"<password>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3107dba4-c72e-4b91-92b8-66052abf8c90",
+              "name": "Authentication successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "aaaLogin.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"aaaUser\": {\n    \"attributes\": {\n      \"name\": \"admin\",\n      \"pwd\": \"Cisco123!\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Session cookie (APIC-cookie) for subsequent requests",
+                  "key": "Set-Cookie",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c806f78f-cca9-49df-a8d8-f8f178a4a3df",
+              "name": "Authentication failed - invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "aaaLogin.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"aaaUser\": {\n    \"attributes\": {\n      \"name\": \"admin\",\n      \"pwd\": \"Cisco123!\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2f29f4ef-345b-4773-9d5e-7d3effc9335f",
+          "name": "Terminate Authenticated Session",
+          "request": {
+            "name": "Terminate Authenticated Session",
+            "description": {
+              "content": "Ends the current authenticated session and invalidates the session cookie.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "aaaLogout.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"aaaUser\": {\n    \"attributes\": {\n      \"name\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ed2c8336-a5ac-4821-b142-9be6d87e41e8",
+              "name": "Logout successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "aaaLogout.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"aaaUser\": {\n    \"attributes\": {\n      \"name\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "edaac9ab-6406-4324-be2e-a69051f94da1",
+      "name": "Interfaces",
+      "description": {
+        "content": "Physical interface configuration and operational state using the l1PhysIf managed object class (DN sys/intf/phys-[id])",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cb71846c-4807-420f-8ab3-b444eeeb28d5",
+          "name": "Retrieve Physical Interface Configuration and State",
+          "request": {
+            "name": "Retrieve Physical Interface Configuration and State",
+            "description": {
+              "content": "Returns the configuration and operational state of a specific physical Ethernet interface identified by its l1PhysIf distinguished name. Use the query-target parameter to retrieve child objects including counters and statistics (rmonEtherStats, rmonIfHCIn, rmonIfHCOut).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys",
+                "intf",
+                "phys-[{{interfaceId}}].json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "query-target",
+                  "value": "self",
+                  "description": "Specifies the scope of the query relative to the target DN. self returns the target MO only. children returns direct children. subtree returns the full subtree."
+                },
+                {
+                  "disabled": false,
+                  "key": "target-subtree-class",
+                  "value": "<string>",
+                  "description": "Filters subtree query results to only include objects of the specified class (e.g., rmonEtherStats, rmonIfHCIn)"
+                },
+                {
+                  "disabled": false,
+                  "key": "query-target-filter",
+                  "value": "<string>",
+                  "description": "Filter expression using conditions like eq(property,\"value\"), ne(property,\"value\"), gt, lt, ge, le, wcard, and boolean operators and, or, not"
+                },
+                {
+                  "disabled": false,
+                  "key": "rsp-subtree",
+                  "value": "no",
+                  "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+                },
+                {
+                  "disabled": false,
+                  "key": "rsp-prop-include",
+                  "value": "all",
+                  "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "95c4866a-f43b-4d42-93e0-466d644fc46f",
+              "name": "Interface details returned successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "intf",
+                    "phys-[{{interfaceId}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query-target",
+                      "value": "self"
+                    },
+                    {
+                      "key": "target-subtree-class",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "query-target-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90317410-d520-45fc-9213-3d8dfeaf5402",
+              "name": "Invalid request - malformed payload, invalid property values, or unsupported query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "intf",
+                    "phys-[{{interfaceId}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query-target",
+                      "value": "self"
+                    },
+                    {
+                      "key": "target-subtree-class",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "query-target-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b19a7fc7-3d49-48b2-a1b5-6b99af24514c",
+              "name": "Insufficient privileges - the authenticated user does not have RBAC permission for the requested operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "intf",
+                    "phys-[{{interfaceId}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query-target",
+                      "value": "self"
+                    },
+                    {
+                      "key": "target-subtree-class",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "query-target-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4871cd3e-0e23-46e5-854a-67ee4f875a04",
+              "name": "Managed object not found - the specified DN does not exist in the Management Information Tree",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "intf",
+                    "phys-[{{interfaceId}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query-target",
+                      "value": "self"
+                    },
+                    {
+                      "key": "target-subtree-class",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "query-target-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3d2695af-c2dc-423f-ad18-d253a4f4ca03",
+          "name": "Configure a Physical Ethernet Interface",
+          "request": {
+            "name": "Configure a Physical Ethernet Interface",
+            "description": {
+              "content": "Creates or modifies the configuration of one or more physical Ethernet interfaces. The payload uses the interfaceEntity container with l1PhysIf child objects. Properties include administrative state, speed, duplex, MTU, layer mode, switchport mode, access VLAN, trunk VLANs, and description.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys",
+                "intf.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interfaceEntity\": {\n    \"children\": [\n      {\n        \"l1PhysIf\": {\n          \"attributes\": {\n            \"dn\": \"<string>\",\n            \"id\": \"<string>\",\n            \"adminSt\": \"<string>\",\n            \"operSt\": \"<string>\",\n            \"layer\": \"<string>\",\n            \"mode\": \"<string>\",\n            \"accessVlan\": \"<string>\",\n            \"trunkVlans\": \"<string>\",\n            \"nativeVlan\": \"<string>\",\n            \"speed\": \"<string>\",\n            \"duplex\": \"<string>\",\n            \"mtu\": \"<string>\",\n            \"descr\": \"<string>\",\n            \"snmpTrapSt\": \"<string>\",\n            \"modTs\": \"<dateTime>\"\n          }\n        }\n      },\n      {\n        \"l1PhysIf\": {\n          \"attributes\": {\n            \"dn\": \"<string>\",\n            \"id\": \"<string>\",\n            \"adminSt\": \"<string>\",\n            \"operSt\": \"<string>\",\n            \"layer\": \"<string>\",\n            \"mode\": \"<string>\",\n            \"accessVlan\": \"<string>\",\n            \"trunkVlans\": \"<string>\",\n            \"nativeVlan\": \"<string>\",\n            \"speed\": \"<string>\",\n            \"duplex\": \"<string>\",\n            \"mtu\": \"<string>\",\n            \"descr\": \"<string>\",\n            \"snmpTrapSt\": \"<string>\",\n            \"modTs\": \"<dateTime>\"\n          }\n        }\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b50f39f9-e580-4288-90b3-6879ec5b5105",
+              "name": "Configuration applied successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "intf.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"interfaceEntity\": {\n    \"children\": [\n      {\n        \"l1PhysIf\": {\n          \"attributes\": {\n            \"id\": \"eth1/1\",\n            \"adminSt\": \"up\",\n            \"layer\": \"Layer2\",\n            \"mode\": \"access\",\n            \"accessVlan\": \"vlan-100\",\n            \"descr\": \"Server port\"\n          }\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "498a3cf3-ae74-4074-8a0b-e347c55f17ec",
+              "name": "Invalid request - malformed payload, invalid property values, or unsupported query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "intf.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"interfaceEntity\": {\n    \"children\": [\n      {\n        \"l1PhysIf\": {\n          \"attributes\": {\n            \"id\": \"eth1/1\",\n            \"adminSt\": \"up\",\n            \"layer\": \"Layer2\",\n            \"mode\": \"access\",\n            \"accessVlan\": \"vlan-100\",\n            \"descr\": \"Server port\"\n          }\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b137cb8-9fa1-49c0-8020-40d7936bd08f",
+              "name": "Insufficient privileges - the authenticated user does not have RBAC permission for the requested operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "intf.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"interfaceEntity\": {\n    \"children\": [\n      {\n        \"l1PhysIf\": {\n          \"attributes\": {\n            \"id\": \"eth1/1\",\n            \"adminSt\": \"up\",\n            \"layer\": \"Layer2\",\n            \"mode\": \"access\",\n            \"accessVlan\": \"vlan-100\",\n            \"descr\": \"Server port\"\n          }\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3fd1adac-edd3-415c-96ff-2472ab9402c4",
+          "name": "List All Physical Interfaces",
+          "request": {
+            "name": "List All Physical Interfaces",
+            "description": {
+              "content": "Returns all l1PhysIf managed objects on the switch via a class-level query. Supports filtering by property values and pagination. Each returned object includes the full DN and configured properties.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "class",
+                "l1PhysIf.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "query-target-filter",
+                  "value": "<string>",
+                  "description": "Filter expression using conditions like eq(property,\"value\"), ne(property,\"value\"), gt, lt, ge, le, wcard, and boolean operators and, or, not"
+                },
+                {
+                  "disabled": false,
+                  "key": "rsp-subtree",
+                  "value": "no",
+                  "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+                },
+                {
+                  "disabled": false,
+                  "key": "rsp-prop-include",
+                  "value": "all",
+                  "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "50",
+                  "description": "Number of objects to return per page for class-level queries"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "0",
+                  "description": "Page number for paginated class-level queries (0-indexed)"
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1499b7c8-2606-42fe-80ed-f98af5f8b9df",
+              "name": "List of physical interfaces returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "class",
+                    "l1PhysIf.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query-target-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "50"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16e101aa-aace-4798-afc7-7cc6ae20438f",
+              "name": "Invalid request - malformed payload, invalid property values, or unsupported query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "class",
+                    "l1PhysIf.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query-target-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "50"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6bfea4fa-5698-46c9-9f29-6e1e46b20aa6",
+              "name": "Insufficient privileges - the authenticated user does not have RBAC permission for the requested operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "class",
+                    "l1PhysIf.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query-target-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "50"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "2c449e71-e2bc-4af3-a939-380a6ae4c8f4",
+      "name": "VLANs",
+      "description": {
+        "content": "VLAN bridge domain management using the l2BD managed object class (DN sys/bd/bd-[vlan-id]) and SVI interface configuration using sviIf",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "89c8a21f-d48d-4bb2-b247-c79a10713589",
+          "name": "Create or Modify a Vlan Bridge Domain",
+          "request": {
+            "name": "Create or Modify a Vlan Bridge Domain",
+            "description": {
+              "content": "Creates or modifies VLAN bridge domains using the bdEntity container with l2BD child objects. The fabEncap attribute specifies the VLAN ID in the format vlan-{id}. Supports VLAN naming and pcTag assignment.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys",
+                "bd.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bdEntity\": {\n    \"children\": [\n      {\n        \"l2BD\": {\n          \"attributes\": {\n            \"dn\": \"<string>\",\n            \"fabEncap\": \"<string>\",\n            \"name\": \"<string>\",\n            \"pcTag\": \"<string>\",\n            \"adminSt\": \"<string>\",\n            \"operSt\": \"<string>\",\n            \"id\": \"<string>\",\n            \"modTs\": \"<dateTime>\"\n          }\n        }\n      },\n      {\n        \"l2BD\": {\n          \"attributes\": {\n            \"dn\": \"<string>\",\n            \"fabEncap\": \"<string>\",\n            \"name\": \"<string>\",\n            \"pcTag\": \"<string>\",\n            \"adminSt\": \"<string>\",\n            \"operSt\": \"<string>\",\n            \"id\": \"<string>\",\n            \"modTs\": \"<dateTime>\"\n          }\n        }\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "687bbdbd-b00d-4c7b-a467-cdbee7df338b",
+              "name": "VLAN created or modified successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "bd.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bdEntity\": {\n    \"children\": [\n      {\n        \"l2BD\": {\n          \"attributes\": {\n            \"fabEncap\": \"vlan-100\",\n            \"name\": \"Production\",\n            \"pcTag\": \"1\"\n          }\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2a2423b7-6515-4675-a5c2-97f4784c0f30",
+              "name": "Invalid request - malformed payload, invalid property values, or unsupported query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "bd.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bdEntity\": {\n    \"children\": [\n      {\n        \"l2BD\": {\n          \"attributes\": {\n            \"fabEncap\": \"vlan-100\",\n            \"name\": \"Production\",\n            \"pcTag\": \"1\"\n          }\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "287bd51b-9107-43cf-b05c-7c57b367e939",
+              "name": "Insufficient privileges - the authenticated user does not have RBAC permission for the requested operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "bd.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bdEntity\": {\n    \"children\": [\n      {\n        \"l2BD\": {\n          \"attributes\": {\n            \"fabEncap\": \"vlan-100\",\n            \"name\": \"Production\",\n            \"pcTag\": \"1\"\n          }\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5dca13d6-d720-49d3-810a-254ddde4f758",
+          "name": "Retrieve a Specific Vlan Bridge Domain",
+          "request": {
+            "name": "Retrieve a Specific Vlan Bridge Domain",
+            "description": {
+              "content": "Returns the configuration and state of a specific VLAN bridge domain identified by its fabric encapsulation (e.g., vlan-100). Use rsp-subtree=full to include child objects like VLAN member ports and statistics.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys",
+                "bd",
+                "bd-[{{vlanEncap}}].json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "rsp-subtree",
+                  "value": "no",
+                  "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+                },
+                {
+                  "disabled": false,
+                  "key": "rsp-prop-include",
+                  "value": "all",
+                  "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "53ecaaea-30f1-4fb2-aa56-faffb0d3796e",
+              "name": "VLAN bridge domain details returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "bd",
+                    "bd-[{{vlanEncap}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3d9901a8-84f4-4be2-aa86-742fe4081dd7",
+              "name": "Invalid request - malformed payload, invalid property values, or unsupported query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "bd",
+                    "bd-[{{vlanEncap}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c7e2114-6da1-4f82-8ff5-92c6ca5cea09",
+              "name": "Managed object not found - the specified DN does not exist in the Management Information Tree",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "bd",
+                    "bd-[{{vlanEncap}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "94adb8a7-7a6e-4a33-855c-5e9eceae9730",
+          "name": "Delete a Vlan Bridge Domain",
+          "request": {
+            "name": "Delete a Vlan Bridge Domain",
+            "description": {
+              "content": "Removes a VLAN bridge domain from the switch configuration. This operation also removes any associated SVI and port membership configurations.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys",
+                "bd",
+                "bd-[{{vlanEncap}}].json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3347e6a3-af9b-4f63-8459-502147947e2c",
+              "name": "VLAN deleted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "bd",
+                    "bd-[{{vlanEncap}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "47fc4048-e165-4b0c-ae00-5c2285d659cf",
+              "name": "Managed object not found - the specified DN does not exist in the Management Information Tree",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "bd",
+                    "bd-[{{vlanEncap}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ec1a4df7-1a0a-4d88-b3ad-556bc452c3f0",
+          "name": "List All Vlan Bridge Domains",
+          "request": {
+            "name": "List All Vlan Bridge Domains",
+            "description": {
+              "content": "Returns all l2BD managed objects representing configured VLANs on the switch. Supports filtering by VLAN name, encapsulation, or administrative state.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "class",
+                "l2BD.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "query-target-filter",
+                  "value": "<string>",
+                  "description": "Filter expression using conditions like eq(property,\"value\"), ne(property,\"value\"), gt, lt, ge, le, wcard, and boolean operators and, or, not"
+                },
+                {
+                  "disabled": false,
+                  "key": "rsp-prop-include",
+                  "value": "all",
+                  "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page-size",
+                  "value": "50",
+                  "description": "Number of objects to return per page for class-level queries"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "0",
+                  "description": "Page number for paginated class-level queries (0-indexed)"
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "afa36f04-8583-4352-ba47-88655db1bf92",
+              "name": "List of VLAN bridge domains returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "class",
+                    "l2BD.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query-target-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "50"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8a3e3204-eed0-480a-b3af-a3227869d9d7",
+              "name": "Invalid request - malformed payload, invalid property values, or unsupported query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "class",
+                    "l2BD.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query-target-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    },
+                    {
+                      "key": "page-size",
+                      "value": "50"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "89a78875-3288-484b-8c52-0a9fcb950cd9",
+          "name": "Retrieve an Svi (vlan Interface) Configuration",
+          "request": {
+            "name": "Retrieve an Svi (vlan Interface) Configuration",
+            "description": {
+              "content": "Returns the configuration and operational state of a Switch Virtual Interface (SVI) identified by its VLAN ID (e.g., vlan100). SVIs provide Layer 3 routing capability for VLANs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys",
+                "intf",
+                "svi-[{{sviId}}].json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "rsp-subtree",
+                  "value": "no",
+                  "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+                },
+                {
+                  "disabled": false,
+                  "key": "rsp-prop-include",
+                  "value": "all",
+                  "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f46e7679-12f5-4d3f-bcb1-b1035a5bdc7b",
+              "name": "SVI interface details returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "intf",
+                    "svi-[{{sviId}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f147c4a1-4b38-40f6-a458-ea22bab19936",
+              "name": "Managed object not found - the specified DN does not exist in the Management Information Tree",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "intf",
+                    "svi-[{{sviId}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c43962d4-c684-443c-a41f-ac6488f32384",
+          "name": "Create or Modify an Svi (vlan Interface)",
+          "request": {
+            "name": "Create or Modify an Svi (vlan Interface)",
+            "description": {
+              "content": "Creates or modifies a Switch Virtual Interface (SVI) for Layer 3 routing on a VLAN. Requires the interface-vlan feature to be enabled (fmInterfaceVlan adminSt=enabled). Properties include admin state, description, MTU, bandwidth, MAC address, and medium type.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys",
+                "intf",
+                "svi-[{{sviId}}].json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sviIf\": {\n    \"attributes\": {\n      \"id\": \"<string>\",\n      \"adminSt\": \"<string>\",\n      \"descr\": \"<string>\",\n      \"mtu\": \"<string>\",\n      \"bw\": \"<string>\",\n      \"mac\": \"<string>\",\n      \"medium\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6588037b-9e7d-4ea9-bf75-87d2d8ea16a2",
+              "name": "SVI configured successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "intf",
+                    "svi-[{{sviId}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sviIf\": {\n    \"attributes\": {\n      \"id\": \"vlan100\",\n      \"adminSt\": \"up\",\n      \"descr\": \"Production Gateway\",\n      \"mtu\": \"9216\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c7f2302e-99a5-4b82-a499-f3d9fab644fb",
+              "name": "Invalid request - malformed payload, invalid property values, or unsupported query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "intf",
+                    "svi-[{{sviId}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sviIf\": {\n    \"attributes\": {\n      \"id\": \"vlan100\",\n      \"adminSt\": \"up\",\n      \"descr\": \"Production Gateway\",\n      \"mtu\": \"9216\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "9dc4467a-4f67-44d1-9790-f4123b5aa258",
+      "name": "Routing",
+      "description": {
+        "content": "IPv4 and IPv6 static route configuration using ipv4Route/ipv6Route managed objects and BGP protocol management using bgpEntity hierarchy",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "555ae390-8200-4f46-9151-19a3e2b13886",
+          "name": "Create or Modify Ipv4 Static Routes",
+          "request": {
+            "name": "Create or Modify Ipv4 Static Routes",
+            "description": {
+              "content": "Configures IPv4 static routes using the ipv4Inst container with ipv4Dom, ipv4Route, and ipv4Nexthop child objects. Routes are defined by destination prefix and one or more next-hop specifications including interface, address, VRF, preference, name, and tag.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys",
+                "ipv4",
+                "inst.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ipv4Inst\": {\n    \"children\": [\n      {\n        \"ipv4Dom\": {\n          \"attributes\": {\n            \"name\": \"<string>\"\n          },\n          \"children\": [\n            {\n              \"attributes\": {\n                \"dn\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"prefix\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"children\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ]\n            },\n            {\n              \"attributes\": {\n                \"dn\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"prefix\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"children\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ]\n            }\n          ]\n        }\n      },\n      {\n        \"ipv4Dom\": {\n          \"attributes\": {\n            \"name\": \"<string>\"\n          },\n          \"children\": [\n            {\n              \"attributes\": {\n                \"dn\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"prefix\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"children\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ]\n            },\n            {\n              \"attributes\": {\n                \"dn\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"prefix\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"children\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ]\n            }\n          ]\n        }\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "45a17f6d-60fe-4a49-a2c7-b3ee054fa496",
+              "name": "Static route configured successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "ipv4",
+                    "inst.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ipv4Inst\": {\n    \"children\": [\n      {\n        \"ipv4Dom\": {\n          \"attributes\": {\n            \"name\": \"default\"\n          },\n          \"children\": [\n            {\n              \"ipv4Route\": {\n                \"attributes\": {\n                  \"prefix\": \"10.0.0.0/8\"\n                },\n                \"children\": [\n                  {\n                    \"ipv4Nexthop\": {\n                      \"attributes\": {\n                        \"nhAddr\": \"192.168.1.1\",\n                        \"nhIf\": \"eth1/1\",\n                        \"nhVrf\": \"default\",\n                        \"pref\": \"1\",\n                        \"tag\": \"100\"\n                      }\n                    }\n                  }\n                ]\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f86ed710-ecbc-4cfa-bf62-dd0f7d909070",
+              "name": "Invalid request - malformed payload, invalid property values, or unsupported query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "ipv4",
+                    "inst.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ipv4Inst\": {\n    \"children\": [\n      {\n        \"ipv4Dom\": {\n          \"attributes\": {\n            \"name\": \"default\"\n          },\n          \"children\": [\n            {\n              \"ipv4Route\": {\n                \"attributes\": {\n                  \"prefix\": \"10.0.0.0/8\"\n                },\n                \"children\": [\n                  {\n                    \"ipv4Nexthop\": {\n                      \"attributes\": {\n                        \"nhAddr\": \"192.168.1.1\",\n                        \"nhIf\": \"eth1/1\",\n                        \"nhVrf\": \"default\",\n                        \"pref\": \"1\",\n                        \"tag\": \"100\"\n                      }\n                    }\n                  }\n                ]\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ae76398c-1a8c-431a-9574-74de015588be",
+          "name": "Retrieve a Specific Ipv4 Static Route",
+          "request": {
+            "name": "Retrieve a Specific Ipv4 Static Route",
+            "description": {
+              "content": "Returns the configuration of a specific IPv4 static route including all configured next-hops. The route is identified by VRF name and destination prefix.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys",
+                "ipv4",
+                "inst",
+                "dom-{{vrfName}}",
+                "rt-[{{prefix}}].json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "rsp-subtree",
+                  "value": "no",
+                  "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b2c611ff-b032-42b4-b6e5-31658991da37",
+              "name": "Static route details returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "ipv4",
+                    "inst",
+                    "dom-{{vrfName}}",
+                    "rt-[{{prefix}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aca94633-9a43-484d-8170-8c75a69fe350",
+              "name": "Managed object not found - the specified DN does not exist in the Management Information Tree",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "ipv4",
+                    "inst",
+                    "dom-{{vrfName}}",
+                    "rt-[{{prefix}}].json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eb44e14b-ff54-44b1-9d2a-d5e990f758a8",
+          "name": "List All Ipv4 Static Routes",
+          "request": {
+            "name": "List All Ipv4 Static Routes",
+            "description": {
+              "content": "Returns all ipv4Route managed objects across all VRFs. Supports filtering by prefix, VRF, or route tag.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "class",
+                "ipv4Route.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "query-target-filter",
+                  "value": "<string>",
+                  "description": "Filter expression using conditions like eq(property,\"value\"), ne(property,\"value\"), gt, lt, ge, le, wcard, and boolean operators and, or, not"
+                },
+                {
+                  "disabled": false,
+                  "key": "rsp-subtree",
+                  "value": "no",
+                  "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+                },
+                {
+                  "disabled": false,
+                  "key": "rsp-prop-include",
+                  "value": "all",
+                  "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2ddbdd79-7f27-4768-8e70-83cc3c3ba08d",
+              "name": "List of IPv4 static routes returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "class",
+                    "ipv4Route.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query-target-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4c859e24-5943-4d11-b7e7-11cb13bae1e6",
+              "name": "Invalid request - malformed payload, invalid property values, or unsupported query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "class",
+                    "ipv4Route.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query-target-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4d017719-cbdf-4a44-86f5-795aa044894c",
+          "name": "Retrieve Full Bgp Configuration",
+          "request": {
+            "name": "Retrieve Full Bgp Configuration",
+            "description": {
+              "content": "Returns the complete BGP configuration tree including bgpEntity, bgpInst, all bgpDom domains, and bgpPeer neighbors. Use rsp-subtree=full to retrieve the entire hierarchy.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys",
+                "bgp.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "rsp-subtree",
+                  "value": "no",
+                  "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+                },
+                {
+                  "disabled": false,
+                  "key": "rsp-prop-include",
+                  "value": "all",
+                  "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8d3bd310-1f6d-4345-9cc1-3f8841b4cdf3",
+              "name": "BGP configuration returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "bgp.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3e52dbc5-cb01-4881-b68d-f36ca2eecad8",
+              "name": "Managed object not found - the specified DN does not exist in the Management Information Tree",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "bgp.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rsp-subtree",
+                      "value": "no"
+                    },
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "426d97b3-e047-4bdd-a215-97ba219b263b",
+      "name": "System",
+      "description": {
+        "content": "Top-level system information and feature management via topSystem and fmEntity managed objects",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fbfeadf6-2f1a-4630-b36b-78dc4930e5f3",
+          "name": "Retrieve Top-level System Information",
+          "request": {
+            "name": "Retrieve Top-level System Information",
+            "description": {
+              "content": "Returns the topSystem managed object containing system-wide information including hostname, serial number, NX-OS version, uptime, and system state.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "rsp-prop-include",
+                  "value": "all",
+                  "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1a2e375b-fc2a-4ef5-948e-f75b17fefc29",
+              "name": "System information returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "rsp-prop-include",
+                      "value": "all"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4553a13e-3040-4ea9-bf44-1154e69a6215",
+          "name": "Apply System-level Configuration",
+          "request": {
+            "name": "Apply System-level Configuration",
+            "description": {
+              "content": "Applies configuration changes at the top system level. This endpoint accepts a topSystem payload with nested child objects for configuring interfaces (interfaceEntity), BGP (bgpEntity), features (fmEntity), and other subsystems in a single atomic transaction.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"topSystem\": {\n    \"children\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a8cf76b2-143b-4ddb-b4f8-3f4480016984",
+              "name": "Configuration applied successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"topSystem\": {\n    \"children\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f67767f3-f6da-466a-b444-642019d30b7f",
+              "name": "Invalid request - malformed payload, invalid property values, or unsupported query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"topSystem\": {\n    \"children\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e08298b5-1cb9-4d22-9d53-57cf0a24884d",
+          "name": "Enable or Disable Nx-os Features",
+          "request": {
+            "name": "Enable or Disable Nx-os Features",
+            "description": {
+              "content": "Manages NX-OS feature activation using the fmEntity container. Features include interface-vlan (fmInterfaceVlan), BGP (fmBgp), OSPF (fmOspf), LACP (fmLacp), and others. Each feature has an adminSt property that accepts enabled or disabled.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mo",
+                "sys",
+                "fm.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fmEntity\": {\n    \"children\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c53af6ca-1ea8-43e4-9c0b-d8ea73ddf047",
+              "name": "Feature configuration applied",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mo",
+                    "sys",
+                    "fm.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fmEntity\": {\n    \"children\": [\n      {\n        \"fmInterfaceVlan\": {\n          \"attributes\": {\n            \"adminSt\": \"enabled\"\n          }\n        }\n      },\n      {\n        \"fmBgp\": {\n          \"attributes\": {\n            \"adminSt\": \"enabled\"\n          }\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Management IP address or hostname of the Nexus switch",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "192.168.1.1",
+      "key": "switchIp"
+    },
+    {
+      "type": "string",
+      "value": "https://{{switchIp}}/api",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) VRF name (use \"default\" for the global routing table)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "default",
+      "key": "vrfName"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) IPv4 destination prefix in CIDR notation (e.g., 10.0.0.0/8)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<ipv4-network>",
+      "key": "prefix"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) VLAN fabric encapsulation identifier in the format vlan-{id} (e.g., vlan-100)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "vlanEncap"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) SVI identifier in the format vlan{id} (e.g., vlan100)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "sviId"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) Physical interface identifier matching the output of show interface brief (e.g., eth1/1, eth1/2, eth2/1)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "interfaceId"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "APIC-cookie"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "74b40279-2b5a-4b51-9028-80bfb61f3472",
+    "name": "Cisco NX-API REST",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "RESTful API for programmatic access to Cisco Nexus 3000 and 9000 Series switches. NX-API REST exposes the NX-OS Data Management Engine (DME) object model over HTTP/HTTPS, enabling configuration management, operational state retrieval, and real-time event subscriptions using managed objects (MOs) organized in a hierarchical Management Information Tree (MIT). All objects are addressed by Distinguished Names (DNs) and support JSON and XML encodings.\n\nContact Support:\n Name: Cisco DevNet Support\n Email: support@cisco.com",
+      "type": "text/plain"
+    }
+  }
+}
