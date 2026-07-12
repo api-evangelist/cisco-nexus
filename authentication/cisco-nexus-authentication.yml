@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/cisco-nexus-nxapi-rest.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - cookie
+schemes:
+- name: cookieAuth
+  type: apiKey
+  in: cookie
+  parameter: APIC-cookie
+  description: Session cookie obtained from the /api/aaaLogin endpoint. The cookie has a configurable
+    idle timeout (default 600 seconds) and must be included in all subsequent requests.
+  sources:
+  - openapi/cisco-nexus-nxapi-rest.yml

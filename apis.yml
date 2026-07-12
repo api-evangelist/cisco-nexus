@@ -269,8 +269,14 @@ apis:
         email: support@cisco.com
         url: https://developer.cisco.com/site/support/
 common:
+  - type: DomainSecurity
+    url: security/cisco-nexus-domain-security.yml
+  - type: Authentication
+    url: authentication/cisco-nexus-authentication.yml
   - type: DeveloperPortal
     url: https://developer.cisco.com/
+  - url: https://blogs.cisco.com/tag/nexus/feed
+    type: Blog
   - type: GitHubOrganization
     url: https://github.com/CiscoDevNet
   - type: Training
