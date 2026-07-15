@@ -269,6 +269,8 @@ apis:
         email: support@cisco.com
         url: https://developer.cisco.com/site/support/
 common:
+  - type: AgenticAccess
+    url: agentic-access/cisco-nexus-agentic-access.yml
   - type: DomainSecurity
     url: security/cisco-nexus-domain-security.yml
   - type: Authentication
