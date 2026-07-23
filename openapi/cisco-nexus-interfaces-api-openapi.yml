@@ -1,0 +1,412 @@
+openapi: 3.1.0
+info:
+  title: Cisco NX-API REST Authentication Interfaces API
+  description: RESTful API for programmatic access to Cisco Nexus 3000 and 9000 Series switches. NX-API REST exposes the NX-OS Data Management Engine (DME) object model over HTTP/HTTPS, enabling configuration management, operational state retrieval, and real-time event subscriptions using managed objects (MOs) organized in a hierarchical Management Information Tree (MIT). All objects are addressed by Distinguished Names (DNs) and support JSON and XML encodings.
+  version: 10.5.0
+  contact:
+    name: Cisco DevNet Support
+    url: https://developer.cisco.com/site/support/
+    email: support@cisco.com
+  license:
+    name: Cisco DevNet
+    url: https://developer.cisco.com/site/license/
+  x-documentation:
+  - title: NX-API REST SDK User Guide
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
+  - title: Nexus Model Reference
+    url: https://developer.cisco.com/docs/nexus-model/latest/
+  - title: NX-OS Programmability Guide
+    url: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/105x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-105x.html
+servers:
+- url: https://{switchIp}/api
+  description: Cisco Nexus switch NX-API REST endpoint
+  variables:
+    switchIp:
+      default: 192.168.1.1
+      description: Management IP address or hostname of the Nexus switch
+security:
+- cookieAuth: []
+tags:
+- name: Interfaces
+  description: Physical interface configuration and operational state using the l1PhysIf managed object class (DN sys/intf/phys-[id])
+paths:
+  /mo/sys/intf/phys-[{interfaceId}].json:
+    get:
+      operationId: getPhysicalInterface
+      summary: Retrieve Physical Interface Configuration and State
+      description: Returns the configuration and operational state of a specific physical Ethernet interface identified by its l1PhysIf distinguished name. Use the query-target parameter to retrieve child objects including counters and statistics (rmonEtherStats, rmonIfHCIn, rmonIfHCOut).
+      tags:
+      - Interfaces
+      parameters:
+      - $ref: '#/components/parameters/interfaceId'
+      - $ref: '#/components/parameters/queryTarget'
+      - $ref: '#/components/parameters/targetSubtreeClass'
+      - $ref: '#/components/parameters/queryTargetFilter'
+      - $ref: '#/components/parameters/rspSubtree'
+      - $ref: '#/components/parameters/rspPropInclude'
+      responses:
+        '200':
+          description: Interface details returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhysicalInterfaceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /mo/sys/intf.json:
+    post:
+      operationId: configurePhysicalInterface
+      summary: Configure a Physical Ethernet Interface
+      description: Creates or modifies the configuration of one or more physical Ethernet interfaces. The payload uses the interfaceEntity container with l1PhysIf child objects. Properties include administrative state, speed, duplex, MTU, layer mode, switchport mode, access VLAN, trunk VLANs, and description.
+      tags:
+      - Interfaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterfaceEntityPayload'
+            example:
+              interfaceEntity:
+                children:
+                - l1PhysIf:
+                    attributes:
+                      id: eth1/1
+                      adminSt: up
+                      layer: Layer2
+                      mode: access
+                      accessVlan: vlan-100
+                      descr: Server port
+      responses:
+        '200':
+          description: Configuration applied successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /class/l1PhysIf.json:
+    get:
+      operationId: listPhysicalInterfaces
+      summary: List All Physical Interfaces
+      description: Returns all l1PhysIf managed objects on the switch via a class-level query. Supports filtering by property values and pagination. Each returned object includes the full DN and configured properties.
+      tags:
+      - Interfaces
+      parameters:
+      - $ref: '#/components/parameters/queryTargetFilter'
+      - $ref: '#/components/parameters/rspSubtree'
+      - $ref: '#/components/parameters/rspPropInclude'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: List of physical interfaces returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhysicalInterfaceListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  responses:
+    Forbidden:
+      description: Insufficient privileges - the authenticated user does not have RBAC permission for the requested operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Managed object not found - the specified DN does not exist in the Management Information Tree
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    queryTarget:
+      name: query-target
+      in: query
+      required: false
+      description: Specifies the scope of the query relative to the target DN. self returns the target MO only. children returns direct children. subtree returns the full subtree.
+      schema:
+        type: string
+        enum:
+        - self
+        - children
+        - subtree
+        default: self
+    page:
+      name: page
+      in: query
+      required: false
+      description: Page number for paginated class-level queries (0-indexed)
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    pageSize:
+      name: page-size
+      in: query
+      required: false
+      description: Number of objects to return per page for class-level queries
+      schema:
+        type: integer
+        minimum: 1
+        default: 50
+    targetSubtreeClass:
+      name: target-subtree-class
+      in: query
+      required: false
+      description: Filters subtree query results to only include objects of the specified class (e.g., rmonEtherStats, rmonIfHCIn)
+      schema:
+        type: string
+    interfaceId:
+      name: interfaceId
+      in: path
+      required: true
+      description: Physical interface identifier matching the output of show interface brief (e.g., eth1/1, eth1/2, eth2/1)
+      schema:
+        type: string
+        pattern: ^eth\d+/\d+(/\d+)?$
+        examples:
+        - eth1/1
+    queryTargetFilter:
+      name: query-target-filter
+      in: query
+      required: false
+      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
+      schema:
+        type: string
+    rspPropInclude:
+      name: rsp-prop-include
+      in: query
+      required: false
+      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
+      schema:
+        type: string
+        enum:
+        - all
+        - config-only
+        - set-config-only
+        default: all
+    rspSubtree:
+      name: rsp-subtree
+      in: query
+      required: false
+      description: Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree.
+      schema:
+        type: string
+        enum:
+        - 'no'
+        - children
+        - full
+        default: 'no'
+  schemas:
+    PhysicalInterfaceResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l1PhysIf:
+                $ref: '#/components/schemas/L1PhysIf'
+          example: []
+    ErrorResponse:
+      type: object
+      description: Error response from NX-API REST
+      properties:
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Numeric error code
+                      text:
+                        type: string
+                        description: Human-readable error message
+          example: []
+    InterfaceEntityPayload:
+      type: object
+      properties:
+        interfaceEntity:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                properties:
+                  l1PhysIf:
+                    $ref: '#/components/schemas/L1PhysIf'
+          example: example_value
+    L1PhysIf:
+      type: object
+      description: Layer 1 physical interface managed object representing a physical Ethernet port on a Nexus switch. DN format is sys/intf/phys-[{id}].
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              description: Distinguished name (e.g., sys/intf/phys-[eth1/1])
+              examples:
+              - sys/intf/phys-[eth1/1]
+            id:
+              type: string
+              description: Interface identifier matching show interface brief output
+              examples:
+              - eth1/1
+            adminSt:
+              type: string
+              description: Administrative state of the interface
+              enum:
+              - up
+              - down
+            operSt:
+              type: string
+              description: Operational state (read-only)
+              enum:
+              - up
+              - down
+              - link-up
+            layer:
+              type: string
+              description: Layer mode of the interface
+              enum:
+              - Layer2
+              - Layer3
+            mode:
+              type: string
+              description: Switchport mode (applicable when layer is Layer2)
+              enum:
+              - access
+              - trunk
+              - fex-fabric
+              - dot1q-tunnel
+              - promiscuous
+            accessVlan:
+              type: string
+              description: Access VLAN assignment in the format vlan-{id} (applicable when mode is access)
+              pattern: ^vlan-\d+$
+              examples:
+              - vlan-100
+            trunkVlans:
+              type: string
+              description: Trunk allowed VLANs. Supports ranges (1-100), additions (+50), and removals (-50). Use 1-4094 for all VLANs.
+              examples:
+              - 1-100,200,300-400
+            nativeVlan:
+              type: string
+              description: Native VLAN for trunk ports in the format vlan-{id}
+              pattern: ^vlan-\d+$
+              examples:
+              - vlan-1
+            speed:
+              type: string
+              description: Interface speed setting
+              enum:
+              - auto
+              - 100M
+              - 1G
+              - 10G
+              - 25G
+              - 40G
+              - 100G
+            duplex:
+              type: string
+              description: Duplex mode setting
+              enum:
+              - auto
+              - full
+              - half
+            mtu:
+              type: string
+              description: Maximum transmission unit (bytes, 576-9216)
+              examples:
+              - '1500'
+              - '9216'
+            descr:
+              type: string
+              description: Interface description (max 254 characters)
+              maxLength: 254
+            snmpTrapSt:
+              type: string
+              description: SNMP trap link-state notifications
+              enum:
+              - enable
+              - disable
+            modTs:
+              type: string
+              format: date-time
+              description: Last modification timestamp (read-only)
+          example: example_value
+    PhysicalInterfaceListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l1PhysIf:
+                $ref: '#/components/schemas/L1PhysIf'
+          example: []
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
+          example: []
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: APIC-cookie
+      description: Session cookie obtained from the /api/aaaLogin endpoint. The cookie has a configurable idle timeout (default 600 seconds) and must be included in all subsequent requests.

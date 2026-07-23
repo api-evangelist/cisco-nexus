@@ -1,0 +1,513 @@
+openapi: 3.1.0
+info:
+  title: Cisco NX-API REST Authentication Routing API
+  description: RESTful API for programmatic access to Cisco Nexus 3000 and 9000 Series switches. NX-API REST exposes the NX-OS Data Management Engine (DME) object model over HTTP/HTTPS, enabling configuration management, operational state retrieval, and real-time event subscriptions using managed objects (MOs) organized in a hierarchical Management Information Tree (MIT). All objects are addressed by Distinguished Names (DNs) and support JSON and XML encodings.
+  version: 10.5.0
+  contact:
+    name: Cisco DevNet Support
+    url: https://developer.cisco.com/site/support/
+    email: support@cisco.com
+  license:
+    name: Cisco DevNet
+    url: https://developer.cisco.com/site/license/
+  x-documentation:
+  - title: NX-API REST SDK User Guide
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
+  - title: Nexus Model Reference
+    url: https://developer.cisco.com/docs/nexus-model/latest/
+  - title: NX-OS Programmability Guide
+    url: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/105x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-105x.html
+servers:
+- url: https://{switchIp}/api
+  description: Cisco Nexus switch NX-API REST endpoint
+  variables:
+    switchIp:
+      default: 192.168.1.1
+      description: Management IP address or hostname of the Nexus switch
+security:
+- cookieAuth: []
+tags:
+- name: Routing
+  description: IPv4 and IPv6 static route configuration using ipv4Route/ipv6Route managed objects and BGP protocol management using bgpEntity hierarchy
+paths:
+  /mo/sys/ipv4/inst.json:
+    post:
+      operationId: configureStaticRoute
+      summary: Create or Modify Ipv4 Static Routes
+      description: Configures IPv4 static routes using the ipv4Inst container with ipv4Dom, ipv4Route, and ipv4Nexthop child objects. Routes are defined by destination prefix and one or more next-hop specifications including interface, address, VRF, preference, name, and tag.
+      tags:
+      - Routing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ipv4InstPayload'
+            example:
+              ipv4Inst:
+                children:
+                - ipv4Dom:
+                    attributes:
+                      name: default
+                    children:
+                    - ipv4Route:
+                        attributes:
+                          prefix: 10.0.0.0/8
+                        children:
+                        - ipv4Nexthop:
+                            attributes:
+                              nhAddr: 192.168.1.1
+                              nhIf: eth1/1
+                              nhVrf: default
+                              pref: '1'
+                              tag: '100'
+      responses:
+        '200':
+          description: Static route configured successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /mo/sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}].json:
+    get:
+      operationId: getStaticRoute
+      summary: Retrieve a Specific Ipv4 Static Route
+      description: Returns the configuration of a specific IPv4 static route including all configured next-hops. The route is identified by VRF name and destination prefix.
+      tags:
+      - Routing
+      parameters:
+      - name: vrfName
+        in: path
+        required: true
+        description: VRF name (use "default" for the global routing table)
+        schema:
+          type: string
+          default: default
+      - name: prefix
+        in: path
+        required: true
+        description: IPv4 destination prefix in CIDR notation (e.g., 10.0.0.0/8)
+        schema:
+          type: string
+          format: ipv4-network
+      - $ref: '#/components/parameters/rspSubtree'
+      responses:
+        '200':
+          description: Static route details returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ipv4RouteResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /class/ipv4Route.json:
+    get:
+      operationId: listStaticRoutes
+      summary: List All Ipv4 Static Routes
+      description: Returns all ipv4Route managed objects across all VRFs. Supports filtering by prefix, VRF, or route tag.
+      tags:
+      - Routing
+      parameters:
+      - $ref: '#/components/parameters/queryTargetFilter'
+      - $ref: '#/components/parameters/rspSubtree'
+      - $ref: '#/components/parameters/rspPropInclude'
+      responses:
+        '200':
+          description: List of IPv4 static routes returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ipv4RouteListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /mo/sys/bgp.json:
+    get:
+      operationId: getBgpConfiguration
+      summary: Retrieve Full Bgp Configuration
+      description: Returns the complete BGP configuration tree including bgpEntity, bgpInst, all bgpDom domains, and bgpPeer neighbors. Use rsp-subtree=full to retrieve the entire hierarchy.
+      tags:
+      - Routing
+      parameters:
+      - $ref: '#/components/parameters/rspSubtree'
+      - $ref: '#/components/parameters/rspPropInclude'
+      responses:
+        '200':
+          description: BGP configuration returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BgpEntityResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    BgpDom:
+      type: object
+      description: BGP domain (VRF) managed object. DN format is sys/bgp/inst/dom-{name}.
+      properties:
+        bgpDom:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: BGP domain name (VRF name, typically default)
+                  examples:
+                  - default
+                rtrId:
+                  type: string
+                  description: BGP router ID in IPv4 address format
+                  format: ipv4
+                  examples:
+                  - 10.0.0.1
+            children:
+              type: array
+              items:
+                $ref: '#/components/schemas/BgpPeer'
+          example: example_value
+    Ipv4RouteResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              ipv4Route:
+                $ref: '#/components/schemas/Ipv4Route'
+          example: []
+    Ipv4RouteListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              ipv4Route:
+                $ref: '#/components/schemas/Ipv4Route'
+          example: []
+    ErrorResponse:
+      type: object
+      description: Error response from NX-API REST
+      properties:
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Numeric error code
+                      text:
+                        type: string
+                        description: Human-readable error message
+          example: []
+    Ipv4InstPayload:
+      type: object
+      properties:
+        ipv4Inst:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                properties:
+                  ipv4Dom:
+                    type: object
+                    properties:
+                      attributes:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            description: VRF name
+                      children:
+                        type: array
+                        items:
+                          oneOf:
+                          - $ref: '#/components/schemas/Ipv4Route'
+                          - type: object
+                            properties:
+                              ipv4RtStaticBfd:
+                                type: object
+                                properties:
+                                  attributes:
+                                    type: object
+                                    properties:
+                                      intf:
+                                        type: string
+                                      nexthop:
+                                        type: string
+                                        format: ipv4
+          example: example_value
+    BgpEntity:
+      type: object
+      description: Top-level BGP entity managed object. DN is sys/bgp.
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              examples:
+              - sys/bgp
+            adminSt:
+              type: string
+              enum:
+              - enabled
+              - disabled
+          example: example_value
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpInst'
+          example: []
+    BgpInst:
+      type: object
+      description: BGP instance managed object containing AS number and domain configuration. DN is sys/bgp/inst.
+      properties:
+        bgpInst:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                asn:
+                  type: string
+                  description: BGP autonomous system number (supports 2-byte and 4-byte ASN formats including dot notation)
+                  examples:
+                  - '65000'
+                  - '65000.1'
+            children:
+              type: array
+              items:
+                $ref: '#/components/schemas/BgpDom'
+          example: example_value
+    BgpEntityResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              bgpEntity:
+                $ref: '#/components/schemas/BgpEntity'
+          example: []
+    Ipv4Route:
+      type: object
+      description: IPv4 static route managed object. DN format is sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}].
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              description: Distinguished name
+              examples:
+              - sys/ipv4/inst/dom-default/rt-[10.0.0.0/8]
+            prefix:
+              type: string
+              description: Destination IPv4 prefix in CIDR notation
+              format: ipv4-network
+              examples:
+              - 10.0.0.0/8
+          example: example_value
+        children:
+          type: array
+          description: Child next-hop objects
+          items:
+            $ref: '#/components/schemas/Ipv4Nexthop'
+          example: []
+    Ipv4Nexthop:
+      type: object
+      description: IPv4 next-hop specification for a static route. DN format is sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}]/nh-[{nhIf}]-addr-[{nhAddr}]-vrf-[{nhVrf}].
+      properties:
+        ipv4Nexthop:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                nhAddr:
+                  type: string
+                  description: Next-hop IP address
+                  format: ipv4
+                  examples:
+                  - 192.168.1.1
+                nhIf:
+                  type: string
+                  description: Next-hop egress interface (e.g., eth1/1, vlan100). Use unspecified for recursive lookup.
+                  examples:
+                  - eth1/1
+                nhVrf:
+                  type: string
+                  description: Next-hop VRF context
+                  default: default
+                  examples:
+                  - default
+                pref:
+                  type: string
+                  description: Route preference / administrative distance (0-255)
+                  examples:
+                  - '1'
+                rtname:
+                  type: string
+                  description: Route identifier name
+                  examples:
+                  - StaticRoute1
+                tag:
+                  type: string
+                  description: Route tag value (0-4294967295)
+                  examples:
+                  - '100'
+                status:
+                  type: string
+                  description: Set to deleted to remove a next-hop entry
+                  enum:
+                  - ''
+                  - deleted
+          example: example_value
+    BgpPeer:
+      type: object
+      description: BGP peer (neighbor) managed object. DN format is sys/bgp/inst/dom-{name}/peer-{addr}.
+      properties:
+        bgpPeer:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                addr:
+                  type: string
+                  description: BGP neighbor IP address
+                  format: ipv4
+                  examples:
+                  - 192.168.1.2
+                asn:
+                  type: string
+                  description: Remote peer autonomous system number
+                  examples:
+                  - '65001'
+                passwdType:
+                  type: string
+                  description: Password encryption type (0=cleartext, 3=3DES, 6=AES, 7=Vigenere)
+                  enum:
+                  - '0'
+                  - '3'
+                  - '6'
+                  - '7'
+                password:
+                  type: string
+                  description: Neighbor authentication password
+                  format: password
+                srcIf:
+                  type: string
+                  description: Source interface for BGP session
+                  examples:
+                  - lo0
+                adminSt:
+                  type: string
+                  description: Administrative state (shutdown/no shutdown)
+                  enum:
+                  - enabled
+                  - disabled
+          example: example_value
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
+          example: []
+  responses:
+    NotFound:
+      description: Managed object not found - the specified DN does not exist in the Management Information Tree
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    queryTargetFilter:
+      name: query-target-filter
+      in: query
+      required: false
+      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
+      schema:
+        type: string
+    rspPropInclude:
+      name: rsp-prop-include
+      in: query
+      required: false
+      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
+      schema:
+        type: string
+        enum:
+        - all
+        - config-only
+        - set-config-only
+        default: all
+    rspSubtree:
+      name: rsp-subtree
+      in: query
+      required: false
+      description: Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree.
+      schema:
+        type: string
+        enum:
+        - 'no'
+        - children
+        - full
+        default: 'no'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: APIC-cookie
+      description: Session cookie obtained from the /api/aaaLogin endpoint. The cookie has a configurable idle timeout (default 600 seconds) and must be included in all subsequent requests.

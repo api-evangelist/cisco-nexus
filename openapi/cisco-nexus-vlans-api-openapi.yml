@@ -1,0 +1,527 @@
+openapi: 3.1.0
+info:
+  title: Cisco NX-API REST Authentication VLANs API
+  description: RESTful API for programmatic access to Cisco Nexus 3000 and 9000 Series switches. NX-API REST exposes the NX-OS Data Management Engine (DME) object model over HTTP/HTTPS, enabling configuration management, operational state retrieval, and real-time event subscriptions using managed objects (MOs) organized in a hierarchical Management Information Tree (MIT). All objects are addressed by Distinguished Names (DNs) and support JSON and XML encodings.
+  version: 10.5.0
+  contact:
+    name: Cisco DevNet Support
+    url: https://developer.cisco.com/site/support/
+    email: support@cisco.com
+  license:
+    name: Cisco DevNet
+    url: https://developer.cisco.com/site/license/
+  x-documentation:
+  - title: NX-API REST SDK User Guide
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
+  - title: Nexus Model Reference
+    url: https://developer.cisco.com/docs/nexus-model/latest/
+  - title: NX-OS Programmability Guide
+    url: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/105x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-105x.html
+servers:
+- url: https://{switchIp}/api
+  description: Cisco Nexus switch NX-API REST endpoint
+  variables:
+    switchIp:
+      default: 192.168.1.1
+      description: Management IP address or hostname of the Nexus switch
+security:
+- cookieAuth: []
+tags:
+- name: VLANs
+  description: VLAN bridge domain management using the l2BD managed object class (DN sys/bd/bd-[vlan-id]) and SVI interface configuration using sviIf
+paths:
+  /mo/sys/bd.json:
+    post:
+      operationId: createVlan
+      summary: Create or Modify a Vlan Bridge Domain
+      description: Creates or modifies VLAN bridge domains using the bdEntity container with l2BD child objects. The fabEncap attribute specifies the VLAN ID in the format vlan-{id}. Supports VLAN naming and pcTag assignment.
+      tags:
+      - VLANs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BdEntityPayload'
+            example:
+              bdEntity:
+                children:
+                - l2BD:
+                    attributes:
+                      fabEncap: vlan-100
+                      name: Production
+                      pcTag: '1'
+      responses:
+        '200':
+          description: VLAN created or modified successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /mo/sys/bd/bd-[{vlanEncap}].json:
+    get:
+      operationId: getVlan
+      summary: Retrieve a Specific Vlan Bridge Domain
+      description: Returns the configuration and state of a specific VLAN bridge domain identified by its fabric encapsulation (e.g., vlan-100). Use rsp-subtree=full to include child objects like VLAN member ports and statistics.
+      tags:
+      - VLANs
+      parameters:
+      - name: vlanEncap
+        in: path
+        required: true
+        description: VLAN fabric encapsulation identifier in the format vlan-{id} (e.g., vlan-100)
+        schema:
+          type: string
+          pattern: ^vlan-\d+$
+          examples:
+          - vlan-100
+      - $ref: '#/components/parameters/rspSubtree'
+      - $ref: '#/components/parameters/rspPropInclude'
+      responses:
+        '200':
+          description: VLAN bridge domain details returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VlanBridgeDomainResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteVlan
+      summary: Delete a Vlan Bridge Domain
+      description: Removes a VLAN bridge domain from the switch configuration. This operation also removes any associated SVI and port membership configurations.
+      tags:
+      - VLANs
+      parameters:
+      - name: vlanEncap
+        in: path
+        required: true
+        description: VLAN fabric encapsulation identifier (e.g., vlan-100)
+        schema:
+          type: string
+          pattern: ^vlan-\d+$
+      responses:
+        '200':
+          description: VLAN deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /class/l2BD.json:
+    get:
+      operationId: listVlans
+      summary: List All Vlan Bridge Domains
+      description: Returns all l2BD managed objects representing configured VLANs on the switch. Supports filtering by VLAN name, encapsulation, or administrative state.
+      tags:
+      - VLANs
+      parameters:
+      - $ref: '#/components/parameters/queryTargetFilter'
+      - $ref: '#/components/parameters/rspPropInclude'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          description: List of VLAN bridge domains returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VlanBridgeDomainListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /mo/sys/intf/svi-[{sviId}].json:
+    get:
+      operationId: getSviInterface
+      summary: Retrieve an Svi (vlan Interface) Configuration
+      description: Returns the configuration and operational state of a Switch Virtual Interface (SVI) identified by its VLAN ID (e.g., vlan100). SVIs provide Layer 3 routing capability for VLANs.
+      tags:
+      - VLANs
+      parameters:
+      - name: sviId
+        in: path
+        required: true
+        description: SVI identifier in the format vlan{id} (e.g., vlan100)
+        schema:
+          type: string
+          pattern: ^vlan\d+$
+          examples:
+          - vlan100
+      - $ref: '#/components/parameters/rspSubtree'
+      - $ref: '#/components/parameters/rspPropInclude'
+      responses:
+        '200':
+          description: SVI interface details returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SviInterfaceResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: configureSviInterface
+      summary: Create or Modify an Svi (vlan Interface)
+      description: Creates or modifies a Switch Virtual Interface (SVI) for Layer 3 routing on a VLAN. Requires the interface-vlan feature to be enabled (fmInterfaceVlan adminSt=enabled). Properties include admin state, description, MTU, bandwidth, MAC address, and medium type.
+      tags:
+      - VLANs
+      parameters:
+      - name: sviId
+        in: path
+        required: true
+        description: SVI identifier in the format vlan{id}
+        schema:
+          type: string
+          pattern: ^vlan\d+$
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SviIfPayload'
+            example:
+              sviIf:
+                attributes:
+                  id: vlan100
+                  adminSt: up
+                  descr: Production Gateway
+                  mtu: '9216'
+      responses:
+        '200':
+          description: SVI configured successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    SviIfPayload:
+      type: object
+      properties:
+        sviIf:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                id:
+                  type: string
+                  pattern: ^vlan\d+$
+                adminSt:
+                  type: string
+                  enum:
+                  - up
+                  - down
+                descr:
+                  type: string
+                mtu:
+                  type: string
+                bw:
+                  type: string
+                mac:
+                  type: string
+                medium:
+                  type: string
+                  enum:
+                  - broadcast
+                  - p2p
+          example: example_value
+    VlanBridgeDomainListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l2BD:
+                $ref: '#/components/schemas/L2BD'
+          example: []
+    ErrorResponse:
+      type: object
+      description: Error response from NX-API REST
+      properties:
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Numeric error code
+                      text:
+                        type: string
+                        description: Human-readable error message
+          example: []
+    BdEntityPayload:
+      type: object
+      properties:
+        bdEntity:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                properties:
+                  l2BD:
+                    $ref: '#/components/schemas/L2BD'
+          example: example_value
+    SviIf:
+      type: object
+      description: Switch Virtual Interface managed object for Layer 3 VLAN routing. DN format is sys/intf/svi-[{id}].
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              description: Distinguished name (e.g., sys/intf/svi-[vlan100])
+              examples:
+              - sys/intf/svi-[vlan100]
+            id:
+              type: string
+              description: SVI identifier in the format vlan{id}
+              pattern: ^vlan\d+$
+              examples:
+              - vlan100
+            adminSt:
+              type: string
+              description: Administrative state
+              enum:
+              - up
+              - down
+            operSt:
+              type: string
+              description: Operational state (read-only)
+            descr:
+              type: string
+              description: Interface description (max 254 characters)
+              maxLength: 254
+            mtu:
+              type: string
+              description: Maximum transmission unit (64-9216 bytes)
+              examples:
+              - '9216'
+            bw:
+              type: string
+              description: Administrative bandwidth (1-400000000 kbps)
+              examples:
+              - '100000'
+            mac:
+              type: string
+              description: MAC address override in MM:MM:MM:SS:SS:SS format
+            medium:
+              type: string
+              description: Port medium type
+              enum:
+              - broadcast
+              - p2p
+            autostate:
+              type: string
+              description: Whether autostate is enabled
+              enum:
+              - 'true'
+              - 'false'
+            modTs:
+              type: string
+              format: date-time
+              description: Last modification timestamp (read-only)
+          example: example_value
+    L2BD:
+      type: object
+      description: Layer 2 bridge domain managed object representing a VLAN. DN format is sys/bd/bd-[{fabEncap}].
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              description: Distinguished name (e.g., sys/bd/bd-[vlan-100])
+              examples:
+              - sys/bd/bd-[vlan-100]
+            fabEncap:
+              type: string
+              description: Fabric encapsulation in the format vlan-{id} or vxlan-{id}
+              pattern: ^(vlan|vxlan)-\d+$
+              examples:
+              - vlan-100
+            name:
+              type: string
+              description: VLAN name
+              maxLength: 32
+              examples:
+              - Production
+            pcTag:
+              type: string
+              description: Default classId for unknown unicast traffic
+              examples:
+              - '1'
+            adminSt:
+              type: string
+              description: Administrative state
+              enum:
+              - active
+              - suspend
+            operSt:
+              type: string
+              description: Operational state (read-only)
+            id:
+              type: string
+              description: Bridge domain numeric identifier (read-only)
+            modTs:
+              type: string
+              format: date-time
+              description: Last modification timestamp (read-only)
+          example: example_value
+    VlanBridgeDomainResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l2BD:
+                $ref: '#/components/schemas/L2BD'
+          example: []
+    SviInterfaceResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              sviIf:
+                $ref: '#/components/schemas/SviIf'
+          example: []
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
+          example: []
+  responses:
+    Forbidden:
+      description: Insufficient privileges - the authenticated user does not have RBAC permission for the requested operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Managed object not found - the specified DN does not exist in the Management Information Tree
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    page:
+      name: page
+      in: query
+      required: false
+      description: Page number for paginated class-level queries (0-indexed)
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    pageSize:
+      name: page-size
+      in: query
+      required: false
+      description: Number of objects to return per page for class-level queries
+      schema:
+        type: integer
+        minimum: 1
+        default: 50
+    queryTargetFilter:
+      name: query-target-filter
+      in: query
+      required: false
+      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
+      schema:
+        type: string
+    rspPropInclude:
+      name: rsp-prop-include
+      in: query
+      required: false
+      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
+      schema:
+        type: string
+        enum:
+        - all
+        - config-only
+        - set-config-only
+        default: all
+    rspSubtree:
+      name: rsp-subtree
+      in: query
+      required: false
+      description: Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree.
+      schema:
+        type: string
+        enum:
+        - 'no'
+        - children
+        - full
+        default: 'no'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: APIC-cookie
+      description: Session cookie obtained from the /api/aaaLogin endpoint. The cookie has a configurable idle timeout (default 600 seconds) and must be included in all subsequent requests.

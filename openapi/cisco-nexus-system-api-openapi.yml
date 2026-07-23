@@ -1,0 +1,237 @@
+openapi: 3.1.0
+info:
+  title: Cisco NX-API REST Authentication System API
+  description: RESTful API for programmatic access to Cisco Nexus 3000 and 9000 Series switches. NX-API REST exposes the NX-OS Data Management Engine (DME) object model over HTTP/HTTPS, enabling configuration management, operational state retrieval, and real-time event subscriptions using managed objects (MOs) organized in a hierarchical Management Information Tree (MIT). All objects are addressed by Distinguished Names (DNs) and support JSON and XML encodings.
+  version: 10.5.0
+  contact:
+    name: Cisco DevNet Support
+    url: https://developer.cisco.com/site/support/
+    email: support@cisco.com
+  license:
+    name: Cisco DevNet
+    url: https://developer.cisco.com/site/license/
+  x-documentation:
+  - title: NX-API REST SDK User Guide
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
+  - title: Nexus Model Reference
+    url: https://developer.cisco.com/docs/nexus-model/latest/
+  - title: NX-OS Programmability Guide
+    url: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/105x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-105x.html
+servers:
+- url: https://{switchIp}/api
+  description: Cisco Nexus switch NX-API REST endpoint
+  variables:
+    switchIp:
+      default: 192.168.1.1
+      description: Management IP address or hostname of the Nexus switch
+security:
+- cookieAuth: []
+tags:
+- name: System
+  description: Top-level system information and feature management via topSystem and fmEntity managed objects
+paths:
+  /mo/sys.json:
+    get:
+      operationId: getSystemInfo
+      summary: Retrieve Top-level System Information
+      description: Returns the topSystem managed object containing system-wide information including hostname, serial number, NX-OS version, uptime, and system state.
+      tags:
+      - System
+      parameters:
+      - $ref: '#/components/parameters/rspPropInclude'
+      responses:
+        '200':
+          description: System information returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopSystemResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: configureSystem
+      summary: Apply System-level Configuration
+      description: Applies configuration changes at the top system level. This endpoint accepts a topSystem payload with nested child objects for configuring interfaces (interfaceEntity), BGP (bgpEntity), features (fmEntity), and other subsystems in a single atomic transaction.
+      tags:
+      - System
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopSystemPayload'
+      responses:
+        '200':
+          description: Configuration applied successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /mo/sys/fm.json:
+    post:
+      operationId: configureFeatures
+      summary: Enable or Disable Nx-os Features
+      description: Manages NX-OS feature activation using the fmEntity container. Features include interface-vlan (fmInterfaceVlan), BGP (fmBgp), OSPF (fmOspf), LACP (fmLacp), and others. Each feature has an adminSt property that accepts enabled or disabled.
+      tags:
+      - System
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FmEntityPayload'
+            example:
+              fmEntity:
+                children:
+                - fmInterfaceVlan:
+                    attributes:
+                      adminSt: enabled
+                - fmBgp:
+                    attributes:
+                      adminSt: enabled
+      responses:
+        '200':
+          description: Feature configuration applied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    TopSystem:
+      type: object
+      description: Top-level system managed object. DN is sys.
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              examples:
+              - sys
+            name:
+              type: string
+              description: System hostname
+            serial:
+              type: string
+              description: Chassis serial number
+            version:
+              type: string
+              description: NX-OS software version
+            upTs:
+              type: string
+              format: date-time
+              description: System last boot timestamp
+            state:
+              type: string
+              description: System operational state
+          example: example_value
+    ErrorResponse:
+      type: object
+      description: Error response from NX-API REST
+      properties:
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Numeric error code
+                      text:
+                        type: string
+                        description: Human-readable error message
+          example: []
+    TopSystemPayload:
+      type: object
+      properties:
+        topSystem:
+          type: object
+          properties:
+            children:
+              type: array
+              description: Array of child subsystem configurations. Supports interfaceEntity, bgpEntity, fmEntity, bdEntity, and other top-level containers for atomic multi-subsystem configuration.
+              items:
+                type: object
+          example: example_value
+    TopSystemResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              topSystem:
+                $ref: '#/components/schemas/TopSystem'
+          example: []
+    FmEntityPayload:
+      type: object
+      properties:
+        fmEntity:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                description: Feature module objects such as fmInterfaceVlan, fmBgp, fmOspf, fmLacp, fmVpc, fmHsrp, fmVxlan, each with an attributes.adminSt property.
+          example: example_value
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
+          example: []
+  responses:
+    BadRequest:
+      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    rspPropInclude:
+      name: rsp-prop-include
+      in: query
+      required: false
+      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
+      schema:
+        type: string
+        enum:
+        - all
+        - config-only
+        - set-config-only
+        default: all
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: APIC-cookie
+      description: Session cookie obtained from the /api/aaaLogin endpoint. The cookie has a configurable idle timeout (default 600 seconds) and must be included in all subsequent requests.

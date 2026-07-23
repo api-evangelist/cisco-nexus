@@ -1,0 +1,199 @@
+openapi: 3.1.0
+info:
+  title: Cisco NX-API REST Authentication API
+  description: RESTful API for programmatic access to Cisco Nexus 3000 and 9000 Series switches. NX-API REST exposes the NX-OS Data Management Engine (DME) object model over HTTP/HTTPS, enabling configuration management, operational state retrieval, and real-time event subscriptions using managed objects (MOs) organized in a hierarchical Management Information Tree (MIT). All objects are addressed by Distinguished Names (DNs) and support JSON and XML encodings.
+  version: 10.5.0
+  contact:
+    name: Cisco DevNet Support
+    url: https://developer.cisco.com/site/support/
+    email: support@cisco.com
+  license:
+    name: Cisco DevNet
+    url: https://developer.cisco.com/site/license/
+  x-documentation:
+  - title: NX-API REST SDK User Guide
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
+  - title: Nexus Model Reference
+    url: https://developer.cisco.com/docs/nexus-model/latest/
+  - title: NX-OS Programmability Guide
+    url: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/105x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-105x.html
+servers:
+- url: https://{switchIp}/api
+  description: Cisco Nexus switch NX-API REST endpoint
+  variables:
+    switchIp:
+      default: 192.168.1.1
+      description: Management IP address or hostname of the Nexus switch
+security:
+- cookieAuth: []
+tags:
+- name: Authentication
+  description: Session authentication and token management via aaaLogin and aaaLogout
+paths:
+  /aaaLogin.json:
+    post:
+      operationId: authenticateUser
+      summary: Authenticate and Obtain Session Cookie
+      description: Authenticates a user against the NX-OS local or remote AAA database and returns a session cookie (APIC-cookie) used for subsequent API requests. The cookie has a configurable idle timeout (default 600 seconds).
+      tags:
+      - Authentication
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - aaaUser
+              properties:
+                aaaUser:
+                  type: object
+                  required:
+                  - attributes
+                  properties:
+                    attributes:
+                      type: object
+                      required:
+                      - name
+                      - pwd
+                      properties:
+                        name:
+                          type: string
+                          description: Username for authentication
+                          examples:
+                          - admin
+                        pwd:
+                          type: string
+                          format: password
+                          description: Password for authentication
+            example:
+              aaaUser:
+                attributes:
+                  name: admin
+                  pwd: Cisco123!
+      responses:
+        '200':
+          description: Authentication successful
+          headers:
+            Set-Cookie:
+              description: Session cookie (APIC-cookie) for subsequent requests
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AaaLoginResponse'
+        '401':
+          description: Authentication failed - invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /aaaLogout.json:
+    post:
+      operationId: logoutUser
+      summary: Terminate Authenticated Session
+      description: Ends the current authenticated session and invalidates the session cookie.
+      tags:
+      - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                aaaUser:
+                  type: object
+                  properties:
+                    attributes:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: Username of the session to terminate
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImDataResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
+          example: []
+    ErrorResponse:
+      type: object
+      description: Error response from NX-API REST
+      properties:
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Numeric error code
+                      text:
+                        type: string
+                        description: Human-readable error message
+          example: []
+    AaaLoginResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              aaaLogin:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        description: Authentication token (also set as cookie)
+                      refreshTimeoutSeconds:
+                        type: string
+                        description: Session idle timeout in seconds
+                      userName:
+                        type: string
+                        description: Authenticated username
+          example: []
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: APIC-cookie
+      description: Session cookie obtained from the /api/aaaLogin endpoint. The cookie has a configurable idle timeout (default 600 seconds) and must be included in all subsequent requests.
