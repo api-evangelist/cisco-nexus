@@ -1,0 +1,22 @@
+{
+  "provider": "cisco-nexus",
+  "sources": [
+    "cisco-nexus-authentication-api-openapi.yml",
+    "cisco-nexus-interfaces-api-openapi.yml",
+    "cisco-nexus-routing-api-openapi.yml",
+    "cisco-nexus-system-api-openapi.yml",
+    "cisco-nexus-vlans-api-openapi.yml"
+  ],
+  "outputs": [
+    "cisco-nexus-authentication-api-openapi.yml",
+    "cisco-nexus-interfaces-api-openapi.yml",
+    "cisco-nexus-routing-api-openapi.yml",
+    "cisco-nexus-system-api-openapi.yml",
+    "cisco-nexus-vlans-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
