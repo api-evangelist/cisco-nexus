@@ -380,6 +380,8 @@ apis:
   - type: APIReference
     url: https://developer.cisco.com/docs/nexus-model/latest/
 common:
+  - type: IssueTracker
+    url: https://github.com/YangModels/yang/issues
   - type: AgenticAccess
     url: agentic-access/cisco-nexus-agentic-access.yml
   - type: DomainSecurity
