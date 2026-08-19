@@ -1,0 +1,133 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cisco NX-API REST Authentication Interfaces API",
+    "version": "10.5.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "APIC-cookie",
+      "value": "{{APIC-cookie}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Interfaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Physical Interface Configuration and State",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/mo/sys/intf/phys-[:interfaceId].json",
+            "params": [
+              {
+                "name": "interfaceId",
+                "value": "",
+                "type": "path",
+                "description": "Physical interface identifier matching the output of show interface brief (e.g., eth1/1, eth1/2, eth2/1)"
+              },
+              {
+                "name": "query-target",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the scope of the query relative to the target DN. self returns the target MO only. children returns direct children. subtree returns the full subtree."
+              },
+              {
+                "name": "target-subtree-class",
+                "value": "",
+                "type": "query",
+                "description": "Filters subtree query results to only include objects of the specified class (e.g., rmonEtherStats, rmonIfHCIn)"
+              },
+              {
+                "name": "query-target-filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter expression using conditions like eq(property,\"value\"), ne(property,\"value\"), gt, lt, ge, le, wcard, and boolean operators and, or, not"
+              },
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              }
+            ]
+          },
+          "docs": "Returns the configuration and operational state of a specific physical Ethernet interface identified by its l1PhysIf distinguished name. Use the query-target parameter to retrieve child objects including counters and statistics (rmonEtherStats, rmonIfHCIn, rmonIfHCOut)."
+        },
+        {
+          "info": {
+            "name": "Configure a Physical Ethernet Interface",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/mo/sys/intf.json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or modifies the configuration of one or more physical Ethernet interfaces. The payload uses the interfaceEntity container with l1PhysIf child objects. Properties include administrative state, speed, duplex, MTU, layer mode, switchport mode, access VLAN, trunk VLANs, and description."
+        },
+        {
+          "info": {
+            "name": "List All Physical Interfaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/class/l1PhysIf.json",
+            "params": [
+              {
+                "name": "query-target-filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter expression using conditions like eq(property,\"value\"), ne(property,\"value\"), gt, lt, ge, le, wcard, and boolean operators and, or, not"
+              },
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Number of objects to return per page for class-level queries"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for paginated class-level queries (0-indexed)"
+              }
+            ]
+          },
+          "docs": "Returns all l1PhysIf managed objects on the switch via a class-level query. Supports filtering by property values and pagination. Each returned object includes the full DN and configured properties."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,348 @@
+{
+  "item": [
+    {
+      "id": "ea4e5e20-188c-4b29-97fa-309d9a0282ee",
+      "name": "Authentication",
+      "description": {
+        "content": "Session authentication and token management via aaaLogin and aaaLogout",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4bc27256-fd2b-4d66-8636-9383ce2ee851",
+          "name": "Authenticate and Obtain Session Cookie",
+          "request": {
+            "name": "Authenticate and Obtain Session Cookie",
+            "description": {
+              "content": "Authenticates a user against the NX-OS local or remote AAA database and returns a session cookie (APIC-cookie) used for subsequent API requests. The cookie has a configurable idle timeout (default 600 seconds).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "aaaLogin.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"aaaUser\": {\n    \"attributes\": {\n      \"name\": \"<string>\",\n      \"pwd\": \"<password>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2b6085f4-3b41-46f3-b89a-74b68f87716e",
+              "name": "Authentication successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "aaaLogin.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"aaaUser\": {\n    \"attributes\": {\n      \"name\": \"admin\",\n      \"pwd\": \"Cisco123!\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Session cookie (APIC-cookie) for subsequent requests",
+                  "key": "Set-Cookie",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64d4f083-d26c-416f-9d4d-78d76cc3b117",
+              "name": "Authentication failed - invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "aaaLogin.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"aaaUser\": {\n    \"attributes\": {\n      \"name\": \"admin\",\n      \"pwd\": \"Cisco123!\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ebea93b6-801e-4bc7-927e-332176944425",
+          "name": "Terminate Authenticated Session",
+          "request": {
+            "name": "Terminate Authenticated Session",
+            "description": {
+              "content": "Ends the current authenticated session and invalidates the session cookie.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "aaaLogout.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Management IP address or hostname of the Nexus switch",
+                  "type": "any",
+                  "value": "{{switchIp}}",
+                  "key": "switchIp"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"aaaUser\": {\n    \"attributes\": {\n      \"name\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a2da484d-a4cb-47ef-9281-11b9178b59f4",
+              "name": "Logout successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "aaaLogout.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Management IP address or hostname of the Nexus switch",
+                      "type": "any",
+                      "value": "{{switchIp}}",
+                      "key": "switchIp"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "APIC-cookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"aaaUser\": {\n    \"attributes\": {\n      \"name\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalCount\": \"example_value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Management IP address or hostname of the Nexus switch",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "192.168.1.1",
+      "key": "switchIp"
+    },
+    {
+      "type": "string",
+      "value": "https://{{switchIp}}/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "APIC-cookie"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "07d4885e-f13b-40f5-99a4-1ec1cda1b223",
+    "name": "Cisco NX-API REST Authentication API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "RESTful API for programmatic access to Cisco Nexus 3000 and 9000 Series switches. NX-API REST exposes the NX-OS Data Management Engine (DME) object model over HTTP/HTTPS, enabling configuration management, operational state retrieval, and real-time event subscriptions using managed objects (MOs) organized in a hierarchical Management Information Tree (MIT). All objects are addressed by Distinguished Names (DNs) and support JSON and XML encodings.\n\nContact Support:\n Name: Cisco DevNet Support\n Email: support@cisco.com",
+      "type": "text/plain"
+    }
+  }
+}

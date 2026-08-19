@@ -1,0 +1,128 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cisco NX-API REST Authentication Routing API",
+    "version": "10.5.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "APIC-cookie",
+      "value": "{{APIC-cookie}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Routing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create or Modify Ipv4 Static Routes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/mo/sys/ipv4/inst.json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Configures IPv4 static routes using the ipv4Inst container with ipv4Dom, ipv4Route, and ipv4Nexthop child objects. Routes are defined by destination prefix and one or more next-hop specifications including interface, address, VRF, preference, name, and tag."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Specific Ipv4 Static Route",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/mo/sys/ipv4/inst/dom-:vrfName/rt-[:prefix].json",
+            "params": [
+              {
+                "name": "vrfName",
+                "value": "",
+                "type": "path",
+                "description": "VRF name (use \"default\" for the global routing table)"
+              },
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "path",
+                "description": "IPv4 destination prefix in CIDR notation (e.g., 10.0.0.0/8)"
+              },
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              }
+            ]
+          },
+          "docs": "Returns the configuration of a specific IPv4 static route including all configured next-hops. The route is identified by VRF name and destination prefix."
+        },
+        {
+          "info": {
+            "name": "List All Ipv4 Static Routes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/class/ipv4Route.json",
+            "params": [
+              {
+                "name": "query-target-filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter expression using conditions like eq(property,\"value\"), ne(property,\"value\"), gt, lt, ge, le, wcard, and boolean operators and, or, not"
+              },
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              }
+            ]
+          },
+          "docs": "Returns all ipv4Route managed objects across all VRFs. Supports filtering by prefix, VRF, or route tag."
+        },
+        {
+          "info": {
+            "name": "Retrieve Full Bgp Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/mo/sys/bgp.json",
+            "params": [
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              }
+            ]
+          },
+          "docs": "Returns the complete BGP configuration tree including bgpEntity, bgpInst, all bgpDom domains, and bgpPeer neighbors. Use rsp-subtree=full to retrieve the entire hierarchy."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

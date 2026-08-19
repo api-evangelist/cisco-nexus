@@ -1,0 +1,182 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cisco NX-API REST Authentication VLANs API",
+    "version": "10.5.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "APIC-cookie",
+      "value": "{{APIC-cookie}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "VLANs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create or Modify a Vlan Bridge Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/mo/sys/bd.json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or modifies VLAN bridge domains using the bdEntity container with l2BD child objects. The fabEncap attribute specifies the VLAN ID in the format vlan-{id}. Supports VLAN naming and pcTag assignment."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Specific Vlan Bridge Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/mo/sys/bd/bd-[:vlanEncap].json",
+            "params": [
+              {
+                "name": "vlanEncap",
+                "value": "",
+                "type": "path",
+                "description": "VLAN fabric encapsulation identifier in the format vlan-{id} (e.g., vlan-100)"
+              },
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              }
+            ]
+          },
+          "docs": "Returns the configuration and state of a specific VLAN bridge domain identified by its fabric encapsulation (e.g., vlan-100). Use rsp-subtree=full to include child objects like VLAN member ports and statistics."
+        },
+        {
+          "info": {
+            "name": "Delete a Vlan Bridge Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{switchIp}/api/mo/sys/bd/bd-[:vlanEncap].json",
+            "params": [
+              {
+                "name": "vlanEncap",
+                "value": "",
+                "type": "path",
+                "description": "VLAN fabric encapsulation identifier (e.g., vlan-100)"
+              }
+            ]
+          },
+          "docs": "Removes a VLAN bridge domain from the switch configuration. This operation also removes any associated SVI and port membership configurations."
+        },
+        {
+          "info": {
+            "name": "List All Vlan Bridge Domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/class/l2BD.json",
+            "params": [
+              {
+                "name": "query-target-filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter expression using conditions like eq(property,\"value\"), ne(property,\"value\"), gt, lt, ge, le, wcard, and boolean operators and, or, not"
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              },
+              {
+                "name": "page-size",
+                "value": "",
+                "type": "query",
+                "description": "Number of objects to return per page for class-level queries"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for paginated class-level queries (0-indexed)"
+              }
+            ]
+          },
+          "docs": "Returns all l2BD managed objects representing configured VLANs on the switch. Supports filtering by VLAN name, encapsulation, or administrative state."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Svi (vlan Interface) Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/mo/sys/intf/svi-[:sviId].json",
+            "params": [
+              {
+                "name": "sviId",
+                "value": "",
+                "type": "path",
+                "description": "SVI identifier in the format vlan{id} (e.g., vlan100)"
+              },
+              {
+                "name": "rsp-subtree",
+                "value": "",
+                "type": "query",
+                "description": "Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree."
+              },
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              }
+            ]
+          },
+          "docs": "Returns the configuration and operational state of a Switch Virtual Interface (SVI) identified by its VLAN ID (e.g., vlan100). SVIs provide Layer 3 routing capability for VLANs."
+        },
+        {
+          "info": {
+            "name": "Create or Modify an Svi (vlan Interface)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/mo/sys/intf/svi-[:sviId].json",
+            "params": [
+              {
+                "name": "sviId",
+                "value": "",
+                "type": "path",
+                "description": "SVI identifier in the format vlan{id}"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or modifies a Switch Virtual Interface (SVI) for Layer 3 routing on a VLAN. Requires the interface-vlan feature to be enabled (fmInterfaceVlan adminSt=enabled). Properties include admin state, description, MTU, bandwidth, MAC address, and medium type."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,75 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cisco NX-API REST Authentication System API",
+    "version": "10.5.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "APIC-cookie",
+      "value": "{{APIC-cookie}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "System",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Top-level System Information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{switchIp}/api/mo/sys.json",
+            "params": [
+              {
+                "name": "rsp-prop-include",
+                "value": "",
+                "type": "query",
+                "description": "Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set."
+              }
+            ]
+          },
+          "docs": "Returns the topSystem managed object containing system-wide information including hostname, serial number, NX-OS version, uptime, and system state."
+        },
+        {
+          "info": {
+            "name": "Apply System-level Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/mo/sys.json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies configuration changes at the top system level. This endpoint accepts a topSystem payload with nested child objects for configuring interfaces (interfaceEntity), BGP (bgpEntity), features (fmEntity), and other subsystems in a single atomic transaction."
+        },
+        {
+          "info": {
+            "name": "Enable or Disable Nx-os Features",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{switchIp}/api/mo/sys/fm.json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Manages NX-OS feature activation using the fmEntity container. Features include interface-vlan (fmInterfaceVlan), BGP (fmBgp), OSPF (fmOspf), LACP (fmLacp), and others. Each feature has an adminSt property that accepts enabled or disabled."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
