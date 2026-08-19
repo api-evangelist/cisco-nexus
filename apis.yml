@@ -17,14 +17,14 @@ accessModel:
 image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
 url: https://developer.cisco.com/site/nexus/
 created: '2024'
-modified: '2026-05-19'
+modified: '2026-08-19'
 tags:
-  - Data Center
-  - Infrastructure
-  - Network Automation
-  - Networking
-  - SDN
-  - Switches
+- Data Center
+- Infrastructure
+- Network Automation
+- Networking
+- SDN
+- Switches
 apis:
 - name: Cisco NX-API CLI
   description: API that accepts show commands and configuration commands in CLI format.
@@ -69,9 +69,8 @@ apis:
     email: support@cisco.com
     url: https://developer.cisco.com/site/support/
 - name: Cisco Nexus Dashboard Fabric Controller API
-  description: >-
-    REST API for managing and automating Nexus and MDS fabrics including LAN, SAN, and IP Fabric for Media
-    deployments.
+  description: REST API for managing and automating Nexus and MDS fabrics including LAN, SAN, and IP Fabric for
+    Media deployments.
   image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
   humanURL: https://developer.cisco.com/docs/nexus-dashboard-fabric-controller/latest/
   baseURL: https://{nexus-dashboard}/appcenter/cisco/ndfc/api/v1
@@ -86,15 +85,13 @@ apis:
   - type: Documentation
     url: https://developer.cisco.com/docs/nexus-dashboard-fabric-controller/latest/
   - type: GettingStarted
-    url: >-
-      https://developer.cisco.com/docs/nexus-dashboard-fabric-controller/latest/getting-started/
+    url: https://developer.cisco.com/docs/nexus-dashboard-fabric-controller/latest/getting-started/
   contact:
   - FN: Cisco DevNet Support
     email: support@cisco.com
     url: https://developer.cisco.com/site/support/
 - name: Cisco Nexus Dashboard Orchestrator API
-  description: >-
-    API for multi-site orchestration of ACI, Cloud ACI, and DCNM fabrics with policy management and segmentation.
+  description: API for multi-site orchestration of ACI, Cloud ACI, and DCNM fabrics with policy management and segmentation.
   image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
   humanURL: https://developer.cisco.com/docs/nexus-dashboard-orchestrator/latest/
   baseURL: https://{nexus-dashboard}/appcenter/cisco/ndo/api/v1
@@ -114,8 +111,7 @@ apis:
     email: support@cisco.com
     url: https://developer.cisco.com/site/support/
 - name: Cisco Nexus Dashboard Insights API
-  description: >-
-    API for network analytics, telemetry, anomaly detection, and troubleshooting across data center fabrics.
+  description: API for network analytics, telemetry, anomaly detection, and troubleshooting across data center fabrics.
   image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
   humanURL: https://developer.cisco.com/docs/nexus-dashboard-insights/latest/
   baseURL: https://{nexus-dashboard}/appcenter/cisco/ndi/api/v1
@@ -175,12 +171,10 @@ apis:
     email: support@cisco.com
     url: https://developer.cisco.com/site/support/
 - name: Cisco NX-OS RESTCONF API
-  description: >-
-    HTTP-based protocol for configuring YANG-defined data on Nexus switches supporting XML and JSON payload
+  description: HTTP-based protocol for configuring YANG-defined data on Nexus switches supporting XML and JSON payload
     encodings.
   image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
-  humanURL: >-
-    https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/chapter-2.html
+  humanURL: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/chapter-2.html
   baseURL: https://{switch-ip}/restconf
   tags:
   - HTTP
@@ -189,18 +183,15 @@ apis:
   - YANG
   properties:
   - type: Documentation
-    url: >-
-      https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/chapter-2.html
+    url: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/chapter-2.html
   contact:
   - FN: Cisco DevNet Support
     email: support@cisco.com
     url: https://developer.cisco.com/site/support/
 - name: Cisco NX-OS gNMI/gRPC API
-  description: >-
-    gRPC Network Management Interface for streaming telemetry and configuration management on Nexus switches.
+  description: gRPC Network Management Interface for streaming telemetry and configuration management on Nexus switches.
   image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
-  humanURL: >-
-    https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/m-gnmi.html
+  humanURL: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/m-gnmi.html
   baseURL: grpc://{switch-ip}:50051
   tags:
   - gNMI
@@ -210,8 +201,7 @@ apis:
   - Telemetry
   properties:
   - type: Documentation
-    url: >-
-      https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/m-gnmi.html
+    url: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/m-gnmi.html
   - type: GitHubRepository
     url: https://github.com/CiscoDevNet/nx-telemetry-proto
   contact:
@@ -219,12 +209,10 @@ apis:
     email: support@cisco.com
     url: https://developer.cisco.com/site/support/
 - name: Cisco NX-OS Model-Driven Telemetry API
-  description: >-
-    Streaming telemetry interface for real-time operational data collection from Nexus switches using
+  description: Streaming telemetry interface for real-time operational data collection from Nexus switches using
     YANG models.
   image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
-  humanURL: >-
-    https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/102x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-release-102x/m-n9k-model-driven-telemetry-101x.html
+  humanURL: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/102x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-release-102x/m-n9k-model-driven-telemetry-101x.html
   baseURL: grpc://{switch-ip}:50051
   tags:
   - Dial-Out
@@ -234,19 +222,16 @@ apis:
   - YANG
   properties:
   - type: Documentation
-    url: >-
-      https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/102x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-release-102x/m-n9k-model-driven-telemetry-101x.html
+    url: https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/102x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-release-102x/m-n9k-model-driven-telemetry-101x.html
   contact:
   - FN: Cisco DevNet Support
     email: support@cisco.com
     url: https://developer.cisco.com/site/support/
 - name: Cisco NX-OS Python SDK API
-  description: >-
-    Python Software Development Kit for programmatic access to Nexus 9000 Series switch modules including
+  description: Python Software Development Kit for programmatic access to Nexus 9000 Series switch modules including
     interfaces, VLANs, ACLs, and routes.
   image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
-  humanURL: >-
-    https://developer.cisco.com/docs/nx-os/cisco-nexus-9000-series-python-sdk-user-guide-and-api-reference/
+  humanURL: https://developer.cisco.com/docs/nx-os/cisco-nexus-9000-series-python-sdk-user-guide-and-api-reference/
   baseURL: https://{switch-ip}
   tags:
   - Automation
@@ -255,8 +240,7 @@ apis:
   - SDK
   properties:
   - type: Documentation
-    url: >-
-      https://developer.cisco.com/docs/nx-os/cisco-nexus-9000-series-python-sdk-user-guide-and-api-reference/
+    url: https://developer.cisco.com/docs/nx-os/cisco-nexus-9000-series-python-sdk-user-guide-and-api-reference/
   - type: GitHubRepository
     url: https://github.com/CiscoDevNet/NX-SDK
   contact:
@@ -278,17 +262,14 @@ apis:
   - type: Authentication
     url: https://developer.cisco.com/docs/nx-os/#!authentication
   - type: SDKs
-    url: >-
-      https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
   - type: GettingStarted
-    url: >-
-      https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/getting-started-with-the-cisco-nexus-3000-and-9000-series-nx-api-rest-sdk/
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/getting-started-with-the-cisco-nexus-3000-and-9000-series-nx-api-rest-sdk/
   - type: APIReference
     url: https://developer.cisco.com/docs/nexus-model/latest/
 - aid: cisco-nexus:cisco-nexus-interfaces-api
   name: Cisco Nexus Dashboard Interfaces API
-  description: >-
-    Physical interface configuration and operational state using the l1PhysIf managed object class (DN
+  description: Physical interface configuration and operational state using the l1PhysIf managed object class (DN
     sys/intf/phys-[id])
   humanURL: https://developer.cisco.com/docs/nx-os/
   baseURL: https://{switch-ip}/api
@@ -302,17 +283,14 @@ apis:
   - type: Authentication
     url: https://developer.cisco.com/docs/nx-os/#!authentication
   - type: SDKs
-    url: >-
-      https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
   - type: GettingStarted
-    url: >-
-      https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/getting-started-with-the-cisco-nexus-3000-and-9000-series-nx-api-rest-sdk/
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/getting-started-with-the-cisco-nexus-3000-and-9000-series-nx-api-rest-sdk/
   - type: APIReference
     url: https://developer.cisco.com/docs/nexus-model/latest/
 - aid: cisco-nexus:cisco-nexus-routing-api
   name: Cisco Nexus Dashboard Routing API
-  description: >-
-    IPv4 and IPv6 static route configuration using ipv4Route/ipv6Route managed objects and BGP protocol
+  description: IPv4 and IPv6 static route configuration using ipv4Route/ipv6Route managed objects and BGP protocol
     management using bgpEntity hierarchy
   humanURL: https://developer.cisco.com/docs/nx-os/
   baseURL: https://{switch-ip}/api
@@ -326,17 +304,14 @@ apis:
   - type: Authentication
     url: https://developer.cisco.com/docs/nx-os/#!authentication
   - type: SDKs
-    url: >-
-      https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
   - type: GettingStarted
-    url: >-
-      https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/getting-started-with-the-cisco-nexus-3000-and-9000-series-nx-api-rest-sdk/
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/getting-started-with-the-cisco-nexus-3000-and-9000-series-nx-api-rest-sdk/
   - type: APIReference
     url: https://developer.cisco.com/docs/nexus-model/latest/
 - aid: cisco-nexus:cisco-nexus-system-api
   name: Cisco Nexus Dashboard System API
-  description: >-
-    Top-level system information and feature management via topSystem and fmEntity managed objects
+  description: Top-level system information and feature management via topSystem and fmEntity managed objects
   humanURL: https://developer.cisco.com/docs/nx-os/
   baseURL: https://{switch-ip}/api
   tags:
@@ -349,17 +324,14 @@ apis:
   - type: Authentication
     url: https://developer.cisco.com/docs/nx-os/#!authentication
   - type: SDKs
-    url: >-
-      https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
   - type: GettingStarted
-    url: >-
-      https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/getting-started-with-the-cisco-nexus-3000-and-9000-series-nx-api-rest-sdk/
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/getting-started-with-the-cisco-nexus-3000-and-9000-series-nx-api-rest-sdk/
   - type: APIReference
     url: https://developer.cisco.com/docs/nexus-model/latest/
 - aid: cisco-nexus:cisco-nexus-vlans-api
   name: Cisco Nexus Dashboard VLANs API
-  description: >-
-    VLAN bridge domain management using the l2BD managed object class (DN sys/bd/bd-[vlan-id]) and SVI
+  description: VLAN bridge domain management using the l2BD managed object class (DN sys/bd/bd-[vlan-id]) and SVI
     interface configuration using sviIf
   humanURL: https://developer.cisco.com/docs/nx-os/
   baseURL: https://{switch-ip}/api
@@ -373,93 +345,95 @@ apis:
   - type: Authentication
     url: https://developer.cisco.com/docs/nx-os/#!authentication
   - type: SDKs
-    url: >-
-      https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/
   - type: GettingStarted
-    url: >-
-      https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/getting-started-with-the-cisco-nexus-3000-and-9000-series-nx-api-rest-sdk/
+    url: https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/getting-started-with-the-cisco-nexus-3000-and-9000-series-nx-api-rest-sdk/
   - type: APIReference
     url: https://developer.cisco.com/docs/nexus-model/latest/
 common:
-  - type: IssueTracker
-    url: https://github.com/YangModels/yang/issues
-  - type: AgenticAccess
-    url: agentic-access/cisco-nexus-agentic-access.yml
-  - type: DomainSecurity
-    url: security/cisco-nexus-domain-security.yml
-  - type: Authentication
-    url: authentication/cisco-nexus-authentication.yml
-  - type: DeveloperPortal
-    url: https://developer.cisco.com/
-  - url: https://blogs.cisco.com/tag/nexus/feed
-    type: Blog
-  - type: GitHubOrganization
-    url: https://github.com/CiscoDevNet
-  - type: Training
-    url: https://developer.cisco.com/learning/labs/tags/Nexus/
-  - type: Sandbox
-    url: https://devnetsandbox.cisco.com/
-  - type: Support
-    url: https://developer.cisco.com/site/support/
-  - type: StatusPage
-    url: https://status.cisco.com/
-  - type: CodeExamples
-    url: https://developer.cisco.com/codeexchange/
-  - type: Features
-    data:
-      - name: DME Object Model REST API
-        description: >-
-          RESTful access to the NX-OS Data Management Engine object model for switch configuration and operational state
-          through managed objects.
-      - name: VLAN and SVI Management
-        description: >-
-          Create, modify, and delete VLAN bridge domains and Switch Virtual Interfaces for Layer 2 and Layer 3
-          networking.
-      - name: Interface Configuration
-        description: >-
-          Programmatically configure physical Ethernet interfaces including speed, duplex, MTU, switchport mode, and
-          VLAN assignment.
-      - name: BGP Routing Management
-        description: Configure and monitor BGP routing protocol including neighbors, route policies, and address families.
-      - name: Static Route Management
-        description: Create and manage IPv4 static routes across VRFs with next-hop specifications and route preferences.
-      - name: Feature Management
-        description: Enable and disable NX-OS features programmatically including interface-vlan, BGP, OSPF, and LACP.
-      - name: Streaming Telemetry
-        description: Real-time operational data collection using gNMI/gRPC and model-driven telemetry with YANG models.
-      - name: Multi-Site Orchestration
-        description: Unified policy management and orchestration across multiple ACI, Cloud ACI, and DCNM fabrics.
-  - type: UseCases
-    data:
-      - name: Data Center Network Automation
-        description: Automate switch configuration, VLAN provisioning, and routing changes across large-scale data center fabrics.
-      - name: Network Monitoring and Analytics
-        description: >-
-          Collect real-time telemetry data from Nexus switches for performance monitoring, anomaly detection, and
-          capacity planning.
-      - name: Multi-Site Fabric Management
-        description: Orchestrate network policies and connectivity across geographically distributed data center fabrics.
-      - name: Infrastructure as Code
-        description: >-
-          Define and manage network infrastructure configurations using YANG models, NETCONF, and RESTCONF for
-          version-controlled deployments.
-      - name: Compliance and Auditing
-        description: Programmatically verify switch configurations against security baselines and generate compliance reports.
-  - type: Integrations
-    data:
-      - name: Ansible
-        description: >-
-          Automate Nexus switch configuration using Ansible NX-OS modules and playbooks for declarative network
-          management.
-      - name: Terraform
-        description: Provision and manage Cisco ACI and Nexus infrastructure using the Terraform Cisco provider.
-      - name: Cisco ACI
-        description: Application Centric Infrastructure integration for policy-driven network automation with Nexus 9000 switches.
-      - name: Splunk
-        description: Forward NX-OS streaming telemetry and syslog data to Splunk for network analytics and SIEM integration.
-      - name: ServiceNow
-        description: Integrate Nexus Dashboard events and alerts with ServiceNow ITSM for automated incident management.
+- type: ParentCompany
+  url: https://apis.io/providers/cisco/
+  name: Cisco
+  x-relationship: product
+  x-generated-by: cisco-family:2026-08-19
+- type: IssueTracker
+  url: https://github.com/YangModels/yang/issues
+- type: AgenticAccess
+  url: agentic-access/cisco-nexus-agentic-access.yml
+- type: DomainSecurity
+  url: security/cisco-nexus-domain-security.yml
+- type: Authentication
+  url: authentication/cisco-nexus-authentication.yml
+- type: DeveloperPortal
+  url: https://developer.cisco.com/
+- url: https://blogs.cisco.com/tag/nexus/feed
+  type: Blog
+- type: GitHubOrganization
+  url: https://github.com/CiscoDevNet
+- type: Training
+  url: https://developer.cisco.com/learning/labs/tags/Nexus/
+- type: Sandbox
+  url: https://devnetsandbox.cisco.com/
+- type: Support
+  url: https://developer.cisco.com/site/support/
+- type: StatusPage
+  url: https://status.cisco.com/
+- type: CodeExamples
+  url: https://developer.cisco.com/codeexchange/
+- type: Features
+  data:
+  - name: DME Object Model REST API
+    description: RESTful access to the NX-OS Data Management Engine object model for switch configuration and operational
+      state through managed objects.
+  - name: VLAN and SVI Management
+    description: Create, modify, and delete VLAN bridge domains and Switch Virtual Interfaces for Layer 2 and Layer
+      3 networking.
+  - name: Interface Configuration
+    description: Programmatically configure physical Ethernet interfaces including speed, duplex, MTU, switchport
+      mode, and VLAN assignment.
+  - name: BGP Routing Management
+    description: Configure and monitor BGP routing protocol including neighbors, route policies, and address families.
+  - name: Static Route Management
+    description: Create and manage IPv4 static routes across VRFs with next-hop specifications and route preferences.
+  - name: Feature Management
+    description: Enable and disable NX-OS features programmatically including interface-vlan, BGP, OSPF, and LACP.
+  - name: Streaming Telemetry
+    description: Real-time operational data collection using gNMI/gRPC and model-driven telemetry with YANG models.
+  - name: Multi-Site Orchestration
+    description: Unified policy management and orchestration across multiple ACI, Cloud ACI, and DCNM fabrics.
+- type: UseCases
+  data:
+  - name: Data Center Network Automation
+    description: Automate switch configuration, VLAN provisioning, and routing changes across large-scale data center
+      fabrics.
+  - name: Network Monitoring and Analytics
+    description: Collect real-time telemetry data from Nexus switches for performance monitoring, anomaly detection,
+      and capacity planning.
+  - name: Multi-Site Fabric Management
+    description: Orchestrate network policies and connectivity across geographically distributed data center fabrics.
+  - name: Infrastructure as Code
+    description: Define and manage network infrastructure configurations using YANG models, NETCONF, and RESTCONF
+      for version-controlled deployments.
+  - name: Compliance and Auditing
+    description: Programmatically verify switch configurations against security baselines and generate compliance
+      reports.
+- type: Integrations
+  data:
+  - name: Ansible
+    description: Automate Nexus switch configuration using Ansible NX-OS modules and playbooks for declarative network
+      management.
+  - name: Terraform
+    description: Provision and manage Cisco ACI and Nexus infrastructure using the Terraform Cisco provider.
+  - name: Cisco ACI
+    description: Application Centric Infrastructure integration for policy-driven network automation with Nexus
+      9000 switches.
+  - name: Splunk
+    description: Forward NX-OS streaming telemetry and syslog data to Splunk for network analytics and SIEM integration.
+  - name: ServiceNow
+    description: Integrate Nexus Dashboard events and alerts with ServiceNow ITSM for automated incident management.
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
-    url: https://apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
+  url: https://apievangelist.com
+x-parent: cisco
+x-relationship: product
