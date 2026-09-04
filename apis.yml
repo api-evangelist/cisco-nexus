@@ -15,16 +15,17 @@ deliveryModel:
 specificationVersion: '0.23'
 accessModel:
   pricing: unknown
-  onboarding: self-serve
+  onboarding: unknown
   trial: false
   try_now: false
   public: false
-  label: Self-serve signup
-  confidence: high
+  label: Unknown
+  confidence: low
   source:
   - plans
   - authentication
-  generated: '2026-07-22'
+  - security
+  generated: '2026-09-03'
   method: derived
 image: https://www.cisco.com/c/en/us/products/switches/nexus-series-switches/index.jpg
 url: https://developer.cisco.com/site/nexus/
