@@ -371,6 +371,8 @@ apis:
   - type: APIReference
     url: https://developer.cisco.com/docs/nexus-model/latest/
 common:
+- type: Website
+  url: https://www.cisco.com/
 - type: ParentCompany
   url: https://apis.io/providers/cisco/
   name: Cisco
