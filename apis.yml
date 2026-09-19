@@ -73,6 +73,12 @@ apis:
   baseURL: https://{nexus-dashboard}/api/v1
   tags:
   - ACI
+  - Dashboards
+  - Fabric Controller
+  - Insights
+  - Orchestration
+  tags_raw:
+  - ACI
   - Dashboard
   - Fabric Controller
   - Insights
