@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Cisco NX-API REST Authentication System API
+  title: Cisco NX-API REST System API
   description: RESTful API for programmatic access to Cisco Nexus 3000 and 9000 Series switches. NX-API REST exposes the NX-OS Data Management Engine (DME) object model over HTTP/HTTPS, enabling configuration management, operational state retrieval, and real-time event subscriptions using managed objects (MOs) organized in a hierarchical Management Information Tree (MIT). All objects are addressed by Distinguished Names (DNs) and support JSON and XML encodings.
   version: 10.5.0
   contact:
@@ -106,7 +106,89 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  responses:
+    BadRequest:
+      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    rspPropInclude:
+      name: rsp-prop-include
+      in: query
+      required: false
+      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
+      schema:
+        type: string
+        enum:
+        - all
+        - config-only
+        - set-config-only
+        default: all
   schemas:
+    TopSystemPayload:
+      type: object
+      properties:
+        topSystem:
+          type: object
+          properties:
+            children:
+              type: array
+              description: Array of child subsystem configurations. Supports interfaceEntity, bgpEntity, fmEntity, bdEntity, and other top-level containers for atomic multi-subsystem configuration.
+              items:
+                type: object
+          example: example_value
+    TopSystemResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              topSystem:
+                $ref: '#/components/schemas/TopSystem'
+          example: []
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
+          example: []
+    ErrorResponse:
+      type: object
+      description: Error response from NX-API REST
+      properties:
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Numeric error code
+                      text:
+                        type: string
+                        description: Human-readable error message
+          example: []
     TopSystem:
       type: object
       description: Top-level system managed object. DN is sys.
@@ -135,54 +217,6 @@ components:
               type: string
               description: System operational state
           example: example_value
-    ErrorResponse:
-      type: object
-      description: Error response from NX-API REST
-      properties:
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              error:
-                type: object
-                properties:
-                  attributes:
-                    type: object
-                    properties:
-                      code:
-                        type: string
-                        description: Numeric error code
-                      text:
-                        type: string
-                        description: Human-readable error message
-          example: []
-    TopSystemPayload:
-      type: object
-      properties:
-        topSystem:
-          type: object
-          properties:
-            children:
-              type: array
-              description: Array of child subsystem configurations. Supports interfaceEntity, bgpEntity, fmEntity, bdEntity, and other top-level containers for atomic multi-subsystem configuration.
-              items:
-                type: object
-          example: example_value
-    TopSystemResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              topSystem:
-                $ref: '#/components/schemas/TopSystem'
-          example: []
     FmEntityPayload:
       type: object
       properties:
@@ -195,40 +229,6 @@ components:
                 type: object
                 description: Feature module objects such as fmInterfaceVlan, fmBgp, fmOspf, fmLacp, fmVpc, fmHsrp, fmVxlan, each with an attributes.adminSt property.
           example: example_value
-    ImDataResponse:
-      type: object
-      description: Standard NX-API REST response wrapper
-      properties:
-        totalCount:
-          type: string
-          description: Total number of managed objects in the response
-          example: example_value
-        imdata:
-          type: array
-          description: Array of managed object results
-          items:
-            type: object
-          example: []
-  responses:
-    BadRequest:
-      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-  parameters:
-    rspPropInclude:
-      name: rsp-prop-include
-      in: query
-      required: false
-      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
-      schema:
-        type: string
-        enum:
-        - all
-        - config-only
-        - set-config-only
-        default: all
   securitySchemes:
     cookieAuth:
       type: apiKey

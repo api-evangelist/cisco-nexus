@@ -1,11 +1,7 @@
 {
   "provider": "cisco-nexus",
   "sources": [
-    "cisco-nexus-authentication-api-openapi.yml",
-    "cisco-nexus-interfaces-api-openapi.yml",
-    "cisco-nexus-routing-api-openapi.yml",
-    "cisco-nexus-system-api-openapi.yml",
-    "cisco-nexus-vlans-api-openapi.yml"
+    "_original/cisco-nexus-nxapi-rest.yml"
   ],
   "outputs": [
     "cisco-nexus-authentication-api-openapi.yml",
@@ -17,6 +13,16 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "cisco-nexus-nxapi-rest.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "cisco-nexus-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cisco-nexus-interfaces-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cisco-nexus-routing-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cisco-nexus-system-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cisco-nexus-vlans-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
