@@ -126,105 +126,71 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  parameters:
-    targetSubtreeClass:
-      name: target-subtree-class
-      in: query
-      required: false
-      description: Filters subtree query results to only include objects of the specified class (e.g., rmonEtherStats, rmonIfHCIn)
-      schema:
-        type: string
-    rspPropInclude:
-      name: rsp-prop-include
-      in: query
-      required: false
-      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
-      schema:
-        type: string
-        enum:
-        - all
-        - config-only
-        - set-config-only
-        default: all
-    queryTarget:
-      name: query-target
-      in: query
-      required: false
-      description: Specifies the scope of the query relative to the target DN. self returns the target MO only. children returns direct children. subtree returns the full subtree.
-      schema:
-        type: string
-        enum:
-        - self
-        - children
-        - subtree
-        default: self
-    queryTargetFilter:
-      name: query-target-filter
-      in: query
-      required: false
-      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
-      schema:
-        type: string
-    pageSize:
-      name: page-size
-      in: query
-      required: false
-      description: Number of objects to return per page for class-level queries
-      schema:
-        type: integer
-        minimum: 1
-        default: 50
-    page:
-      name: page
-      in: query
-      required: false
-      description: Page number for paginated class-level queries (0-indexed)
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
-    rspSubtree:
-      name: rsp-subtree
-      in: query
-      required: false
-      description: Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree.
-      schema:
-        type: string
-        enum:
-        - 'no'
-        - children
-        - full
-        default: 'no'
-    interfaceId:
-      name: interfaceId
-      in: path
-      required: true
-      description: Physical interface identifier matching the output of show interface brief (e.g., eth1/1, eth1/2, eth2/1)
-      schema:
-        type: string
-        pattern: ^eth\d+/\d+(/\d+)?$
-        examples:
-        - eth1/1
-  responses:
-    BadRequest:
-      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: Insufficient privileges - the authenticated user does not have RBAC permission for the requested operation
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Managed object not found - the specified DN does not exist in the Management Information Tree
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    PhysicalInterfaceListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l1PhysIf:
+                $ref: '#/components/schemas/L1PhysIf'
+          example: []
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
+          example: []
+    InterfaceEntityPayload:
+      type: object
+      properties:
+        interfaceEntity:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                properties:
+                  l1PhysIf:
+                    $ref: '#/components/schemas/L1PhysIf'
+          example: example_value
+    ErrorResponse:
+      type: object
+      description: Error response from NX-API REST
+      properties:
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Numeric error code
+                      text:
+                        type: string
+                        description: Human-readable error message
+          example: []
     L1PhysIf:
       type: object
       description: Layer 1 physical interface managed object representing a physical Ethernet port on a Nexus switch. DN format is sys/intf/phys-[{id}].
@@ -340,70 +306,104 @@ components:
               l1PhysIf:
                 $ref: '#/components/schemas/L1PhysIf'
           example: []
-    InterfaceEntityPayload:
-      type: object
-      properties:
-        interfaceEntity:
-          type: object
-          properties:
-            children:
-              type: array
-              items:
-                type: object
-                properties:
-                  l1PhysIf:
-                    $ref: '#/components/schemas/L1PhysIf'
-          example: example_value
-    ImDataResponse:
-      type: object
-      description: Standard NX-API REST response wrapper
-      properties:
-        totalCount:
-          type: string
-          description: Total number of managed objects in the response
-          example: example_value
-        imdata:
-          type: array
-          description: Array of managed object results
-          items:
-            type: object
-          example: []
-    ErrorResponse:
-      type: object
-      description: Error response from NX-API REST
-      properties:
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              error:
-                type: object
-                properties:
-                  attributes:
-                    type: object
-                    properties:
-                      code:
-                        type: string
-                        description: Numeric error code
-                      text:
-                        type: string
-                        description: Human-readable error message
-          example: []
-    PhysicalInterfaceListResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              l1PhysIf:
-                $ref: '#/components/schemas/L1PhysIf'
-          example: []
+  parameters:
+    queryTargetFilter:
+      name: query-target-filter
+      in: query
+      required: false
+      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
+      schema:
+        type: string
+    interfaceId:
+      name: interfaceId
+      in: path
+      required: true
+      description: Physical interface identifier matching the output of show interface brief (e.g., eth1/1, eth1/2, eth2/1)
+      schema:
+        type: string
+        pattern: ^eth\d+/\d+(/\d+)?$
+        examples:
+        - eth1/1
+    pageSize:
+      name: page-size
+      in: query
+      required: false
+      description: Number of objects to return per page for class-level queries
+      schema:
+        type: integer
+        minimum: 1
+        default: 50
+    rspPropInclude:
+      name: rsp-prop-include
+      in: query
+      required: false
+      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
+      schema:
+        type: string
+        enum:
+        - all
+        - config-only
+        - set-config-only
+        default: all
+    rspSubtree:
+      name: rsp-subtree
+      in: query
+      required: false
+      description: Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree.
+      schema:
+        type: string
+        enum:
+        - 'no'
+        - children
+        - full
+        default: 'no'
+    queryTarget:
+      name: query-target
+      in: query
+      required: false
+      description: Specifies the scope of the query relative to the target DN. self returns the target MO only. children returns direct children. subtree returns the full subtree.
+      schema:
+        type: string
+        enum:
+        - self
+        - children
+        - subtree
+        default: self
+    targetSubtreeClass:
+      name: target-subtree-class
+      in: query
+      required: false
+      description: Filters subtree query results to only include objects of the specified class (e.g., rmonEtherStats, rmonIfHCIn)
+      schema:
+        type: string
+    page:
+      name: page
+      in: query
+      required: false
+      description: Page number for paginated class-level queries (0-indexed)
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+  responses:
+    NotFound:
+      description: Managed object not found - the specified DN does not exist in the Management Information Tree
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient privileges - the authenticated user does not have RBAC permission for the requested operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     cookieAuth:
       type: apiKey

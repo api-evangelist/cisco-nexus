@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Cisco NX-API REST VLA Ns API
+  title: Cisco NX-API REST VLANs API
   description: RESTful API for programmatic access to Cisco Nexus 3000 and 9000 Series switches. NX-API REST exposes the NX-OS Data Management Engine (DME) object model over HTTP/HTTPS, enabling configuration management, operational state retrieval, and real-time event subscriptions using managed objects (MOs) organized in a hierarchical Management Information Tree (MIT). All objects are addressed by Distinguished Names (DNs) and support JSON and XML encodings.
   version: 10.5.0
   contact:
@@ -219,6 +219,56 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  parameters:
+    queryTargetFilter:
+      name: query-target-filter
+      in: query
+      required: false
+      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
+      schema:
+        type: string
+    pageSize:
+      name: page-size
+      in: query
+      required: false
+      description: Number of objects to return per page for class-level queries
+      schema:
+        type: integer
+        minimum: 1
+        default: 50
+    rspPropInclude:
+      name: rsp-prop-include
+      in: query
+      required: false
+      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
+      schema:
+        type: string
+        enum:
+        - all
+        - config-only
+        - set-config-only
+        default: all
+    rspSubtree:
+      name: rsp-subtree
+      in: query
+      required: false
+      description: Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree.
+      schema:
+        type: string
+        enum:
+        - 'no'
+        - children
+        - full
+        default: 'no'
+    page:
+      name: page
+      in: query
+      required: false
+      description: Page number for paginated class-level queries (0-indexed)
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
   schemas:
     SviIfPayload:
       type: object
@@ -251,6 +301,130 @@ components:
                   - broadcast
                   - p2p
           example: example_value
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
+          example: []
+    SviInterfaceResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              sviIf:
+                $ref: '#/components/schemas/SviIf'
+          example: []
+    L2BD:
+      type: object
+      description: Layer 2 bridge domain managed object representing a VLAN. DN format is sys/bd/bd-[{fabEncap}].
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              description: Distinguished name (e.g., sys/bd/bd-[vlan-100])
+              examples:
+              - sys/bd/bd-[vlan-100]
+            fabEncap:
+              type: string
+              description: Fabric encapsulation in the format vlan-{id} or vxlan-{id}
+              pattern: ^(vlan|vxlan)-\d+$
+              examples:
+              - vlan-100
+            name:
+              type: string
+              description: VLAN name
+              maxLength: 32
+              examples:
+              - Production
+            pcTag:
+              type: string
+              description: Default classId for unknown unicast traffic
+              examples:
+              - '1'
+            adminSt:
+              type: string
+              description: Administrative state
+              enum:
+              - active
+              - suspend
+            operSt:
+              type: string
+              description: Operational state (read-only)
+            id:
+              type: string
+              description: Bridge domain numeric identifier (read-only)
+            modTs:
+              type: string
+              format: date-time
+              description: Last modification timestamp (read-only)
+          example: example_value
+    VlanBridgeDomainResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l2BD:
+                $ref: '#/components/schemas/L2BD'
+          example: []
+    ErrorResponse:
+      type: object
+      description: Error response from NX-API REST
+      properties:
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Numeric error code
+                      text:
+                        type: string
+                        description: Human-readable error message
+          example: []
+    VlanBridgeDomainListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l2BD:
+                $ref: '#/components/schemas/L2BD'
+          example: []
     SviIf:
       type: object
       description: Switch Virtual Interface managed object for Layer 3 VLAN routing. DN format is sys/intf/svi-[{id}].
@@ -312,130 +486,6 @@ components:
               format: date-time
               description: Last modification timestamp (read-only)
           example: example_value
-    L2BD:
-      type: object
-      description: Layer 2 bridge domain managed object representing a VLAN. DN format is sys/bd/bd-[{fabEncap}].
-      properties:
-        attributes:
-          type: object
-          properties:
-            dn:
-              type: string
-              description: Distinguished name (e.g., sys/bd/bd-[vlan-100])
-              examples:
-              - sys/bd/bd-[vlan-100]
-            fabEncap:
-              type: string
-              description: Fabric encapsulation in the format vlan-{id} or vxlan-{id}
-              pattern: ^(vlan|vxlan)-\d+$
-              examples:
-              - vlan-100
-            name:
-              type: string
-              description: VLAN name
-              maxLength: 32
-              examples:
-              - Production
-            pcTag:
-              type: string
-              description: Default classId for unknown unicast traffic
-              examples:
-              - '1'
-            adminSt:
-              type: string
-              description: Administrative state
-              enum:
-              - active
-              - suspend
-            operSt:
-              type: string
-              description: Operational state (read-only)
-            id:
-              type: string
-              description: Bridge domain numeric identifier (read-only)
-            modTs:
-              type: string
-              format: date-time
-              description: Last modification timestamp (read-only)
-          example: example_value
-    VlanBridgeDomainResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              l2BD:
-                $ref: '#/components/schemas/L2BD'
-          example: []
-    ImDataResponse:
-      type: object
-      description: Standard NX-API REST response wrapper
-      properties:
-        totalCount:
-          type: string
-          description: Total number of managed objects in the response
-          example: example_value
-        imdata:
-          type: array
-          description: Array of managed object results
-          items:
-            type: object
-          example: []
-    ErrorResponse:
-      type: object
-      description: Error response from NX-API REST
-      properties:
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              error:
-                type: object
-                properties:
-                  attributes:
-                    type: object
-                    properties:
-                      code:
-                        type: string
-                        description: Numeric error code
-                      text:
-                        type: string
-                        description: Human-readable error message
-          example: []
-    VlanBridgeDomainListResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              l2BD:
-                $ref: '#/components/schemas/L2BD'
-          example: []
-    SviInterfaceResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              sviIf:
-                $ref: '#/components/schemas/SviIf'
-          example: []
     BdEntityPayload:
       type: object
       properties:
@@ -451,14 +501,14 @@ components:
                     $ref: '#/components/schemas/L2BD'
           example: example_value
   responses:
-    BadRequest:
-      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
+    NotFound:
+      description: Managed object not found - the specified DN does not exist in the Management Information Tree
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Managed object not found - the specified DN does not exist in the Management Information Tree
+    BadRequest:
+      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
       content:
         application/json:
           schema:
@@ -469,56 +519,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-  parameters:
-    rspPropInclude:
-      name: rsp-prop-include
-      in: query
-      required: false
-      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
-      schema:
-        type: string
-        enum:
-        - all
-        - config-only
-        - set-config-only
-        default: all
-    queryTargetFilter:
-      name: query-target-filter
-      in: query
-      required: false
-      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
-      schema:
-        type: string
-    rspSubtree:
-      name: rsp-subtree
-      in: query
-      required: false
-      description: Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree.
-      schema:
-        type: string
-        enum:
-        - 'no'
-        - children
-        - full
-        default: 'no'
-    pageSize:
-      name: page-size
-      in: query
-      required: false
-      description: Number of objects to return per page for class-level queries
-      schema:
-        type: integer
-        minimum: 1
-        default: 50
-    page:
-      name: page
-      in: query
-      required: false
-      description: Page number for paginated class-level queries (0-indexed)
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
   securitySchemes:
     cookieAuth:
       type: apiKey

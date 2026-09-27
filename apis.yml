@@ -1,16 +1,21 @@
 name: Cisco Nexus Dashboard
 description: APIs for managing and monitoring Cisco Nexus data center switches and network infrastructure.
 deliveryModel:
-  model: unknown
+  model: library
+  license_evidence:
+    not_product:
+    - ciscodevnet/nx-sdk
+    - ciscodevnet/nx-telemetry-proto
+    - yangmodels/yang
   open_source: unknown
   commercial: false
   callable_host: false
-  label: Delivery model not determined — needs a product licence on record
+  label: Library · distributed through package registries, no callable service
   confidence: low
   source:
   - openapi
-  - repository-unlicensed
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 specificationVersion: '0.23'
 accessModel:
@@ -32,7 +37,7 @@ url: https://developer.cisco.com/site/nexus/
 created: '2024'
 modified: '2026-08-19'
 tags:
-- Data-Center
+- Data Center
 - Infrastructure
 - Network Automation
 - Networking
@@ -45,6 +50,7 @@ tags_raw:
 - Networking
 - SDN
 - Switches
+- Data-Center
 apis:
 - name: Cisco NX-API CLI
   description: API that accepts show commands and configuration commands in CLI format.

@@ -155,197 +155,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    BgpEntityResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              bgpEntity:
-                $ref: '#/components/schemas/BgpEntity'
-          example: []
-    Ipv4Route:
-      type: object
-      description: IPv4 static route managed object. DN format is sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}].
-      properties:
-        attributes:
-          type: object
-          properties:
-            dn:
-              type: string
-              description: Distinguished name
-              examples:
-              - sys/ipv4/inst/dom-default/rt-[10.0.0.0/8]
-            prefix:
-              type: string
-              description: Destination IPv4 prefix in CIDR notation
-              format: ipv4-network
-              examples:
-              - 10.0.0.0/8
-          example: example_value
-        children:
-          type: array
-          description: Child next-hop objects
-          items:
-            $ref: '#/components/schemas/Ipv4Nexthop'
-          example: []
-    Ipv4RouteListResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              ipv4Route:
-                $ref: '#/components/schemas/Ipv4Route'
-          example: []
-    ImDataResponse:
-      type: object
-      description: Standard NX-API REST response wrapper
-      properties:
-        totalCount:
-          type: string
-          description: Total number of managed objects in the response
-          example: example_value
-        imdata:
-          type: array
-          description: Array of managed object results
-          items:
-            type: object
-          example: []
-    ErrorResponse:
-      type: object
-      description: Error response from NX-API REST
-      properties:
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              error:
-                type: object
-                properties:
-                  attributes:
-                    type: object
-                    properties:
-                      code:
-                        type: string
-                        description: Numeric error code
-                      text:
-                        type: string
-                        description: Human-readable error message
-          example: []
-    BgpPeer:
-      type: object
-      description: BGP peer (neighbor) managed object. DN format is sys/bgp/inst/dom-{name}/peer-{addr}.
-      properties:
-        bgpPeer:
-          type: object
-          properties:
-            attributes:
-              type: object
-              properties:
-                addr:
-                  type: string
-                  description: BGP neighbor IP address
-                  format: ipv4
-                  examples:
-                  - 192.168.1.2
-                asn:
-                  type: string
-                  description: Remote peer autonomous system number
-                  examples:
-                  - '65001'
-                passwdType:
-                  type: string
-                  description: Password encryption type (0=cleartext, 3=3DES, 6=AES, 7=Vigenere)
-                  enum:
-                  - '0'
-                  - '3'
-                  - '6'
-                  - '7'
-                password:
-                  type: string
-                  description: Neighbor authentication password
-                  format: password
-                srcIf:
-                  type: string
-                  description: Source interface for BGP session
-                  examples:
-                  - lo0
-                adminSt:
-                  type: string
-                  description: Administrative state (shutdown/no shutdown)
-                  enum:
-                  - enabled
-                  - disabled
-          example: example_value
-    Ipv4RouteResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              ipv4Route:
-                $ref: '#/components/schemas/Ipv4Route'
-          example: []
-    BgpEntity:
-      type: object
-      description: Top-level BGP entity managed object. DN is sys/bgp.
-      properties:
-        attributes:
-          type: object
-          properties:
-            dn:
-              type: string
-              examples:
-              - sys/bgp
-            adminSt:
-              type: string
-              enum:
-              - enabled
-              - disabled
-          example: example_value
-        children:
-          type: array
-          items:
-            $ref: '#/components/schemas/BgpInst'
-          example: []
-    BgpInst:
-      type: object
-      description: BGP instance managed object containing AS number and domain configuration. DN is sys/bgp/inst.
-      properties:
-        bgpInst:
-          type: object
-          properties:
-            attributes:
-              type: object
-              properties:
-                asn:
-                  type: string
-                  description: BGP autonomous system number (supports 2-byte and 4-byte ASN formats including dot notation)
-                  examples:
-                  - '65000'
-                  - '65000.1'
-            children:
-              type: array
-              items:
-                $ref: '#/components/schemas/BgpDom'
-          example: example_value
     BgpDom:
       type: object
       description: BGP domain (VRF) managed object. DN format is sys/bgp/inst/dom-{name}.
@@ -372,6 +181,20 @@ components:
               items:
                 $ref: '#/components/schemas/BgpPeer'
           example: example_value
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
+          example: []
     Ipv4Nexthop:
       type: object
       description: IPv4 next-hop specification for a static route. DN format is sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}]/nh-[{nhIf}]-addr-[{nhAddr}]-vrf-[{nhVrf}].
@@ -421,6 +244,88 @@ components:
                   - ''
                   - deleted
           example: example_value
+    Ipv4RouteListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              ipv4Route:
+                $ref: '#/components/schemas/Ipv4Route'
+          example: []
+    BgpInst:
+      type: object
+      description: BGP instance managed object containing AS number and domain configuration. DN is sys/bgp/inst.
+      properties:
+        bgpInst:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                asn:
+                  type: string
+                  description: BGP autonomous system number (supports 2-byte and 4-byte ASN formats including dot notation)
+                  examples:
+                  - '65000'
+                  - '65000.1'
+            children:
+              type: array
+              items:
+                $ref: '#/components/schemas/BgpDom'
+          example: example_value
+    ErrorResponse:
+      type: object
+      description: Error response from NX-API REST
+      properties:
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Numeric error code
+                      text:
+                        type: string
+                        description: Human-readable error message
+          example: []
+    Ipv4Route:
+      type: object
+      description: IPv4 static route managed object. DN format is sys/ipv4/inst/dom-{vrfName}/rt-[{prefix}].
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              description: Distinguished name
+              examples:
+              - sys/ipv4/inst/dom-default/rt-[10.0.0.0/8]
+            prefix:
+              type: string
+              description: Destination IPv4 prefix in CIDR notation
+              format: ipv4-network
+              examples:
+              - 10.0.0.0/8
+          example: example_value
+        children:
+          type: array
+          description: Child next-hop objects
+          items:
+            $ref: '#/components/schemas/Ipv4Nexthop'
+          example: []
     Ipv4InstPayload:
       type: object
       properties:
@@ -460,7 +365,109 @@ components:
                                         type: string
                                         format: ipv4
           example: example_value
+    BgpEntity:
+      type: object
+      description: Top-level BGP entity managed object. DN is sys/bgp.
+      properties:
+        attributes:
+          type: object
+          properties:
+            dn:
+              type: string
+              examples:
+              - sys/bgp
+            adminSt:
+              type: string
+              enum:
+              - enabled
+              - disabled
+          example: example_value
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/BgpInst'
+          example: []
+    BgpEntityResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              bgpEntity:
+                $ref: '#/components/schemas/BgpEntity'
+          example: []
+    Ipv4RouteResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              ipv4Route:
+                $ref: '#/components/schemas/Ipv4Route'
+          example: []
+    BgpPeer:
+      type: object
+      description: BGP peer (neighbor) managed object. DN format is sys/bgp/inst/dom-{name}/peer-{addr}.
+      properties:
+        bgpPeer:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                addr:
+                  type: string
+                  description: BGP neighbor IP address
+                  format: ipv4
+                  examples:
+                  - 192.168.1.2
+                asn:
+                  type: string
+                  description: Remote peer autonomous system number
+                  examples:
+                  - '65001'
+                passwdType:
+                  type: string
+                  description: Password encryption type (0=cleartext, 3=3DES, 6=AES, 7=Vigenere)
+                  enum:
+                  - '0'
+                  - '3'
+                  - '6'
+                  - '7'
+                password:
+                  type: string
+                  description: Neighbor authentication password
+                  format: password
+                srcIf:
+                  type: string
+                  description: Source interface for BGP session
+                  examples:
+                  - lo0
+                adminSt:
+                  type: string
+                  description: Administrative state (shutdown/no shutdown)
+                  enum:
+                  - enabled
+                  - disabled
+          example: example_value
   parameters:
+    queryTargetFilter:
+      name: query-target-filter
+      in: query
+      required: false
+      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
+      schema:
+        type: string
     rspPropInclude:
       name: rsp-prop-include
       in: query
@@ -473,13 +480,6 @@ components:
         - config-only
         - set-config-only
         default: all
-    queryTargetFilter:
-      name: query-target-filter
-      in: query
-      required: false
-      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
-      schema:
-        type: string
     rspSubtree:
       name: rsp-subtree
       in: query
@@ -493,14 +493,14 @@ components:
         - full
         default: 'no'
   responses:
-    BadRequest:
-      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
+    NotFound:
+      description: Managed object not found - the specified DN does not exist in the Management Information Tree
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Managed object not found - the specified DN does not exist in the Management Information Tree
+    BadRequest:
+      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
       content:
         application/json:
           schema:

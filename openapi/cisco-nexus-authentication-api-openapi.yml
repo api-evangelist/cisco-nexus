@@ -128,28 +128,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      description: Error response from NX-API REST
-      properties:
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              error:
-                type: object
-                properties:
-                  attributes:
-                    type: object
-                    properties:
-                      code:
-                        type: string
-                        description: Numeric error code
-                      text:
-                        type: string
-                        description: Human-readable error message
-          example: []
     ImDataResponse:
       type: object
       description: Standard NX-API REST response wrapper
@@ -190,6 +168,28 @@ components:
                       userName:
                         type: string
                         description: Authenticated username
+          example: []
+    ErrorResponse:
+      type: object
+      description: Error response from NX-API REST
+      properties:
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Numeric error code
+                      text:
+                        type: string
+                        description: Human-readable error message
           example: []
   securitySchemes:
     cookieAuth:
