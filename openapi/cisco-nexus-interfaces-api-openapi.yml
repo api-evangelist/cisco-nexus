@@ -127,7 +127,7 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    PhysicalInterfaceListResponse:
+    PhysicalInterfaceResponse:
       type: object
       properties:
         totalCount:
@@ -169,6 +169,20 @@ components:
                   l1PhysIf:
                     $ref: '#/components/schemas/L1PhysIf'
           example: example_value
+    PhysicalInterfaceListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l1PhysIf:
+                $ref: '#/components/schemas/L1PhysIf'
+          example: []
     ErrorResponse:
       type: object
       description: Error response from NX-API REST
@@ -292,26 +306,55 @@ components:
               format: date-time
               description: Last modification timestamp (read-only)
           example: example_value
-    PhysicalInterfaceResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              l1PhysIf:
-                $ref: '#/components/schemas/L1PhysIf'
-          example: []
   parameters:
+    queryTarget:
+      name: query-target
+      in: query
+      required: false
+      description: Specifies the scope of the query relative to the target DN. self returns the target MO only. children returns direct children. subtree returns the full subtree.
+      schema:
+        type: string
+        enum:
+        - self
+        - children
+        - subtree
+        default: self
+    rspSubtree:
+      name: rsp-subtree
+      in: query
+      required: false
+      description: Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree.
+      schema:
+        type: string
+        enum:
+        - 'no'
+        - children
+        - full
+        default: 'no'
     queryTargetFilter:
       name: query-target-filter
       in: query
       required: false
       description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
+      schema:
+        type: string
+    rspPropInclude:
+      name: rsp-prop-include
+      in: query
+      required: false
+      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
+      schema:
+        type: string
+        enum:
+        - all
+        - config-only
+        - set-config-only
+        default: all
+    targetSubtreeClass:
+      name: target-subtree-class
+      in: query
+      required: false
+      description: Filters subtree query results to only include objects of the specified class (e.g., rmonEtherStats, rmonIfHCIn)
       schema:
         type: string
     interfaceId:
@@ -333,49 +376,6 @@ components:
         type: integer
         minimum: 1
         default: 50
-    rspPropInclude:
-      name: rsp-prop-include
-      in: query
-      required: false
-      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
-      schema:
-        type: string
-        enum:
-        - all
-        - config-only
-        - set-config-only
-        default: all
-    rspSubtree:
-      name: rsp-subtree
-      in: query
-      required: false
-      description: Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree.
-      schema:
-        type: string
-        enum:
-        - 'no'
-        - children
-        - full
-        default: 'no'
-    queryTarget:
-      name: query-target
-      in: query
-      required: false
-      description: Specifies the scope of the query relative to the target DN. self returns the target MO only. children returns direct children. subtree returns the full subtree.
-      schema:
-        type: string
-        enum:
-        - self
-        - children
-        - subtree
-        default: self
-    targetSubtreeClass:
-      name: target-subtree-class
-      in: query
-      required: false
-      description: Filters subtree query results to only include objects of the specified class (e.g., rmonEtherStats, rmonIfHCIn)
-      schema:
-        type: string
     page:
       name: page
       in: query

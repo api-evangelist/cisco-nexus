@@ -219,88 +219,21 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  parameters:
-    queryTargetFilter:
-      name: query-target-filter
-      in: query
-      required: false
-      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
-      schema:
-        type: string
-    pageSize:
-      name: page-size
-      in: query
-      required: false
-      description: Number of objects to return per page for class-level queries
-      schema:
-        type: integer
-        minimum: 1
-        default: 50
-    rspPropInclude:
-      name: rsp-prop-include
-      in: query
-      required: false
-      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
-      schema:
-        type: string
-        enum:
-        - all
-        - config-only
-        - set-config-only
-        default: all
-    rspSubtree:
-      name: rsp-subtree
-      in: query
-      required: false
-      description: Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree.
-      schema:
-        type: string
-        enum:
-        - 'no'
-        - children
-        - full
-        default: 'no'
-    page:
-      name: page
-      in: query
-      required: false
-      description: Page number for paginated class-level queries (0-indexed)
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
   schemas:
-    SviIfPayload:
+    VlanBridgeDomainListResponse:
       type: object
       properties:
-        sviIf:
-          type: object
-          properties:
-            attributes:
-              type: object
-              properties:
-                id:
-                  type: string
-                  pattern: ^vlan\d+$
-                adminSt:
-                  type: string
-                  enum:
-                  - up
-                  - down
-                descr:
-                  type: string
-                mtu:
-                  type: string
-                bw:
-                  type: string
-                mac:
-                  type: string
-                medium:
-                  type: string
-                  enum:
-                  - broadcast
-                  - p2p
+        totalCount:
+          type: string
           example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l2BD:
+                $ref: '#/components/schemas/L2BD'
+          example: []
     ImDataResponse:
       type: object
       description: Standard NX-API REST response wrapper
@@ -314,20 +247,6 @@ components:
           description: Array of managed object results
           items:
             type: object
-          example: []
-    SviInterfaceResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              sviIf:
-                $ref: '#/components/schemas/SviIf'
           example: []
     L2BD:
       type: object
@@ -375,6 +294,51 @@ components:
               format: date-time
               description: Last modification timestamp (read-only)
           example: example_value
+    SviIfPayload:
+      type: object
+      properties:
+        sviIf:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                id:
+                  type: string
+                  pattern: ^vlan\d+$
+                adminSt:
+                  type: string
+                  enum:
+                  - up
+                  - down
+                descr:
+                  type: string
+                mtu:
+                  type: string
+                bw:
+                  type: string
+                mac:
+                  type: string
+                medium:
+                  type: string
+                  enum:
+                  - broadcast
+                  - p2p
+          example: example_value
+    BdEntityPayload:
+      type: object
+      properties:
+        bdEntity:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                properties:
+                  l2BD:
+                    $ref: '#/components/schemas/L2BD'
+          example: example_value
     VlanBridgeDomainResponse:
       type: object
       properties:
@@ -388,6 +352,20 @@ components:
             properties:
               l2BD:
                 $ref: '#/components/schemas/L2BD'
+          example: []
+    SviInterfaceResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              sviIf:
+                $ref: '#/components/schemas/SviIf'
           example: []
     ErrorResponse:
       type: object
@@ -410,20 +388,6 @@ components:
                       text:
                         type: string
                         description: Human-readable error message
-          example: []
-    VlanBridgeDomainListResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              l2BD:
-                $ref: '#/components/schemas/L2BD'
           example: []
     SviIf:
       type: object
@@ -486,20 +450,56 @@ components:
               format: date-time
               description: Last modification timestamp (read-only)
           example: example_value
-    BdEntityPayload:
-      type: object
-      properties:
-        bdEntity:
-          type: object
-          properties:
-            children:
-              type: array
-              items:
-                type: object
-                properties:
-                  l2BD:
-                    $ref: '#/components/schemas/L2BD'
-          example: example_value
+  parameters:
+    rspSubtree:
+      name: rsp-subtree
+      in: query
+      required: false
+      description: Controls the depth of child objects returned in the response. no returns the target MO only. children includes direct children. full includes the complete subtree.
+      schema:
+        type: string
+        enum:
+        - 'no'
+        - children
+        - full
+        default: 'no'
+    queryTargetFilter:
+      name: query-target-filter
+      in: query
+      required: false
+      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
+      schema:
+        type: string
+    rspPropInclude:
+      name: rsp-prop-include
+      in: query
+      required: false
+      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
+      schema:
+        type: string
+        enum:
+        - all
+        - config-only
+        - set-config-only
+        default: all
+    pageSize:
+      name: page-size
+      in: query
+      required: false
+      description: Number of objects to return per page for class-level queries
+      schema:
+        type: integer
+        minimum: 1
+        default: 50
+    page:
+      name: page
+      in: query
+      required: false
+      description: Page number for paginated class-level queries (0-indexed)
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
   responses:
     NotFound:
       description: Managed object not found - the specified DN does not exist in the Management Information Tree

@@ -167,20 +167,6 @@ components:
                         type: string
                         description: Human-readable error message
           example: []
-    TopSystemResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              topSystem:
-                $ref: '#/components/schemas/TopSystem'
-          example: []
     TopSystem:
       type: object
       description: Top-level system managed object. DN is sys.
@@ -209,6 +195,20 @@ components:
               type: string
               description: System operational state
           example: example_value
+    TopSystemResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              topSystem:
+                $ref: '#/components/schemas/TopSystem'
+          example: []
   parameters:
     rspPropInclude:
       name: rsp-prop-include
