@@ -107,20 +107,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    ImDataResponse:
-      type: object
-      description: Standard NX-API REST response wrapper
-      properties:
-        totalCount:
-          type: string
-          description: Total number of managed objects in the response
-          example: example_value
-        imdata:
-          type: array
-          description: Array of managed object results
-          items:
-            type: object
-          example: []
     FmEntityPayload:
       type: object
       properties:
@@ -132,18 +118,6 @@ components:
               items:
                 type: object
                 description: Feature module objects such as fmInterfaceVlan, fmBgp, fmOspf, fmLacp, fmVpc, fmHsrp, fmVxlan, each with an attributes.adminSt property.
-          example: example_value
-    TopSystemPayload:
-      type: object
-      properties:
-        topSystem:
-          type: object
-          properties:
-            children:
-              type: array
-              description: Array of child subsystem configurations. Supports interfaceEntity, bgpEntity, fmEntity, bdEntity, and other top-level containers for atomic multi-subsystem configuration.
-              items:
-                type: object
           example: example_value
     ErrorResponse:
       type: object
@@ -166,6 +140,20 @@ components:
                       text:
                         type: string
                         description: Human-readable error message
+          example: []
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
           example: []
     TopSystem:
       type: object
@@ -194,6 +182,18 @@ components:
             state:
               type: string
               description: System operational state
+          example: example_value
+    TopSystemPayload:
+      type: object
+      properties:
+        topSystem:
+          type: object
+          properties:
+            children:
+              type: array
+              description: Array of child subsystem configurations. Supports interfaceEntity, bgpEntity, fmEntity, bdEntity, and other top-level containers for atomic multi-subsystem configuration.
+              items:
+                type: object
           example: example_value
     TopSystemResponse:
       type: object

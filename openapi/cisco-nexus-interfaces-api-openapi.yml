@@ -126,63 +126,26 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  responses:
+    NotFound:
+      description: Managed object not found - the specified DN does not exist in the Management Information Tree
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient privileges - the authenticated user does not have RBAC permission for the requested operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    PhysicalInterfaceResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              l1PhysIf:
-                $ref: '#/components/schemas/L1PhysIf'
-          example: []
-    ImDataResponse:
-      type: object
-      description: Standard NX-API REST response wrapper
-      properties:
-        totalCount:
-          type: string
-          description: Total number of managed objects in the response
-          example: example_value
-        imdata:
-          type: array
-          description: Array of managed object results
-          items:
-            type: object
-          example: []
-    InterfaceEntityPayload:
-      type: object
-      properties:
-        interfaceEntity:
-          type: object
-          properties:
-            children:
-              type: array
-              items:
-                type: object
-                properties:
-                  l1PhysIf:
-                    $ref: '#/components/schemas/L1PhysIf'
-          example: example_value
-    PhysicalInterfaceListResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              l1PhysIf:
-                $ref: '#/components/schemas/L1PhysIf'
-          example: []
     ErrorResponse:
       type: object
       description: Error response from NX-API REST
@@ -204,6 +167,20 @@ components:
                       text:
                         type: string
                         description: Human-readable error message
+          example: []
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
           example: []
     L1PhysIf:
       type: object
@@ -306,19 +283,56 @@ components:
               format: date-time
               description: Last modification timestamp (read-only)
           example: example_value
+    InterfaceEntityPayload:
+      type: object
+      properties:
+        interfaceEntity:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                properties:
+                  l1PhysIf:
+                    $ref: '#/components/schemas/L1PhysIf'
+          example: example_value
+    PhysicalInterfaceListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l1PhysIf:
+                $ref: '#/components/schemas/L1PhysIf'
+          example: []
+    PhysicalInterfaceResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l1PhysIf:
+                $ref: '#/components/schemas/L1PhysIf'
+          example: []
   parameters:
-    queryTarget:
-      name: query-target
+    queryTargetFilter:
+      name: query-target-filter
       in: query
       required: false
-      description: Specifies the scope of the query relative to the target DN. self returns the target MO only. children returns direct children. subtree returns the full subtree.
+      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
       schema:
         type: string
-        enum:
-        - self
-        - children
-        - subtree
-        default: self
     rspSubtree:
       name: rsp-subtree
       in: query
@@ -331,32 +345,6 @@ components:
         - children
         - full
         default: 'no'
-    queryTargetFilter:
-      name: query-target-filter
-      in: query
-      required: false
-      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
-      schema:
-        type: string
-    rspPropInclude:
-      name: rsp-prop-include
-      in: query
-      required: false
-      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
-      schema:
-        type: string
-        enum:
-        - all
-        - config-only
-        - set-config-only
-        default: all
-    targetSubtreeClass:
-      name: target-subtree-class
-      in: query
-      required: false
-      description: Filters subtree query results to only include objects of the specified class (e.g., rmonEtherStats, rmonIfHCIn)
-      schema:
-        type: string
     interfaceId:
       name: interfaceId
       in: path
@@ -376,6 +364,37 @@ components:
         type: integer
         minimum: 1
         default: 50
+    rspPropInclude:
+      name: rsp-prop-include
+      in: query
+      required: false
+      description: Controls which properties are included in the response. all returns all properties. config-only returns only configurable properties. set-config-only returns only properties that have been explicitly set.
+      schema:
+        type: string
+        enum:
+        - all
+        - config-only
+        - set-config-only
+        default: all
+    targetSubtreeClass:
+      name: target-subtree-class
+      in: query
+      required: false
+      description: Filters subtree query results to only include objects of the specified class (e.g., rmonEtherStats, rmonIfHCIn)
+      schema:
+        type: string
+    queryTarget:
+      name: query-target
+      in: query
+      required: false
+      description: Specifies the scope of the query relative to the target DN. self returns the target MO only. children returns direct children. subtree returns the full subtree.
+      schema:
+        type: string
+        enum:
+        - self
+        - children
+        - subtree
+        default: self
     page:
       name: page
       in: query
@@ -385,25 +404,6 @@ components:
         type: integer
         minimum: 0
         default: 0
-  responses:
-    NotFound:
-      description: Managed object not found - the specified DN does not exist in the Management Information Tree
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: Insufficient privileges - the authenticated user does not have RBAC permission for the requested operation
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     cookieAuth:
       type: apiKey
