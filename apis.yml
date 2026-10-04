@@ -383,6 +383,9 @@ apis:
   - type: APIReference
     url: https://developer.cisco.com/docs/nexus-model/latest/
 common:
+- type: CapabilityMap
+  url: capabilities/cisco-nexus-capability-edges.yml
+  name: Cisco Nexus Dashboard Business Capability Map
 - type: Website
   url: https://www.cisco.com/
 - type: ParentCompany
