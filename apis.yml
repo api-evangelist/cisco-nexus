@@ -383,6 +383,12 @@ apis:
   - type: APIReference
     url: https://developer.cisco.com/docs/nexus-model/latest/
 common:
+- type: Plans
+  url: plans/cisco-nexus-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/cisco-nexus-rate-limits.yml
+- type: FinOps
+  url: finops/cisco-nexus-finops.yml
 - type: CapabilityMap
   url: capabilities/cisco-nexus-capability-edges.yml
   name: Cisco Nexus Dashboard Business Capability Map
