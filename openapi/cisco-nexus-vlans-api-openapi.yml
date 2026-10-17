@@ -219,76 +219,7 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  responses:
-    NotFound:
-      description: Managed object not found - the specified DN does not exist in the Management Information Tree
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: Insufficient privileges - the authenticated user does not have RBAC permission for the requested operation
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    ErrorResponse:
-      type: object
-      description: Error response from NX-API REST
-      properties:
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              error:
-                type: object
-                properties:
-                  attributes:
-                    type: object
-                    properties:
-                      code:
-                        type: string
-                        description: Numeric error code
-                      text:
-                        type: string
-                        description: Human-readable error message
-          example: []
-    ImDataResponse:
-      type: object
-      description: Standard NX-API REST response wrapper
-      properties:
-        totalCount:
-          type: string
-          description: Total number of managed objects in the response
-          example: example_value
-        imdata:
-          type: array
-          description: Array of managed object results
-          items:
-            type: object
-          example: []
-    VlanBridgeDomainListResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              l2BD:
-                $ref: '#/components/schemas/L2BD'
-          example: []
     L2BD:
       type: object
       description: Layer 2 bridge domain managed object representing a VLAN. DN format is sys/bd/bd-[{fabEncap}].
@@ -335,6 +266,101 @@ components:
               format: date-time
               description: Last modification timestamp (read-only)
           example: example_value
+    VlanBridgeDomainListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              l2BD:
+                $ref: '#/components/schemas/L2BD'
+          example: []
+    SviIfPayload:
+      type: object
+      properties:
+        sviIf:
+          type: object
+          properties:
+            attributes:
+              type: object
+              properties:
+                id:
+                  type: string
+                  pattern: ^vlan\d+$
+                adminSt:
+                  type: string
+                  enum:
+                  - up
+                  - down
+                descr:
+                  type: string
+                mtu:
+                  type: string
+                bw:
+                  type: string
+                mac:
+                  type: string
+                medium:
+                  type: string
+                  enum:
+                  - broadcast
+                  - p2p
+          example: example_value
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
+          example: []
+    BdEntityPayload:
+      type: object
+      properties:
+        bdEntity:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                properties:
+                  l2BD:
+                    $ref: '#/components/schemas/L2BD'
+          example: example_value
+    ErrorResponse:
+      type: object
+      description: Error response from NX-API REST
+      properties:
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  attributes:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Numeric error code
+                      text:
+                        type: string
+                        description: Human-readable error message
+          example: []
     VlanBridgeDomainResponse:
       type: object
       properties:
@@ -348,6 +374,20 @@ components:
             properties:
               l2BD:
                 $ref: '#/components/schemas/L2BD'
+          example: []
+    SviInterfaceResponse:
+      type: object
+      properties:
+        totalCount:
+          type: string
+          example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              sviIf:
+                $ref: '#/components/schemas/SviIf'
           example: []
     SviIf:
       type: object
@@ -410,73 +450,26 @@ components:
               format: date-time
               description: Last modification timestamp (read-only)
           example: example_value
-    BdEntityPayload:
-      type: object
-      properties:
-        bdEntity:
-          type: object
-          properties:
-            children:
-              type: array
-              items:
-                type: object
-                properties:
-                  l2BD:
-                    $ref: '#/components/schemas/L2BD'
-          example: example_value
-    SviInterfaceResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              sviIf:
-                $ref: '#/components/schemas/SviIf'
-          example: []
-    SviIfPayload:
-      type: object
-      properties:
-        sviIf:
-          type: object
-          properties:
-            attributes:
-              type: object
-              properties:
-                id:
-                  type: string
-                  pattern: ^vlan\d+$
-                adminSt:
-                  type: string
-                  enum:
-                  - up
-                  - down
-                descr:
-                  type: string
-                mtu:
-                  type: string
-                bw:
-                  type: string
-                mac:
-                  type: string
-                medium:
-                  type: string
-                  enum:
-                  - broadcast
-                  - p2p
-          example: example_value
+  responses:
+    NotFound:
+      description: Managed object not found - the specified DN does not exist in the Management Information Tree
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient privileges - the authenticated user does not have RBAC permission for the requested operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   parameters:
-    queryTargetFilter:
-      name: query-target-filter
-      in: query
-      required: false
-      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
-      schema:
-        type: string
     rspSubtree:
       name: rsp-subtree
       in: query
@@ -489,6 +482,15 @@ components:
         - children
         - full
         default: 'no'
+    pageSize:
+      name: page-size
+      in: query
+      required: false
+      description: Number of objects to return per page for class-level queries
+      schema:
+        type: integer
+        minimum: 1
+        default: 50
     rspPropInclude:
       name: rsp-prop-include
       in: query
@@ -501,15 +503,13 @@ components:
         - config-only
         - set-config-only
         default: all
-    pageSize:
-      name: page-size
+    queryTargetFilter:
+      name: query-target-filter
       in: query
       required: false
-      description: Number of objects to return per page for class-level queries
+      description: Filter expression using conditions like eq(property,"value"), ne(property,"value"), gt, lt, ge, le, wcard, and boolean operators and, or, not
       schema:
-        type: integer
-        minimum: 1
-        default: 50
+        type: string
     page:
       name: page
       in: query

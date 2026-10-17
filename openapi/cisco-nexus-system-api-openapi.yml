@@ -107,18 +107,34 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    FmEntityPayload:
+    ImDataResponse:
+      type: object
+      description: Standard NX-API REST response wrapper
+      properties:
+        totalCount:
+          type: string
+          description: Total number of managed objects in the response
+          example: example_value
+        imdata:
+          type: array
+          description: Array of managed object results
+          items:
+            type: object
+          example: []
+    TopSystemResponse:
       type: object
       properties:
-        fmEntity:
-          type: object
-          properties:
-            children:
-              type: array
-              items:
-                type: object
-                description: Feature module objects such as fmInterfaceVlan, fmBgp, fmOspf, fmLacp, fmVpc, fmHsrp, fmVxlan, each with an attributes.adminSt property.
+        totalCount:
+          type: string
           example: example_value
+        imdata:
+          type: array
+          items:
+            type: object
+            properties:
+              topSystem:
+                $ref: '#/components/schemas/TopSystem'
+          example: []
     ErrorResponse:
       type: object
       description: Error response from NX-API REST
@@ -141,20 +157,30 @@ components:
                         type: string
                         description: Human-readable error message
           example: []
-    ImDataResponse:
+    TopSystemPayload:
       type: object
-      description: Standard NX-API REST response wrapper
       properties:
-        totalCount:
-          type: string
-          description: Total number of managed objects in the response
+        topSystem:
+          type: object
+          properties:
+            children:
+              type: array
+              description: Array of child subsystem configurations. Supports interfaceEntity, bgpEntity, fmEntity, bdEntity, and other top-level containers for atomic multi-subsystem configuration.
+              items:
+                type: object
           example: example_value
-        imdata:
-          type: array
-          description: Array of managed object results
-          items:
-            type: object
-          example: []
+    FmEntityPayload:
+      type: object
+      properties:
+        fmEntity:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                description: Feature module objects such as fmInterfaceVlan, fmBgp, fmOspf, fmLacp, fmVpc, fmHsrp, fmVxlan, each with an attributes.adminSt property.
+          example: example_value
     TopSystem:
       type: object
       description: Top-level system managed object. DN is sys.
@@ -183,32 +209,13 @@ components:
               type: string
               description: System operational state
           example: example_value
-    TopSystemPayload:
-      type: object
-      properties:
-        topSystem:
-          type: object
-          properties:
-            children:
-              type: array
-              description: Array of child subsystem configurations. Supports interfaceEntity, bgpEntity, fmEntity, bdEntity, and other top-level containers for atomic multi-subsystem configuration.
-              items:
-                type: object
-          example: example_value
-    TopSystemResponse:
-      type: object
-      properties:
-        totalCount:
-          type: string
-          example: example_value
-        imdata:
-          type: array
-          items:
-            type: object
-            properties:
-              topSystem:
-                $ref: '#/components/schemas/TopSystem'
-          example: []
+  responses:
+    BadRequest:
+      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   parameters:
     rspPropInclude:
       name: rsp-prop-include
@@ -222,13 +229,6 @@ components:
         - config-only
         - set-config-only
         default: all
-  responses:
-    BadRequest:
-      description: Invalid request - malformed payload, invalid property values, or unsupported query parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     cookieAuth:
       type: apiKey
