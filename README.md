@@ -1,4 +1,4 @@
-# Cisco Nexus Dashboard (cisco-nexus)
+# Cisco Nexus Dashboard
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,302 +66,249 @@
 
 APIs for managing and monitoring Cisco Nexus data center switches and network infrastructure.
 
-**APIs.json:** [https://developer.cisco.com/site/nexus/](https://developer.cisco.com/site/nexus/)
+**Areas:** Data Center · Infrastructure · Network Automation · Networking · SDN · Switches
+
+## Cisco Nexus Dashboard on APIs.io
+
+Everything profiled for Cisco Nexus Dashboard is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/cisco-nexus/](https://apis.io/providers/cisco-nexus/)** — or go straight to one of the APIs or properties below.
+
+### APIs (16)
+
+- [Cisco NX-API CLI](https://apis.io/apis/cisco-nexus/cisco-nx-api-cli/) — API that accepts show commands and configuration commands in CLI format.
+- [Cisco Nexus Dashboard REST API](https://apis.io/apis/cisco-nexus/cisco-nexus-dashboard-rest-api/) — Unified API for Nexus Dashboard Insights, Orchestrator, and Fabric Controller.
+- [Cisco Nexus Dashboard Fabric Controller API](https://apis.io/apis/cisco-nexus/cisco-nexus-dashboard-fabric-controller-api/) — REST API for managing and automating Nexus and MDS fabrics including LAN, SAN, and IP Fabric for Media deployments.
+- [Cisco Nexus Dashboard Orchestrator API](https://apis.io/apis/cisco-nexus/cisco-nexus-dashboard-orchestrator-api/) — API for multi-site orchestration of ACI, Cloud ACI, and DCNM fabrics with policy management and segmentation.
+- [Cisco Nexus Dashboard Insights API](https://apis.io/apis/cisco-nexus/cisco-nexus-dashboard-insights-api/) — API for network analytics, telemetry, anomaly detection, and troubleshooting across data center fabrics.
+- [Cisco DCNM REST API](https://apis.io/apis/cisco-nexus/cisco-dcnm-rest-api/) — Data Center Network Manager API for managing Nexus fabric deployments.
+- [Cisco NETCONF/YANG API](https://apis.io/apis/cisco-nexus/cisco-netconfyang-api/) — Model-driven API using YANG data models for Nexus devices.
+- [Cisco NX-OS RESTCONF API](https://apis.io/apis/cisco-nexus/cisco-nx-os-restconf-api/) — HTTP-based protocol for configuring YANG-defined data on Nexus switches supporting XML and JSON payload encodings.
+- [Cisco NX-OS gNMI/gRPC API](https://apis.io/apis/cisco-nexus/cisco-nx-os-gnmigrpc-api/) — gRPC Network Management Interface for streaming telemetry and configuration management on Nexus switches.
+- [Cisco NX-OS Model-Driven Telemetry API](https://apis.io/apis/cisco-nexus/cisco-nx-os-model-driven-telemetry-api/) — Streaming telemetry interface for real-time operational data collection from Nexus switches using YANG models.
+- [Cisco NX-OS Python SDK API](https://apis.io/apis/cisco-nexus/cisco-nx-os-python-sdk-api/) — Python Software Development Kit for programmatic access to Nexus 9000 Series switch modules including interfaces, VLANs, ACLs, and routes.
+- [Cisco Nexus Dashboard Authentication API](https://apis.io/apis/cisco-nexus/cisco-nexus-authentication-api/) — Session authentication and token management via aaaLogin and aaaLogout
+- [Cisco Nexus Dashboard Interfaces API](https://apis.io/apis/cisco-nexus/cisco-nexus-interfaces-api/) — Physical interface configuration and operational state using the l1PhysIf managed object class (DN sys/intf/phys-[id])
+- [Cisco Nexus Dashboard Routing API](https://apis.io/apis/cisco-nexus/cisco-nexus-routing-api/) — IPv4 and IPv6 static route configuration using ipv4Route/ipv6Route managed objects and BGP protocol management using bgpEntity hierarchy
+- [Cisco Nexus Dashboard System API](https://apis.io/apis/cisco-nexus/cisco-nexus-system-api/) — Top-level system information and feature management via topSystem and fmEntity managed objects
+- [Cisco Nexus Dashboard VLANs API](https://apis.io/apis/cisco-nexus/cisco-nexus-vlans-api/) — VLAN bridge domain management using the l2BD managed object class (DN sys/bd/bd-[vlan-id]) and SVI interface configuration using sviIf
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Cisco Nexus Agentic Access](https://apis.io/agentic-access/cisco-nexus/cisco-nexus-agentic-access/)
+
+#### JSON Schema (57)
+
+The data models the API reads and writes.
+
+- [AaaLoginResponse](https://apis.io/schemas/cisco-nexus/cisco-nexus-aaaloginresponse/)
+- [BdEntityPayload](https://apis.io/schemas/cisco-nexus/cisco-nexus-bdentitypayload/)
+- [BgpDom](https://apis.io/schemas/cisco-nexus/cisco-nexus-bgpdom/)
+- [BgpEntity](https://apis.io/schemas/cisco-nexus/cisco-nexus-bgpentity/)
+- [BgpEntityResponse](https://apis.io/schemas/cisco-nexus/cisco-nexus-bgpentityresponse/)
+- [BgpInst](https://apis.io/schemas/cisco-nexus/cisco-nexus-bgpinst/)
+- [BgpPeer](https://apis.io/schemas/cisco-nexus/cisco-nexus-bgppeer/)
+- [ErrorResponse](https://apis.io/schemas/cisco-nexus/cisco-nexus-errorresponse/)
+- [FmEntityPayload](https://apis.io/schemas/cisco-nexus/cisco-nexus-fmentitypayload/)
+- [ImDataResponse](https://apis.io/schemas/cisco-nexus/cisco-nexus-imdataresponse/)
+- [Cisco Nexus NX-API REST Interface Schema](https://apis.io/schemas/cisco-nexus/cisco-nexus-interface/)
+- [InterfaceEntityPayload](https://apis.io/schemas/cisco-nexus/cisco-nexus-interfaceentitypayload/)
+- [Ipv4InstPayload](https://apis.io/schemas/cisco-nexus/cisco-nexus-ipv4instpayload/)
+- [Ipv4Nexthop](https://apis.io/schemas/cisco-nexus/cisco-nexus-ipv4nexthop/)
+- [Ipv4Route](https://apis.io/schemas/cisco-nexus/cisco-nexus-ipv4route/)
+- [Ipv4RouteListResponse](https://apis.io/schemas/cisco-nexus/cisco-nexus-ipv4routelistresponse/)
+- [Ipv4RouteResponse](https://apis.io/schemas/cisco-nexus/cisco-nexus-ipv4routeresponse/)
+- [L1PhysIf](https://apis.io/schemas/cisco-nexus/cisco-nexus-l1physif/)
+- [L2BD](https://apis.io/schemas/cisco-nexus/cisco-nexus-l2bd/)
+- [AaaLoginResponse](https://apis.io/schemas/cisco-nexus/cisco-nexus-nxapi-rest-aaa-login-response/)
+- [BdEntityPayload](https://apis.io/schemas/cisco-nexus/cisco-nexus-nxapi-rest-bd-entity-payload/)
+- [BgpDom](https://apis.io/schemas/cisco-nexus/cisco-nexus-nxapi-rest-bgp-dom/)
+- [BgpEntity](https://apis.io/schemas/cisco-nexus/cisco-nexus-nxapi-rest-bgp-entity/)
+- [BgpEntityResponse](https://apis.io/schemas/cisco-nexus/cisco-nexus-nxapi-rest-bgp-entity-response/)
+- [BgpInst](https://apis.io/schemas/cisco-nexus/cisco-nexus-nxapi-rest-bgp-inst/)
+- …and 32 more published on APIs.io
+
+#### JSON Structure (29)
+
+Data models expressed in JSON Structure.
+
+- [Cisco Nexus Nxapi Rest Aaa Login Response Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-aaa-login-response-structure/)
+- [Cisco Nexus Nxapi Rest Bd Entity Payload Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-bd-entity-payload-structure/)
+- [Cisco Nexus Nxapi Rest Bgp Dom Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-bgp-dom-structure/)
+- [Cisco Nexus Nxapi Rest Bgp Entity Response Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-bgp-entity-response-structure/)
+- [Cisco Nexus Nxapi Rest Bgp Entity Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-bgp-entity-structure/)
+- [Cisco Nexus Nxapi Rest Bgp Inst Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-bgp-inst-structure/)
+- [Cisco Nexus Nxapi Rest Bgp Peer Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-bgp-peer-structure/)
+- [Cisco Nexus Nxapi Rest Error Response Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-error-response-structure/)
+- [Cisco Nexus Nxapi Rest Fm Entity Payload Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-fm-entity-payload-structure/)
+- [Cisco Nexus Nxapi Rest Im Data Response Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-im-data-response-structure/)
+- [Cisco Nexus Nxapi Rest Interface Entity Payload Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-interface-entity-payload-structure/)
+- [Cisco Nexus Nxapi Rest Ipv4 Inst Payload Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-ipv4-inst-payload-structure/)
+- [Cisco Nexus Nxapi Rest Ipv4 Nexthop Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-ipv4-nexthop-structure/)
+- [Cisco Nexus Nxapi Rest Ipv4 Route List Response Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-ipv4-route-list-response-structure/)
+- [Cisco Nexus Nxapi Rest Ipv4 Route Response Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-ipv4-route-response-structure/)
+- [Cisco Nexus Nxapi Rest Ipv4 Route Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-ipv4-route-structure/)
+- [Cisco Nexus Nxapi Rest L1 Phys If Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-l1-phys-if-structure/)
+- [Cisco Nexus Nxapi Rest L2 Bd Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-l2-bd-structure/)
+- [Cisco Nexus Nxapi Rest Physical Interface List Response Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-physical-interface-list-response-structure/)
+- [Cisco Nexus Nxapi Rest Physical Interface Response Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-physical-interface-response-structure/)
+- [Cisco Nexus Nxapi Rest Svi If Payload Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-svi-if-payload-structure/)
+- [Cisco Nexus Nxapi Rest Svi If Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-svi-if-structure/)
+- [Cisco Nexus Nxapi Rest Svi Interface Response Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-svi-interface-response-structure/)
+- [Cisco Nexus Nxapi Rest Top System Payload Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-top-system-payload-structure/)
+- [Cisco Nexus Nxapi Rest Top System Response Structure](https://apis.io/json-structure/cisco-nexus/cisco-nexus-nxapi-rest-top-system-response-structure/)
+- …and 4 more published on APIs.io
+
+#### JSON-LD (2)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Cisco Nexus Context](https://apis.io/jsonld/cisco-nexus/cisco-nexus-context/)
+- [Cisco Nexus Nxapi Rest Context](https://apis.io/jsonld/cisco-nexus/cisco-nexus-nxapi-rest-context/)
 
-## Tags
+#### Vocabulary (1)
 
-- Data Center
-- Infrastructure
-- Network Automation
-- Networking
-- SDN
-- Switches
+The provider's domain terms, defined.
 
-## Timestamps
+- [Cisco Nexus Dashboard Domain Vocabulary](https://apis.io/vocabularies/cisco-nexus/cisco-nexus-vocabulary/)
 
-- **Created:** 2024
-- **Modified:** 2026-05-19
+#### Examples (34)
 
-## APIs
+Example requests and responses.
 
-### Cisco NX-API REST
+- [Cisco Nexus Authenticateuser Example](https://apis.io/examples/cisco-nexus/cisco-nexus-authenticateuser-example/)
+- [Cisco Nexus Configurefeatures Example](https://apis.io/examples/cisco-nexus/cisco-nexus-configurefeatures-example/)
+- [Cisco Nexus Configurephysicalinterface Example](https://apis.io/examples/cisco-nexus/cisco-nexus-configurephysicalinterface-example/)
+- [Cisco Nexus Configurestaticroute Example](https://apis.io/examples/cisco-nexus/cisco-nexus-configurestaticroute-example/)
+- [Cisco Nexus Configuresviinterface Example](https://apis.io/examples/cisco-nexus/cisco-nexus-configuresviinterface-example/)
+- [Cisco Nexus Createvlan Example](https://apis.io/examples/cisco-nexus/cisco-nexus-createvlan-example/)
+- [Cisco Nexus Nxapi Rest Aaa Login Response Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-aaa-login-response-example/)
+- [Cisco Nexus Nxapi Rest Bd Entity Payload Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-bd-entity-payload-example/)
+- [Cisco Nexus Nxapi Rest Bgp Dom Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-bgp-dom-example/)
+- [Cisco Nexus Nxapi Rest Bgp Entity Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-bgp-entity-example/)
+- [Cisco Nexus Nxapi Rest Bgp Entity Response Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-bgp-entity-response-example/)
+- [Cisco Nexus Nxapi Rest Bgp Inst Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-bgp-inst-example/)
+- [Cisco Nexus Nxapi Rest Bgp Peer Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-bgp-peer-example/)
+- [Cisco Nexus Nxapi Rest Error Response Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-error-response-example/)
+- [Cisco Nexus Nxapi Rest Fm Entity Payload Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-fm-entity-payload-example/)
+- [Cisco Nexus Nxapi Rest Im Data Response Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-im-data-response-example/)
+- [Cisco Nexus Nxapi Rest Interface Entity Payload Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-interface-entity-payload-example/)
+- [Cisco Nexus Nxapi Rest Ipv4 Inst Payload Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-ipv4-inst-payload-example/)
+- [Cisco Nexus Nxapi Rest Ipv4 Nexthop Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-ipv4-nexthop-example/)
+- [Cisco Nexus Nxapi Rest Ipv4 Route Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-ipv4-route-example/)
+- [Cisco Nexus Nxapi Rest Ipv4 Route List Response Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-ipv4-route-list-response-example/)
+- [Cisco Nexus Nxapi Rest Ipv4 Route Response Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-ipv4-route-response-example/)
+- [Cisco Nexus Nxapi Rest L1 Phys If Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-l1-phys-if-example/)
+- [Cisco Nexus Nxapi Rest L2 Bd Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-l2-bd-example/)
+- [Cisco Nexus Nxapi Rest Physical Interface List Response Example](https://apis.io/examples/cisco-nexus/cisco-nexus-nxapi-rest-physical-interface-list-response-example/)
+- …and 9 more published on APIs.io
 
-RESTful API for programmatic access to Nexus switches using HTTP/HTTPS.
+#### Collections (6)
 
-- **Human URL:** [https://developer.cisco.com/docs/nx-os/](https://developer.cisco.com/docs/nx-os/)
-- **Base URL:** `https://{switch-ip}/api`
+Postman and Open Collection request collections.
 
-#### Tags
+- [Cisco NX-API REST Authentication API](https://apis.io/collections/cisco-nexus/open-cisco-nexus-authentication-api/)
+- [Cisco NX-API REST Authentication Interfaces API](https://apis.io/collections/cisco-nexus/open-cisco-nexus-interfaces-api/)
+- [Cisco NX-API REST](https://apis.io/collections/cisco-nexus/open-cisco-nexus-nxapi-rest/)
+- [Cisco NX-API REST Authentication Routing API](https://apis.io/collections/cisco-nexus/open-cisco-nexus-routing-api/)
+- [Cisco NX-API REST Authentication System API](https://apis.io/collections/cisco-nexus/open-cisco-nexus-system-api/)
+- [Cisco NX-API REST Authentication VLANs API](https://apis.io/collections/cisco-nexus/open-cisco-nexus-vlans-api/)
 
-- CLI
-- Configuration
-- Monitoring
-- REST
+#### Governance rules (2)
 
-#### Properties
+Spectral rulesets for the provider's contracts.
 
-- [Documentation](https://developer.cisco.com/docs/nx-os/#!working-with-nx-api)
-- [OpenAPI](openapi/cisco-nexus-nxapi-rest.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cisco-nexus-nxapi-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cisco-nexus-nxapi-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Authentication](https://developer.cisco.com/docs/nx-os/#!authentication)
-- [SDK](https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/)
-- [Getting Started](https://developer.cisco.com/docs/cisco-nexus-3000-and-9000-series-nx-api-rest-sdk-user-guide-and-api-reference/latest/getting-started-with-the-cisco-nexus-3000-and-9000-series-nx-api-rest-sdk/)
-- [API Reference](https://developer.cisco.com/docs/nexus-model/latest/)
+- [Cisco Nexus Dashboard — jsonschema rules](https://apis.io/rules/cisco-nexus/cisco-nexus-jsonschema-spectral-rules/)
+- [Cisco Nexus Dashboard API Rules](https://apis.io/rules/cisco-nexus/cisco-nexus-spectral-rules/)
 
-### Cisco NX-API CLI
+#### Security (2)
 
-API that accepts show commands and configuration commands in CLI format.
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://developer.cisco.com/docs/nx-os/#!working-with-nx-api-cli](https://developer.cisco.com/docs/nx-os/#!working-with-nx-api-cli)
-- **Base URL:** `https://{switch-ip}/ins`
+- [Cisco Nexus Authentication](https://apis.io/security/cisco-nexus/cisco-nexus-authentication/)
+- [Cisco Nexus Domain Security](https://apis.io/security/cisco-nexus/cisco-nexus-domain-security/)
 
-#### Tags
+#### Plans and pricing (1)
 
-- CLI
-- Configuration
-- Show Commands
+Published plans, tiers and prices.
 
-#### Properties
+- [Cisco Nexus Plans Pricing](https://apis.io/plans/cisco-nexus/cisco-nexus-plans-pricing/)
 
-- [Documentation](https://developer.cisco.com/docs/nx-os/#!nx-api-cli)
-- [SDK](https://github.com/CiscoDevNet/nxapi-learning-labs)
-- [Sandbox](https://devnetsandbox.cisco.com/RM/Topology)
-- [Postman Collection](collections/cisco-nexus-nxapi-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cisco-nexus-nxapi-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Rate limits (1)
 
-### Cisco Nexus Dashboard REST API
+Published request limits.
 
-Unified API for Nexus Dashboard Insights, Orchestrator, and Fabric Controller.
+- [Cisco Nexus Rate Limits](https://apis.io/rate-limits/cisco-nexus/cisco-nexus-rate-limits/)
 
-- **Human URL:** [https://developer.cisco.com/docs/nexus-dashboard/latest/](https://developer.cisco.com/docs/nexus-dashboard/latest/)
-- **Base URL:** `https://{nexus-dashboard}/api/v1`
+#### FinOps (1)
 
-#### Tags
+What the API costs to run, by operation.
 
-- ACI
-- Dashboard
-- Fabric Controller
-- Insights
-- Orchestration
+- [Cisco Nexus Finops](https://apis.io/finops/cisco-nexus/cisco-nexus-finops/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://developer.cisco.com/docs/nexus-dashboard/)
-- [API Reference](https://developer.cisco.com/docs/nexus-dashboard/#!api-reference)
-- [Getting Started](https://developer.cisco.com/docs/nexus-dashboard/latest/getting-started/)
-- [Postman Collection](collections/cisco-nexus-nxapi-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cisco-nexus-nxapi-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### Cisco Nexus Dashboard Fabric Controller API
-
-REST API for managing and automating Nexus and MDS fabrics including LAN, SAN, and IP Fabric for Media deployments.
-
-- **Human URL:** [https://developer.cisco.com/docs/nexus-dashboard-fabric-controller/latest/](https://developer.cisco.com/docs/nexus-dashboard-fabric-controller/latest/)
-- **Base URL:** `https://{nexus-dashboard}/appcenter/cisco/ndfc/api/v1`
-
-#### Tags
-
-- EVPN
-- Fabric Management
-- LAN
-- NDFC
-- SAN
-- VXLAN
-
-#### Properties
-
-- [Documentation](https://developer.cisco.com/docs/nexus-dashboard-fabric-controller/latest/)
-- [Getting Started](https://developer.cisco.com/docs/nexus-dashboard-fabric-controller/latest/getting-started/)
-- [Postman Collection](collections/cisco-nexus-nxapi-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cisco-nexus-nxapi-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Cisco Nexus Dashboard Orchestrator API
-
-API for multi-site orchestration of ACI, Cloud ACI, and DCNM fabrics with policy management and segmentation.
-
-- **Human URL:** [https://developer.cisco.com/docs/nexus-dashboard-orchestrator/latest/](https://developer.cisco.com/docs/nexus-dashboard-orchestrator/latest/)
-- **Base URL:** `https://{nexus-dashboard}/appcenter/cisco/ndo/api/v1`
-
-#### Tags
-
-- ACI
-- Multi-Site
-- Orchestrator
-- Policy Management
-- Segmentation
-
-#### Properties
-
-- [Documentation](https://developer.cisco.com/docs/nexus-dashboard-orchestrator/latest/)
-- [Getting Started](https://developer.cisco.com/docs/nexus-dashboard-orchestrator/latest/getting-started/)
-- [Postman Collection](collections/cisco-nexus-nxapi-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cisco-nexus-nxapi-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Cisco Nexus Dashboard Insights API
-
-API for network analytics, telemetry, anomaly detection, and troubleshooting across data center fabrics.
-
-- **Human URL:** [https://developer.cisco.com/docs/nexus-dashboard-insights/latest/](https://developer.cisco.com/docs/nexus-dashboard-insights/latest/)
-- **Base URL:** `https://{nexus-dashboard}/appcenter/cisco/ndi/api/v1`
-
-#### Tags
-
-- Analytics
-- Anomaly Detection
-- Insights
-- Telemetry
-- Troubleshooting
-
-#### Properties
-
-- [Documentation](https://developer.cisco.com/docs/nexus-dashboard-insights/latest/)
-- [Getting Started](https://developer.cisco.com/docs/nexus-dashboard-insights/latest/getting-started/)
-- [Postman Collection](collections/cisco-nexus-nxapi-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cisco-nexus-nxapi-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Cisco DCNM REST API
-
-Data Center Network Manager API for managing Nexus fabric deployments.
-
-- **Human URL:** [https://developer.cisco.com/docs/data-center-network-manager/](https://developer.cisco.com/docs/data-center-network-manager/)
-- **Base URL:** `https://{dcnm-server}/rest`
-
-#### Tags
-
-- DCNM
-- EVPN
-- Fabric Management
-- VXLAN
-
-#### Properties
-
-- [Documentation](https://developer.cisco.com/docs/data-center-network-manager/)
-- [Use Cases](https://developer.cisco.com/docs/data-center-network-manager/#!use-cases)
-- [Postman Collection](collections/cisco-nexus-nxapi-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cisco-nexus-nxapi-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Cisco NETCONF/YANG API
-
-Model-driven API using YANG data models for Nexus devices.
-
-- **Human URL:** [https://developer.cisco.com/docs/nx-os/#!working-with-netconf](https://developer.cisco.com/docs/nx-os/#!working-with-netconf)
-- **Base URL:** `netconf://{switch-ip}:830`
-
-#### Tags
-
-- Automation
-- Model-Driven
-- NETCONF
-- YANG
-
-#### Properties
-
-- [Documentation](https://developer.cisco.com/docs/nx-os/#!working-with-netconf)
-- [GitHub Repository](https://github.com/YangModels/yang/tree/master/vendor/cisco/nx)
-- [Tutorials](https://developer.cisco.com/learning/labs/tags/Nexus/)
-- [Postman Collection](collections/cisco-nexus-nxapi-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cisco-nexus-nxapi-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Cisco NX-OS RESTCONF API
-
-HTTP-based protocol for configuring YANG-defined data on Nexus switches supporting XML and JSON payload encodings.
-
-- **Human URL:** [https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/chapter-2.html](https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/chapter-2.html)
-- **Base URL:** `https://{switch-ip}/restconf`
-
-#### Tags
-
-- HTTP
-- Model-Driven
-- RESTCONF
-- YANG
-
-#### Properties
-
-- [Documentation](https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/chapter-2.html)
-- [Postman Collection](collections/cisco-nexus-nxapi-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cisco-nexus-nxapi-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Cisco NX-OS gNMI/gRPC API
-
-gRPC Network Management Interface for streaming telemetry and configuration management on Nexus switches.
-
-- **Human URL:** [https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/m-gnmi.html](https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/m-gnmi.html)
-- **Base URL:** `grpc://{switch-ip}:50051`
-
-#### Tags
-
-- gNMI
-- gRPC
-- Model-Driven
-- Streaming
-- Telemetry
-
-#### Properties
-
-- [Documentation](https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/106x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-106x/m-gnmi.html)
-- [GitHub Repository](https://github.com/CiscoDevNet/nx-telemetry-proto)
-- [Postman Collection](collections/cisco-nexus-nxapi-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cisco-nexus-nxapi-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Cisco NX-OS Model-Driven Telemetry API
-
-Streaming telemetry interface for real-time operational data collection from Nexus switches using YANG models.
-
-- **Human URL:** [https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/102x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-release-102x/m-n9k-model-driven-telemetry-101x.html](https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/102x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-release-102x/m-n9k-model-driven-telemetry-101x.html)
-- **Base URL:** `grpc://{switch-ip}:50051`
-
-#### Tags
-
-- Dial-Out
-- Monitoring
-- Streaming
-- Telemetry
-- YANG
-
-#### Properties
-
-- [Documentation](https://www.cisco.com/c/en/us/td/docs/dcn/nx-os/nexus9000/102x/programmability/cisco-nexus-9000-series-nx-os-programmability-guide-release-102x/m-n9k-model-driven-telemetry-101x.html)
-- [Postman Collection](collections/cisco-nexus-nxapi-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cisco-nexus-nxapi-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Cisco NX-OS Python SDK API
-
-Python Software Development Kit for programmatic access to Nexus 9000 Series switch modules including interfaces, VLANs, ACLs, and routes.
-
-- **Human URL:** [https://developer.cisco.com/docs/nx-os/cisco-nexus-9000-series-python-sdk-user-guide-and-api-reference/](https://developer.cisco.com/docs/nx-os/cisco-nexus-9000-series-python-sdk-user-guide-and-api-reference/)
-- **Base URL:** `https://{switch-ip}`
-
-#### Tags
-
-- Automation
-- On-Box
-- Python
-- SDK
-
-#### Properties
-
-- [Documentation](https://developer.cisco.com/docs/nx-os/cisco-nexus-9000-series-python-sdk-user-guide-and-api-reference/)
-- [GitHub Repository](https://github.com/CiscoDevNet/NX-SDK)
-- [Postman Collection](collections/cisco-nexus-nxapi-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cisco-nexus-nxapi-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [Developer Portal](https://developer.cisco.com/)
-- [GitHub Organization](https://github.com/CiscoDevNet)
-- [Training](https://developer.cisco.com/learning/labs/tags/Nexus/)
-- [Sandbox](https://devnetsandbox.cisco.com/)
+- [Website](https://www.cisco.com/)
 - [Support](https://developer.cisco.com/site/support/)
-- [Status Page](https://status.cisco.com/)
-- [Code Examples](https://developer.cisco.com/codeexchange/)
-- [Features](undefined)
-- [Use Cases](undefined)
-- [Integrations](undefined)
+- [Blog](https://blogs.cisco.com/tag/nexus/feed)
+- [GitHub](https://github.com/CiscoDevNet)
+- [Status](https://status.cisco.com/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
-**URL:** https://apievangelist.com
+**Kin Score 39.2** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 64.3 |
+| Contract quality | 58.4 |
+| Contract governance | 13.6 |
+| Operational transparency | 18.4 |
+| Developer ergonomics | 67.9 |
+| Access clarity | 5.3 |
+
+**Agent readiness 20.4** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 16.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/cisco-nexus/](https://apis.io/providers/cisco-nexus/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Cisco Nexus Dashboard: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/cisco-nexus/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
